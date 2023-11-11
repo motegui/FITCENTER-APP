@@ -8,11 +8,11 @@ package ar.edu.itba.hci.fitcenter
 object SampleData {
     // Sample conversation data
     val conversationSample = listOf(
-        Message(
+        ComposeTutorial.Message(
             "Lexi",
             "Test...Test...Test..."
         ),
-        Message(
+        ComposeTutorial.Message(
             "Lexi",
             """List of Android versions:
             |Android KitKat (API 19)
@@ -25,51 +25,51 @@ object SampleData {
             |Android 11 (API 30)
             |Android 12 (API 31)""".trim()
         ),
-        Message(
+        ComposeTutorial.Message(
             "Lexi",
             """I think Kotlin is my favorite programming language.
             |It's so much fun!""".trim()
         ),
-        Message(
+        ComposeTutorial.Message(
             "Lexi",
             "Searching for alternatives to XML layouts..."
         ),
-        Message(
+        ComposeTutorial.Message(
             "Lexi",
             """Hey, take a look at Jetpack Compose, it's great!
             |It's the Android's modern toolkit for building native UI.
             |It simplifies and accelerates UI development on Android.
             |Less code, powerful tools, and intuitive Kotlin APIs :)""".trim()
         ),
-        Message(
+        ComposeTutorial.Message(
             "Lexi",
             "It's available from API 21+ :)"
         ),
-        Message(
+        ComposeTutorial.Message(
             "Lexi",
             "Writing Kotlin for UI seems so natural, Compose where have you been all my life?"
         ),
-        Message(
+        ComposeTutorial.Message(
             "Lexi",
             "Android Studio next version's name is Arctic Fox"
         ),
-        Message(
+        ComposeTutorial.Message(
             "Lexi",
             "Android Studio Arctic Fox tooling for Compose is top notch ^_^"
         ),
-        Message(
+        ComposeTutorial.Message(
             "Lexi",
             "I didn't know you can now run the emulator directly from Android Studio"
         ),
-        Message(
+        ComposeTutorial.Message(
             "Lexi",
             "Compose Previews are great to check quickly how a composable layout looks like"
         ),
-        Message(
+        ComposeTutorial.Message(
             "Lexi",
             "Previews are also interactive after enabling the experimental setting"
         ),
-        Message(
+        ComposeTutorial.Message(
             "Lexi",
             "Have you tried writing build.gradle with KTS?"
         ),

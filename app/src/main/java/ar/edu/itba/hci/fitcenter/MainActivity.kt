@@ -10,35 +10,39 @@ import android.util.Log
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.StringRes
+
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+
+import androidx.compose.material.Scaffold
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-//import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.animateContentSize
+
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.FitnessCenter
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.composable
+import ar.edu.itba.hci.fitcenter.screens.Login
 
 
 class MainActivity : ComponentActivity() {
@@ -51,7 +55,8 @@ class MainActivity : ComponentActivity() {
                     modifier=Modifier.fillMaxSize(),
                     color=MaterialTheme.colorScheme.background,
                 ) {
-                    Conversation(SampleData.conversationSample)
+//                    ComposeTutorial.Conversation(SampleData.conversationSample)
+                    MyAppNavHost()
                 }
             }
         }
@@ -73,90 +78,71 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-data class Message(
-    val author: String,
-    val body: String
+
+sealed class Screen(
+    val route: String,
+    @StringRes val resourceId: Int,
+    val icon: ImageVector?
+) {
+    object Login: Screen("login", R.string.login, null)
+    object Profile: Screen("profile", R.string.profile, Icons.Filled.AccountCircle)
+
+    object MyWorkouts: Screen("my-workouts", R.string.my_workouts, Icons.Filled.FitnessCenter)
+    object FindWorkouts: Screen("find-workouts", R.string.find_workouts, Icons.Filled.Search)
+}
+
+val bottomBarItems = listOf(
+    Screen.Profile,  // TO DO: move to top bar
+    Screen.MyWorkouts,
+    Screen.FindWorkouts,
 )
 
+
 @Composable
-fun MessageCard(msg: Message) {
-    Row(modifier=Modifier.padding(all=8.dp)) {
-        Image(
-            painter=painterResource(R.drawable.avatar_placeholder),
-            contentDescription="Contact profile picture",
-            modifier= Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-                .border(1.5.dp, MaterialTheme.colorScheme.primary),
-        )
-
-        Spacer(modifier=Modifier.width(8.dp))
-
-        // Keep track of whether the message is expanded or not
-        var isExpanded by remember { mutableStateOf(false) }
-        // Gradually update surfaceColor from one color to another
-        val surfaceColor by animateColorAsState(
-            if (isExpanded) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
-            label="guh animation",
-        )
-
-        // Toggle the variable when this column is clicked
-        Column(modifier=Modifier.clickable { isExpanded = !isExpanded }) {
-            Text(
-                text=msg.author,
-                style=MaterialTheme.typography.titleSmall
-            )
-            Spacer(modifier=Modifier.width(4.dp))
-
-            Surface(
-                shape=MaterialTheme.shapes.medium,
-                shadowElevation=2.dp,
-                // surfaceColor changes the surface's color gradually
-                color=surfaceColor,
-                // animateContentSize changes the surface's size gradually
-                modifier=Modifier.animateContentSize().padding(1.dp)
-            ) {
-                Text(
-                    text=msg.body,
-                    modifier=Modifier.padding(all=4.dp),
-                    // If the message is expanded, display all of its contents.
-                    // Otherwise, display only the first line.
-                    maxLines=if (isExpanded) Int.MAX_VALUE else 1,
-                    style=MaterialTheme.typography.bodyMedium
-                )
+fun MyAppNavHost(
+    navController: NavHostController=rememberNavController(),
+//    startDestination: String=Screen.MyWorkouts.route
+    startDestination: String=Screen.Login.route
+) {
+    Scaffold(
+//        topBar={}
+        bottomBar={
+            BottomNavigation(backgroundColor=MaterialTheme.colorScheme.secondary) {
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentDestination = navBackStackEntry?.destination
+                bottomBarItems.forEach { screen ->
+                    BottomNavigationItem(
+                        icon={ if (screen.icon != null) Icon(screen.icon, contentDescription=null) else null },
+                        label={ Text(stringResource(screen.resourceId)) },
+                        selected=currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                        onClick={
+                            navController.navigate(screen.route) {
+                                // Pop up to the start destination of the graph to
+                                // avoid building up a large stack of destinations
+                                // on the back stack as users select items
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                // Avoid multiple copies of the same destination when
+                                // re-selecting the same item
+                                launchSingleTop = true
+                                // Restore state when re-selecting a previously selected item
+                                restoreState = true
+                            }
+                        }
+                    )
+                }
             }
         }
-    }
-}
-
-@Composable
-fun Conversation(messages: List<Message>) {
-    LazyColumn {
-        items(messages) { message ->
-            MessageCard(message)
+    ) { innerPadding ->
+        NavHost(navController, startDestination=startDestination, Modifier.padding(innerPadding)) {
+            composable(Screen.Login.route) { Login(/*navController*/) }
+//            composable(Screen.Profile.route) { Profile(navController) }
+//            composable(Screen.MyWorkouts.route) { MyWorkouts(navController) }
+//            composable(Screen.FindWorkouts.route) { FindWorkouts(navController) }
         }
     }
 }
-
-//@Preview(name="Light Mode")
-//@Preview(
-//    name="Dark Mode",
-//    showBackground=true,
-//    uiMode=Configuration.UI_MODE_NIGHT_YES
-//)
-//@Composable
-//fun PreviewMessageCard() {
-//    FitcenterTheme {
-//        Surface {
-//            MessageCard(
-//                msg=Message(
-//                    "Billy Mays",
-//                    "Hi, Billy Mays here for the Big City Slider Station! The fast and easy way to press and cook delicious sliders — those restaurant mini-burgers everyone loves!"
-//                )
-//            )
-//        }
-//    }
-//}
 
 @Preview(name="Light Mode")
 @Preview(
@@ -165,13 +151,13 @@ fun Conversation(messages: List<Message>) {
     uiMode=Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
-fun PreviewConversation() {
+fun PreviewMainActivity() {
     FitcenterTheme {
         Surface(
             modifier=Modifier.fillMaxSize(),
             color=MaterialTheme.colorScheme.background,
         ) {
-            Conversation(SampleData.conversationSample)
+            MyAppNavHost()
         }
     }
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="my_workouts">Mis rutinas</string>
+    <string name="find_workouts">Buscinar rutinas</string>
+    <string name="profile">Perfil</string>
+    <string name="login">Inicio de sesión</string>
+</resources>
