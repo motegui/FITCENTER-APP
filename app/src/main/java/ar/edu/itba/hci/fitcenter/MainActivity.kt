@@ -1,24 +1,23 @@
 package ar.edu.itba.hci.fitcenter
 
-
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
-//import ar.edu.itba.hci.fitcenter.BuildConfig
 import android.content.res.Configuration
 import android.os.Bundle
-import android.os.Debug
-import android.util.Log
-import android.view.WindowManager
+
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-
-import androidx.compose.material.Scaffold
-import androidx.compose.material.BottomNavigation
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material.BottomNavigationItem
 
 import androidx.compose.runtime.Composable
@@ -36,6 +35,7 @@ import androidx.navigation.compose.rememberNavController
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.mutableStateOf
@@ -64,21 +64,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-//        if (BuildConfig.DEBUG) {
-        if (Debug.isDebuggerConnected()) {
-            Log.d(
-                "SCREEN",
-                "Keeping screen on for debugging, detach debugger and force an onResume to turn it off."
-            )
-            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        } else {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-            Log.d("SCREEN", "Keeping screen on for debugging is now deactivated.")
-        }
-    }
 }
 
 
@@ -86,22 +71,58 @@ sealed class Screen(
     val route: String,
     @StringRes val resourceId: Int,
     val usesNav: Boolean,
-    val icon: ImageVector?
+    val isSubPage: Boolean = false,
+    val icon: ImageVector? = null
 ) {
-    object Login: Screen("login", R.string.login, false, null)
-    object Profile: Screen("profile", R.string.profile, true, Icons.Filled.AccountCircle)
+    object Login: Screen(
+        route = "login",
+        resourceId = R.string.login,
+        usesNav = false,
+    )
+    object Profile: Screen(
+        route = "profile",
+        resourceId = R.string.profile,
+        usesNav = true,
+        icon = Icons.Filled.AccountCircle
+    )
 
-    object MyWorkouts: Screen("my-workouts", R.string.my_workouts, true, Icons.Filled.FitnessCenter)
-    object FindWorkouts: Screen("find-workouts", R.string.find_workouts, true, Icons.Filled.Search)
+    object MyWorkouts: Screen(
+        route = "my-workouts",
+        resourceId = R.string.my_workouts,
+        usesNav = true,
+        icon = Icons.Filled.FitnessCenter
+    )
+    object FindWorkouts: Screen(
+        route = "find-workouts",
+        resourceId = R.string.find_workouts,
+        usesNav = true,
+        icon = Icons.Filled.Search
+    )
 }
 
 val bottomBarItems = listOf(
-    Screen.Profile,  // TO DO: move to top bar
     Screen.MyWorkouts,
     Screen.FindWorkouts,
 )
 
+fun navigate(navController: NavHostController, route: String) {
+    navController.navigate(route) {
+        // Pop up to the start destination of the graph to
+        // avoid building up a large stack of destinations
+        // on the back stack as users select items
+        popUpTo(navController.graph.findStartDestination().id) {
+            saveState = true
+        }
+        // Avoid multiple copies of the same destination when
+        // re-selecting the same item
+        launchSingleTop = true
+        // Restore state when re-selecting a previously selected item
+        restoreState = true
+    }
+}
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyAppNavHost(
     navController: NavHostController = rememberNavController(),
@@ -109,23 +130,54 @@ fun MyAppNavHost(
 ) {
     var currentScreen by remember { mutableStateOf(startScreen) }
     Scaffold(
-//        topBar = {}
+        topBar = {
+            TopAppBar(
+                colors = TopAppBarDefaults.smallTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onSecondary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onSecondary
+                ),
+                title = {
+                    Text(stringResource(currentScreen.resourceId))
+                },
+                navigationIcon = {
+                    if (currentScreen.isSubPage) {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(
+                                imageVector = Icons.Filled.ArrowBack,
+                                contentDescription = stringResource(R.string.go_back)
+                            )
+                        }
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { navigate(navController, Screen.Profile.route) }) {
+                        Icon(
+                            imageVector = Icons.Filled.AccountCircle,
+                            contentDescription = stringResource(R.string.profile)
+                        )
+                    }
+                },
+            )
+        },
         bottomBar = {
             if (currentScreen.usesNav) {
-                BottomNavigation(
-                    backgroundColor = MaterialTheme.colorScheme.secondary,
+                BottomAppBar(
+                    containerColor = MaterialTheme.colorScheme.secondary,
                     contentColor = MaterialTheme.colorScheme.onSecondary
                 ) {
 //                    val navBackStackEntry by navController.currentBackStackEntryAsState()
 //                    val currentDestination = navBackStackEntry?.destination
                     bottomBarItems.forEach { screen ->
                         BottomNavigationItem(
+                            selectedContentColor = MaterialTheme.colorScheme.primary,
+                            unselectedContentColor = MaterialTheme.colorScheme.onSecondary,
                             icon = {
                                 if (screen.icon != null) {
                                     Icon(
                                         imageVector = screen.icon,
                                         contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.onSecondary
                                     )
                                 }
                             },
@@ -139,19 +191,7 @@ fun MyAppNavHost(
                             selected = screen.route == currentScreen.route,
                             onClick = {
                                 currentScreen = screen
-                                navController.navigate(screen.route) {
-                                    // Pop up to the start destination of the graph to
-                                    // avoid building up a large stack of destinations
-                                    // on the back stack as users select items
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
-                                    // Avoid multiple copies of the same destination when
-                                    // re-selecting the same item
-                                    launchSingleTop = true
-                                    // Restore state when re-selecting a previously selected item
-                                    restoreState = true
-                                }
+                                navigate(navController, screen.route)
                             }
                         )
                     }
