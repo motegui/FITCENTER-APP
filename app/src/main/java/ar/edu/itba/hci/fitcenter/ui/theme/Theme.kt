@@ -15,9 +15,11 @@ import androidx.core.view.WindowCompat
 private val LightColorScheme = lightColorScheme(
     primary = Green,
     secondary = ReallyDarkGray,
+    tertiary = Color.White,
 
     onPrimary = Color.Black,
     onSecondary = Color.White,
+    onTertiary = Color.Black,
 
     // Other default colors:
     // tertiary = ReallyDarkGray,
