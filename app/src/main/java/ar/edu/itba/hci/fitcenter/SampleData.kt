@@ -1,8 +1,5 @@
 package ar.edu.itba.hci.fitcenter
 
-/**
- * SampleData for Jetpack Compose Tutorial
- */
 
 
 object SampleData {

@@ -55,7 +55,7 @@ fun Login() {
             contentAlignment = Alignment.Center,
         ) {
             Text(
-                text = "FITCENTER",
+                text = stringResource(R.string.app_name),
                 color = MaterialTheme.colorScheme.primary,
                 letterSpacing = 11.sp,
                 fontWeight = FontWeight.Bold,
@@ -96,7 +96,7 @@ fun Login() {
                     containerColor = MaterialTheme.colorScheme.tertiary
                 )
             )
-            Button(onClick = { /* POST /login */ }) {
+            Button(onClick = { /* POST /users/login */ }) {
                 Text(stringResource(R.string.log_in))
             }
         }

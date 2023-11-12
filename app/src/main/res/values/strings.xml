@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Fitcenter</string>
+    <string name="app_name" translatable="false">FITCENTER</string>
     <string name="my_workouts">My Workouts</string>
     <string name="find_workouts">Find Workouts</string>
     <string name="profile">Profile</string>
