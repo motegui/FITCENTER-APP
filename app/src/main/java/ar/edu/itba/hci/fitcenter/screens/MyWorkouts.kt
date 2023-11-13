@@ -4,6 +4,14 @@ import android.content.res.Configuration
 import androidx.compose.runtime.Composable
 import androidx.compose.material3.Text
 import androidx.compose.ui.tooling.preview.Preview
+import ar.edu.itba.hci.fitcenter.api.Store
+import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
+
+
+@Composable
+fun MyWorkouts(store: Store) {
+    Text("This is the My Workouts screen")
+}
 
 
 @Preview(name="Light Mode")
@@ -13,6 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
     uiMode=Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
-fun MyWorkouts() {
-    Text("This is the My Workouts screen")
+fun PreviewMyWorkouts() {
+    FitcenterTheme {
+        MyWorkouts()
+    }
 }

@@ -1,4 +1,4 @@
-package ar.edu.itba.hci.fitcenter
+package ar.edu.itba.hci.fitcenter.api
 
 object ApiModels {
     enum class Gender(val value: String) { Male("male"), Female("female"), Other("other") }

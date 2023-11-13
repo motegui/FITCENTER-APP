@@ -1,5 +1,6 @@
 package ar.edu.itba.hci.fitcenter
 
+import android.content.Context
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 import android.content.res.Configuration
 import android.os.Bundle
@@ -42,11 +43,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
-//import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.composable
+import ar.edu.itba.hci.fitcenter.api.Store
 import ar.edu.itba.hci.fitcenter.screens.*
 
+
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "app")
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +65,8 @@ class MainActivity : ComponentActivity() {
                     modifier=Modifier.fillMaxSize(),
                     color=MaterialTheme.colorScheme.background,
                 ) {
-                    MyAppNavHost()
+                    val store = Store.getStore(applicationContext.dataStore)
+                    MyAppNavHost(store = store)
                 }
             }
         }
@@ -126,7 +133,8 @@ fun navigate(navController: NavHostController, route: String) {
 @Composable
 fun MyAppNavHost(
     navController: NavHostController = rememberNavController(),
-    startScreen: Screen = Screen.MyWorkouts
+    startScreen: Screen = Screen.MyWorkouts,
+    store: Store,
 ) {
     var currentScreen by remember { mutableStateOf(startScreen) }
     Scaffold(
@@ -200,10 +208,10 @@ fun MyAppNavHost(
         }
     ) { innerPadding ->
         NavHost(navController, startDestination=currentScreen.route, Modifier.padding(innerPadding)) {
-            composable(Screen.Login.route) { Login(/*navController*/) }
-            composable(Screen.Profile.route) { Profile(/*navController*/) }
-            composable(Screen.MyWorkouts.route) { MyWorkouts(/*navController*/) }
-            composable(Screen.FindWorkouts.route) { FindWorkouts(/*navController*/) }
+            composable(Screen.Login.route) { Login(store) }
+            composable(Screen.Profile.route) { Profile(store) }
+            composable(Screen.MyWorkouts.route) { MyWorkouts(store) }
+            composable(Screen.FindWorkouts.route) { FindWorkouts(store) }
         }
     }
 }

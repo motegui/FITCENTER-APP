@@ -33,12 +33,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ar.edu.itba.hci.fitcenter.api.Store
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Login() {
+fun Login(store: Store) {
     Column(
         modifier=Modifier
             .fillMaxSize()
@@ -112,6 +113,7 @@ fun Login() {
 @Composable
 fun PreviewLogin() {
     FitcenterTheme {
+        // TO DO: use sample store or modify Login to partially work without a store
         Login()
     }
 }
