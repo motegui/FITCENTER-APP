@@ -10,7 +10,7 @@ import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
 
 @Composable
-fun FindWorkouts(store: Store) {
+fun FindWorkouts(store: Store? = null) {
     Text("This is the FindWorkouts screen")
 }
 

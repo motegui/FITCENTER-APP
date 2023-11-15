@@ -1,6 +1,9 @@
 package ar.edu.itba.hci.fitcenter.screens
 
 import ar.edu.itba.hci.fitcenter.R
+import ar.edu.itba.hci.fitcenter.api.Credentials
+import ar.edu.itba.hci.fitcenter.api.Store
+import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,9 +22,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
@@ -33,15 +36,64 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ar.edu.itba.hci.fitcenter.api.Store
-import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
+import kotlinx.coroutines.launch
 
+
+// TODO: Read this guide for improving this form's UX
+// https://medium.com/@WhiteBatCodes/simple-login-page-in-jetpack-compose-9c92af690234
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Login(store: Store) {
+fun LoginForm(store: Store? = null) {
+    val scope = rememberCoroutineScope()
     Column(
-        modifier=Modifier
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier
+            .background(
+                color = Color(0x800C0D0D),
+                shape = RoundedCornerShape(size = 10.dp)
+            )
+            .padding(all = 28.dp),
+    ) {
+        val credentials by remember { mutableStateOf(
+            Credentials(
+                username = "",
+                password = "",
+            )
+        ) }
+
+        OutlinedTextField(
+            value = credentials.username,
+            onValueChange = { credentials.username = it },
+            label = { Text(stringResource(R.string.username)) },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                containerColor = MaterialTheme.colorScheme.tertiary
+            )
+        )
+        OutlinedTextField(
+            value = credentials.password,
+            onValueChange = { credentials.password = it },
+            label = { Text(stringResource(R.string.password)) },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                containerColor = MaterialTheme.colorScheme.tertiary
+            )
+        )
+        Button(onClick = {
+            scope.launch {
+                store?.login(credentials)
+            }
+        }) {
+            Text(stringResource(R.string.log_in))
+        }
+    }
+}
+
+
+@Composable
+fun Login(store: Store? = null) {
+    Column(
+        modifier = Modifier
             .fillMaxSize()
             .paint(
                 painterResource(R.drawable.landing2),
@@ -68,41 +120,10 @@ fun Login(store: Store) {
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize(),
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier
-                .background(
-                    color = Color(0x800C0D0D),
-                    shape = RoundedCornerShape(size = 10.dp)
-                )
-                .padding(all = 28.dp),
-        ) {
-            var username by remember { mutableStateOf("") }
-            var password by remember { mutableStateOf("") }
-
-            OutlinedTextField(
-                value = username,
-                onValueChange = { username = it },
-                label = { Text(stringResource(R.string.username)) },
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    containerColor = MaterialTheme.colorScheme.tertiary
-                )
-            )
-            OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text(stringResource(R.string.password)) },
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    containerColor = MaterialTheme.colorScheme.tertiary
-                )
-            )
-            Button(onClick = { /* POST /users/login */ }) {
-                Text(stringResource(R.string.log_in))
-            }
-        }
+        LoginForm(store)
     }
 }
+
 
 @Preview(name="Light Mode")
 @Preview(

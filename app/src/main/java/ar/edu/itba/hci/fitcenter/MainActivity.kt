@@ -31,7 +31,6 @@ import androidx.compose.foundation.layout.padding
 
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-//import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 
 import androidx.compose.material.icons.Icons
@@ -66,7 +65,7 @@ class MainActivity : ComponentActivity() {
                     color=MaterialTheme.colorScheme.background,
                 ) {
                     val store = Store.getStore(applicationContext.dataStore)
-                    MyAppNavHost(store = store)
+                    MainScreen(store = store)
                 }
             }
         }
@@ -131,10 +130,10 @@ fun navigate(navController: NavHostController, route: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyAppNavHost(
-    navController: NavHostController = rememberNavController(),
+fun MainScreen(
+    store: Store? = null,
     startScreen: Screen = Screen.MyWorkouts,
-    store: Store,
+    navController: NavHostController = rememberNavController(),
 ) {
     var currentScreen by remember { mutableStateOf(startScreen) }
     Scaffold(
@@ -223,13 +222,13 @@ fun MyAppNavHost(
     uiMode=Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
-fun PreviewMainActivity() {
+fun PreviewMainScreen() {
     FitcenterTheme {
         Surface(
             modifier=Modifier.fillMaxSize(),
             color=MaterialTheme.colorScheme.background,
         ) {
-            MyAppNavHost()
+            MainScreen()
         }
     }
 }

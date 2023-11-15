@@ -9,7 +9,7 @@ import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
 
 @Composable
-fun Profile(store: Store) {
+fun Profile(store: Store? = null) {
     Text("This is the profile screen")
 }
 

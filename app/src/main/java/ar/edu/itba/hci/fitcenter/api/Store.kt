@@ -1,11 +1,19 @@
 package ar.edu.itba.hci.fitcenter.api
 
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 
+/**
+ * Store
+ * Use this to interface with the API. Please avoid using api.Routes directly outside of this class.
+ * Objects like the current user can be added as properties on this object to cache them in memory.
+ * Objects like the session token can be added to the dataStore to save them to the device's storage.
+ */
 class Store private constructor(private val dataStore: DataStore<Preferences>) {
+    // Singleton class constructor
     companion object {
         @Volatile
         private var INSTANCE: Store? = null
@@ -16,12 +24,17 @@ class Store private constructor(private val dataStore: DataStore<Preferences>) {
             }
     }
 
-    private var user: ApiModels.FullUser? = null
-    val SESSION_TOKEN = stringPreferencesKey("session_token")
 
-    suspend fun login() {
+    private val apiRoutes = Routes()
+
+    private var user: FullUser? = null
+
+    private val SESSION_TOKEN = stringPreferencesKey("session_token")
+
+    suspend fun login(credentials: Credentials): Unit {
+        val tokenObject = apiRoutes.login(credentials)
         dataStore.edit { app ->
-//            app[SESSION_TOKEN] = <POST /users/login>
+            app[SESSION_TOKEN] = tokenObject.token
         }
     }
 
@@ -29,8 +42,8 @@ class Store private constructor(private val dataStore: DataStore<Preferences>) {
         // POST /users/logout
     }
 
-    suspend fun currentUser(): ApiModels.FullUser {
-        if (user != null) return user
-        // GET /users/current
-    }
+//    suspend fun currentUser(): FullUser {
+//        if (user != null) return user
+//        // GET /users/current
+//    }
 }
