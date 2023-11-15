@@ -3,8 +3,7 @@ package ar.edu.itba.hci.fitcenter
 
 
 object SampleData {
-    //Sample Routine data
-
+    //Sample Exercise data
 
     val initialExercises: List<ApiModels.Exercise> = listOf(
         ApiModels.Exercise(
@@ -319,6 +318,8 @@ object SampleData {
         ),
         )
 
+    // Sample routine data
+
     val sportsRoutines: List<ApiModels.FullRoutine> = listOf(
         ApiModels.FullRoutine(
             id = 1,
@@ -368,7 +369,6 @@ object SampleData {
             ),
             metadata = Any()
         ),
-        // Add more routines
         ApiModels.FullRoutine(
             id = 3,
             name = "Legs of Steel",
