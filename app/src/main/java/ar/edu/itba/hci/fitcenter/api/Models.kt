@@ -1,6 +1,12 @@
 package ar.edu.itba.hci.fitcenter.api
 
-object ApiModels {
+/**
+ * API Models from the API's swagger documentation
+ * THE STRUCTURE OF THESE OBJECTS CANNOT BE CHANGED.
+ * If you add new objects, make sure they reflect exactly what the documentation says they will be.
+ * http://localhost:8080/docs/#/
+ */
+object Models {
     enum class Gender(val value: String) { Male("male"), Female("female"), Other("other") }
     data class User (
         val username: String,
