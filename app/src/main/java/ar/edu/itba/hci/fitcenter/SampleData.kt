@@ -12,7 +12,7 @@ object SampleData {
             description = "Take a break!",
             type = null,
             equipment = emptyList(),
-            image = "/src/assets/break.jpg",
+            image = "/res/drawable/break.jpg",
             favorite = false,
             bodyArea = null,
         ),
@@ -22,7 +22,7 @@ object SampleData {
             description = "Burpees are a full-body exercise that combines a squat, push-up, and jump. Begin standing, squat down, kick feet back, perform a push-up, return to squat, and explosively jump up.",
             type = "Cardio",
             equipment = listOf("Exercise Mat"),
-            image = "/src/assets/burpees.jpg",
+            image = "/res/drawable/burpees.jpg",
             favorite = false,
             bodyArea = "Legs",
         ),
@@ -32,7 +32,7 @@ object SampleData {
             description = "Crunches are an abdominal exercise that involves lying on your back, bending your knees, and lifting your upper body off the ground. They target your core muscles.",
             type = "Strength",
             equipment = emptyList(),
-            image = "/src/assets/crunches.jpg",
+            image = "/res/drawable/crunches.jpg",
             favorite = false,
             bodyArea = null
         ),
@@ -42,7 +42,7 @@ object SampleData {
             description = "Squats are a lower-body exercise that involves bending your knees and hips while keeping your back straight. They target your quadriceps, hamstrings, and glutes.",
             type = "Strength",
             equipment = listOf("Barbell"),
-            image = "/src/assets/squats.jpg",
+            image = "/res/drawable/squats.jpg",
             favorite = false,
             bodyArea = "Legs"
         ),
@@ -52,7 +52,7 @@ object SampleData {
             description = "Push-ups are a bodyweight exercise that targets your chest, shoulders, and triceps. Start in a plank position, then lower and raise your body by bending your elbows.",
             type = "Strength",
             equipment = emptyList(),
-            image = "/src/assets/pushups.jpg",
+            image = "/res/drawable/pushups.jpg",
             favorite = false,
             bodyArea = "Chest"
         ),
@@ -62,7 +62,7 @@ object SampleData {
             description = "Lunges are a lower-body exercise that involves stepping forward and bending both knees to create a lunge position. They target your quadriceps and glutes.",
             type = "Strength",
             equipment = listOf("Dumbbells"),
-            image = "/src/assets/lunges.jpg",
+            image = "/res/drawable/lunges.jpg",
             favorite = false,
             bodyArea = "Legs"
         ),
@@ -72,7 +72,7 @@ object SampleData {
             description = "The plank is a core exercise that involves holding a push-up position with your body in a straight line. It targets your core muscles.",
             type = "Strength",
             equipment = emptyList(),
-            image = "/src/assets/plank.jpg",
+            image = "/res/drawable/plank.jpg",
             favorite = false,
             bodyArea = null
         ),
@@ -82,7 +82,7 @@ object SampleData {
             description = "Jumping jacks are a cardio exercise that involves jumping and spreading your legs and arms apart, then returning to the starting position. They elevate your heart rate.",
             type = "Cardio",
             equipment = emptyList(),
-            image = "/src/assets/jumping.jpg",
+            image = "/res/drawable/jumping.jpg",
             favorite = false,
             bodyArea = null
         ),
@@ -92,7 +92,7 @@ object SampleData {
             description = "Mountain climbers are a cardio exercise that simulates climbing. Start in a push-up position and alternate bringing your knees toward your chest.",
             type = "Cardio",
             equipment = emptyList(),
-            image = "/src/assets/mountains.jpg",
+            image = "/res/drawable/mountains.jpg",
             favorite = false,
             bodyArea = null
         ),
@@ -102,7 +102,7 @@ object SampleData {
             description = "Bicycle crunches engage your core as you lie on your back, lift your legs, and mimic pedaling a bicycle while twisting to touch your right elbow to your left knee and vice versa.",
             type = "Strength",
             equipment = emptyList(),
-            image = "/src/assets/bicycle_crunches.jpg",
+            image = "/res/drawable/bicycle_crunches.jpg",
             favorite = false,
             bodyArea = null
         ),
@@ -112,7 +112,7 @@ object SampleData {
             description = "Dumbbell squats are a variation of squats that involve using dumbbells. Hold a dumbbell in each hand at your sides while performing squats to increase resistance.",
             type = "Strength",
             equipment = listOf("Dumbbells"),
-            image = "/src/assets/dumbbell_squats.jpg",
+            image = "/res/drawable/dumbbell_squats.jpg",
             favorite = false,
             bodyArea = "Legs"
         ),
@@ -122,7 +122,7 @@ object SampleData {
             description = "Push-ups have many variations, such as diamond push-ups, tricep push-ups, and wide push-ups. Each variation focuses on different muscles and provides a unique challenge.",
             type = "Strength",
             equipment = emptyList(),
-            image = "/src/assets/pushup_variations.jpg",
+            image = "/res/drawable/pushup_variations.jpg",
             favorite = false,
             bodyArea = "Chest"
         ),
@@ -132,7 +132,7 @@ object SampleData {
             description = "Jump squats are an advanced version of squats. Start with a squat and then perform an explosive jump from the squat position. Land softly and repeat.",
             type = "Plyometrics",
             equipment = emptyList(),
-            image = "/src/assets/jump_squats.jpg",
+            image = "/res/drawable/jump_squats.jpg",
             favorite = false,
             bodyArea = "Legs"
         ),
@@ -142,7 +142,7 @@ object SampleData {
             description = "Plank with leg lift is an advanced core exercise. Perform a standard plank and alternate lifting one leg while keeping your back straight.",
             type = "Strength",
             equipment = emptyList(),
-            image = "/src/assets/plank_leg_lift.jpg",
+            image = "/res/drawable/plank_leg_lift.jpg",
             favorite = false,
             bodyArea = null
         ),
@@ -152,7 +152,7 @@ object SampleData {
             description = "High knees are a high-intensity cardiovascular exercise that involves running in place while lifting your knees toward your chest with each step.",
             type = "Cardio",
             equipment = emptyList(),
-            image = "/src/assets/high_knees.jpg",
+            image = "/res/drawable/high_knees.jpg",
             favorite = false,
             bodyArea = "Legs"
         ),
@@ -162,7 +162,7 @@ object SampleData {
             description = "Box jumps are a plyometric exercise that involves jumping onto a box or platform. This exercise improves leg strength and power.",
             type = "Plyometrics",
             equipment = emptyList(),
-            image = "/src/assets/box_jumps.jpg",
+            image = "/res/drawable/box_jumps.jpg",
             favorite = false,
             bodyArea = "Legs"
         ),
@@ -172,7 +172,7 @@ object SampleData {
             description = "Russian twists are a core exercise where you sit on the floor, lift your legs, and twist your torso from side to side, reaching to touch the ground with your hands.",
             type = "Strength",
             equipment = emptyList(),
-            image = "/src/assets/russian_twists.jpg",
+            image = "/res/drawable/russian_twists.jpg",
             favorite = false,
             bodyArea = null
         ),
@@ -182,7 +182,7 @@ object SampleData {
             description = "The plank with arm raise is a core exercise that begins in a standard plank position. Lift one arm at a time while keeping your body stable and parallel to the ground.",
             type = "Strength",
             equipment = emptyList(),
-            image = "/src/assets/plank_arm_raise.jpg",
+            image = "/res/drawable/plank_arm_raise.jpg",
             favorite = false,
             bodyArea = null
         ),
@@ -192,7 +192,7 @@ object SampleData {
             description = "The side plank is a core exercise that involves lying on your side with your elbow directly under your shoulder. Lift your hips and maintain a straight line from head to heels.",
             type = "Strength",
             equipment = emptyList(),
-            image = "/src/assets/side_plank.jpg",
+            image = "/res/drawable/side_plank.jpg",
             favorite = false,
             bodyArea = null
         ),
@@ -202,7 +202,7 @@ object SampleData {
             description = "Wall sits are a leg exercise that require you to lean against a wall with your knees bent at a 90-degree angle. Hold this position for as long as possible to build leg strength.",
             type = "Strength",
             equipment = emptyList(),
-            image = "/src/assets/wall_sits.jpg",
+            image = "/res/drawable/wall_sits.jpg",
             favorite = false,
             bodyArea = "Legs"
         ),
@@ -212,7 +212,7 @@ object SampleData {
             description = "The Superman exercise is performed lying face down with your arms and legs extended. Lift your arms, chest, and legs off the ground, squeezing your lower back and glutes.",
             type = "Strength",
             equipment = emptyList(),
-            image = "/src/assets/superman.jpg",
+            image = "/res/drawable/superman.jpg",
             favorite = false,
             bodyArea = "Back"
         ),
@@ -222,7 +222,7 @@ object SampleData {
             description = "Static stretching involves holding a stretch position for a period of time without moving. Perform static stretches for various upper body muscle groups, such as neck muscles, shoulders, and back.",
             type = "Flexibility",
             equipment = emptyList(),
-            image = "/src/assets/static_stretching.jpg",
+            image = "/res/drawable/static_stretching.jpg",
             favorite = false,
             bodyArea = null
         ),
@@ -232,7 +232,7 @@ object SampleData {
             description = "Child's pose is a yoga stretch that relaxes and stretches your lower back, hips, and thighs. Kneel with your big toes touching and sit back on your heels, extending your arms forward.",
             type = "Flexibility",
             equipment = emptyList(),
-            image = "/src/assets/childs_pose.jpg",
+            image = "/res/drawable/childs_pose.jpg",
             favorite = false,
             bodyArea = "Back"
         ),
@@ -242,7 +242,7 @@ object SampleData {
             description = "The seated forward bend is a yoga stretch that targets the hamstrings and lower back. Sit with your legs extended, and reach for your toes while keeping your back straight.",
             type = "Flexibility",
             equipment = emptyList(),
-            image = "/src/assets/seated_forward_bend.jpg",
+            image = "/res/drawable/seated_forward_bend.jpg",
             favorite = false,
             bodyArea = "Legs"
         ),
@@ -252,7 +252,7 @@ object SampleData {
             description = "The cobra stretch is a yoga pose that opens the chest and stretches the abs. Lie on your stomach, hands under shoulders, and lift your upper body while keeping your pelvis down.",
             type = "Flexibility",
             equipment = emptyList(),
-            image = "/src/assets/cobra_stretch.jpg",
+            image = "/res/drawable/cobra_stretch.jpg",
             favorite = false,
             bodyArea = "Chest"
         ),
@@ -262,7 +262,7 @@ object SampleData {
             description = "The triceps stretch helps relieve tension in the triceps muscles. Raise one arm overhead and bend your elbow, reaching down your back with your opposite hand to gently pull on your bent elbow.",
             type = "Flexibility",
             equipment = emptyList(),
-            image = "/src/assets/triceps_stretch.jpg",
+            image = "/res/drawable/triceps_stretch.jpg",
             favorite = false,
             bodyArea = "Arms"
         ),
@@ -272,7 +272,7 @@ object SampleData {
             description = "Neck rolls help release tension in the neck and shoulders. Gently roll your neck in a circular motion, both clockwise and counterclockwise.",
             type = "Flexibility",
             equipment = emptyList(),
-            image = "/src/assets/neck_rolls.jpg",
+            image = "/res/drawable/neck_rolls.jpg",
             favorite = false,
             bodyArea = null
         ),
@@ -282,7 +282,7 @@ object SampleData {
             description = "The hip flexor stretch helps relieve tension in the hip flexor muscles. Kneel on one knee and push your hips forward, feeling the stretch in your hip area.",
             type = "Flexibility",
             equipment = emptyList(),
-            image = "src/assets/hip_flexor_stretch.jpg",
+            image = "/res/drawable/hip_flexor_stretch.jpg",
             favorite = false,
             bodyArea = "Legs"
         ),
@@ -292,7 +292,7 @@ object SampleData {
             description = "The butterfly stretch is a seated stretch that opens up the groin and inner thighs. Sit with the soles of your feet together and gently push your knees toward the ground.",
             type = "Flexibility",
             equipment = emptyList(),
-            image = "/src/assets/butterfly_stretch.jpg",
+            image = "/res/drawable/butterfly_stretch.jpg",
             favorite = false,
             bodyArea = "Legs"
         ),
@@ -302,7 +302,7 @@ object SampleData {
             description = "Ankle circles help improve ankle mobility and flexibility. Lift one foot off the ground and rotate your ankle in circular motions, both clockwise and counterclockwise.",
             type = "Flexibility",
             equipment = emptyList(),
-            image = "/src/assets/ankle_circles.jpg",
+            image = "/res/drawable/ankle_circles.jpg",
             favorite = false,
             bodyArea = "Legs"
         ),
@@ -312,7 +312,7 @@ object SampleData {
             description = "Deep breathing exercises can help calm your body and reduce stress. Inhale deeply through your nose, hold your breath for a few seconds, and exhale slowly through your mouth. Repeat several times.",
             type = "Balance",
             equipment = emptyList(),
-            image = "/src/assets/deep_breathing.jpg",
+            image = "/res/drawable/deep_breathing.jpg",
             favorite = false,
             bodyArea = null,
         ),
