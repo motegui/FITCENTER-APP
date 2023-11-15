@@ -58,10 +58,10 @@ object ApiModels {
         Advanced("advanced"),
         Expert("expert")
     }
-    data class FullRoutine (
+    data class FullRoutine(
         val id: Int,
         val name: String,
-        val detail: String,
+        val detail: List<Exercise>,
         val date: Int,
         val score: Int,
         val isPublic: Boolean,
@@ -75,5 +75,16 @@ object ApiModels {
         val id: Int,
         val name: String,
         val detail: String
+    )
+
+    data class Exercise(
+        val id: Int,
+        val title: String,
+        val description: String,
+        val type: String?,
+        val equipment: List<String>,
+        val image: String,
+        val favorite: Boolean,
+        val bodyArea: String?
     )
 }
