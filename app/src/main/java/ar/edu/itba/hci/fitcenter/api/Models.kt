@@ -9,33 +9,33 @@ package ar.edu.itba.hci.fitcenter.api
 object Models {
     enum class Gender(val value: String) { Male("male"), Female("female"), Other("other") }
     data class User (
-        val username: String,
-        val password: String,
-        val firstName: String?,
-        val lastName: String?,
-        val gender: Gender?,
-        val birthdate: Int?,
-        val email: String,
-        val phone: String?,
-        val avatarUrl: String?,
-        val metadata: Any?
+        var username: String,
+        var password: String,
+        var firstName: String?,
+        var lastName: String?,
+        var gender: Gender?,
+        var birthdate: Int?,
+        var email: String,
+        var phone: String?,
+        var avatarUrl: String?,
+        var metadata: Any?
     )
 
     data class FullUser (
-        val id: Int,
-        val username: String,
-        val password: String,
-        val firstName: String,
-        val lastName: String,
-        val gender: Gender,
-        val birthdate: Int,
-        val email: String,
-        val phone: String,
-        val avatarUrl: String,
-        val metadata: Any,
-        val date: Int,
-        val lastActivity: Int,
-        val verified: Boolean
+        var id: Int,
+        var username: String,
+        var password: String,
+        var firstName: String,
+        var lastName: String,
+        var gender: Gender,
+        var birthdate: Int,
+        var email: String,
+        var phone: String,
+        var avatarUrl: String,
+        var metadata: Any,
+        var date: Int,
+        var lastActivity: Int,
+        var verified: Boolean
     )
 
     data class PublicUser (
@@ -45,16 +45,17 @@ object Models {
         val avatarUrl: String,
         val date: Int,
         val lastActivity: Int
+
     )
 
     data class SearchResult<T> (
-        val totalCount: Int,
-        val orderBy: String,
-        val direction: String,
-        val content: List<T>,
-        val size: Int,
-        val page: Int,
-        val isLastPage: Boolean
+        var totalCount: Int,
+        var orderBy: String,
+        var direction: String,
+        var content: List<T>,
+        var size: Int,
+        var page: Int,
+        var isLastPage: Boolean
     )
 
     enum class Difficulty(val value: String) {
@@ -78,9 +79,9 @@ object Models {
     )
 
     data class FullCategory (
-        val id: Int,
-        val name: String,
-        val detail: String
+        var id: Int,
+        var name: String,
+        var detail: String
     )
 
     data class Exercise(
