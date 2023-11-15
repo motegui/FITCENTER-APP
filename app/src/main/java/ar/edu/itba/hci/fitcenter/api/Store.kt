@@ -1,6 +1,5 @@
 package ar.edu.itba.hci.fitcenter.api
 
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -24,23 +23,20 @@ class Store private constructor(private val dataStore: DataStore<Preferences>) {
             }
     }
 
-
-    private val apiRoutes = Routes()
-
-    private var user: FullUser? = null
+    private var user: Models.FullUser? = null
 
     private val SESSION_TOKEN = stringPreferencesKey("session_token")
 
-    suspend fun login(credentials: Credentials): Unit {
-        val tokenObject = apiRoutes.login(credentials)
+    suspend fun login(credentials: Models.Credentials) {
+        val tokenObject = Routes.login(credentials)
         dataStore.edit { app ->
             app[SESSION_TOKEN] = tokenObject.token
         }
     }
 
-    suspend fun logout() {
-        // POST /users/logout
-    }
+//    suspend fun logout() {
+////         POST /users/logout
+//    }
 
 //    suspend fun currentUser(): FullUser {
 //        if (user != null) return user

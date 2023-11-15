@@ -1,7 +1,7 @@
 package ar.edu.itba.hci.fitcenter.screens
 
 import ar.edu.itba.hci.fitcenter.R
-import ar.edu.itba.hci.fitcenter.api.Credentials
+import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.api.Store
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 import android.content.res.Configuration
@@ -57,7 +57,7 @@ fun LoginForm(store: Store? = null) {
             .padding(all = 28.dp),
     ) {
         val credentials by remember { mutableStateOf(
-            Credentials(
+            Models.Credentials(
                 username = "",
                 password = "",
             )

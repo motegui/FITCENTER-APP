@@ -10,7 +10,7 @@ import io.ktor.client.request.setBody
 
 const val BASE_URL = "http://localhost:8080"
 
-class Routes {
+object Routes {
 //    suspend fun getAllPosts(): List<Post> = client.get("$BASE_URL/posts").body()
 //
 //    suspend fun createNewPost(newPost: Post): Post = client.post("$BASE_URL/posts"){
@@ -23,7 +23,7 @@ class Routes {
 //
 //    suspend fun deletePost(id: Int) = client.delete("$BASE_URL/posts/$id")
 
-    suspend fun login(credentials: Credentials): AuthenticationToken {
+    suspend fun login(credentials: Models.Credentials): Models.AuthenticationToken {
         return client.post("$BASE_URL/users/login") {
             setBody(credentials)
         }.body()
