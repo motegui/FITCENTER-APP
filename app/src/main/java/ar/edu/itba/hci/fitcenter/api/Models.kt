@@ -47,6 +47,13 @@ object Models {
         var lastActivity: Int
     )
 
+    data class Credentials (
+        var username: String,
+        var password: String
+    )
+
+    data class AuthenticationToken (
+        var token: String
     )
 
     data class SearchResult<T> (
