@@ -1,5 +1,6 @@
 package ar.edu.itba.hci.fitcenter
 
+import ar.edu.itba.hci.fitcenter.api.Models
 
 
 object SampleData {
@@ -10,8 +11,8 @@ object SampleData {
 
     //Sample Exercise data
 
-    val initialExercises: List<ApiModels.Exercise> = listOf(
-        ApiModels.Exercise(
+    val initialExercises: List<Models.Exercise> = listOf(
+        Models.Exercise(
             id = 1,
             title = "Break",
             description = "Take a break!",
@@ -21,7 +22,7 @@ object SampleData {
             favorite = false,
             bodyArea = null,
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567890,
             title = "Burpees",
             description = "Burpees are a full-body exercise that combines a squat, push-up, and jump. Begin standing, squat down, kick feet back, perform a push-up, return to squat, and explosively jump up.",
@@ -31,7 +32,7 @@ object SampleData {
             favorite = false,
             bodyArea = "Legs",
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567891,
             title = "Crunches",
             description = "Crunches are an abdominal exercise that involves lying on your back, bending your knees, and lifting your upper body off the ground. They target your core muscles.",
@@ -41,7 +42,7 @@ object SampleData {
             favorite = false,
             bodyArea = null
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567892,
             title = "Squats",
             description = "Squats are a lower-body exercise that involves bending your knees and hips while keeping your back straight. They target your quadriceps, hamstrings, and glutes.",
@@ -51,7 +52,7 @@ object SampleData {
             favorite = false,
             bodyArea = "Legs"
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567893,
             title = "Push-ups",
             description = "Push-ups are a bodyweight exercise that targets your chest, shoulders, and triceps. Start in a plank position, then lower and raise your body by bending your elbows.",
@@ -61,7 +62,7 @@ object SampleData {
             favorite = false,
             bodyArea = "Chest"
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567894,
             title = "Lunges",
             description = "Lunges are a lower-body exercise that involves stepping forward and bending both knees to create a lunge position. They target your quadriceps and glutes.",
@@ -71,7 +72,7 @@ object SampleData {
             favorite = false,
             bodyArea = "Legs"
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567895,
             title = "Plank",
             description = "The plank is a core exercise that involves holding a push-up position with your body in a straight line. It targets your core muscles.",
@@ -81,7 +82,7 @@ object SampleData {
             favorite = false,
             bodyArea = null
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567896,
             title = "Jumping Jacks",
             description = "Jumping jacks are a cardio exercise that involves jumping and spreading your legs and arms apart, then returning to the starting position. They elevate your heart rate.",
@@ -91,7 +92,7 @@ object SampleData {
             favorite = false,
             bodyArea = null
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567897,
             title = "Mountain Climbers",
             description = "Mountain climbers are a cardio exercise that simulates climbing. Start in a push-up position and alternate bringing your knees toward your chest.",
@@ -101,7 +102,7 @@ object SampleData {
             favorite = false,
             bodyArea = null
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567898,
             title = "Bicycle Crunches",
             description = "Bicycle crunches engage your core as you lie on your back, lift your legs, and mimic pedaling a bicycle while twisting to touch your right elbow to your left knee and vice versa.",
@@ -111,7 +112,7 @@ object SampleData {
             favorite = false,
             bodyArea = null
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567899,
             title = "Dumbbell Squats",
             description = "Dumbbell squats are a variation of squats that involve using dumbbells. Hold a dumbbell in each hand at your sides while performing squats to increase resistance.",
@@ -121,7 +122,7 @@ object SampleData {
             favorite = false,
             bodyArea = "Legs"
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567900,
             title = "Push-up Variations",
             description = "Push-ups have many variations, such as diamond push-ups, tricep push-ups, and wide push-ups. Each variation focuses on different muscles and provides a unique challenge.",
@@ -131,7 +132,7 @@ object SampleData {
             favorite = false,
             bodyArea = "Chest"
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567901,
             title = "Jump Squats",
             description = "Jump squats are an advanced version of squats. Start with a squat and then perform an explosive jump from the squat position. Land softly and repeat.",
@@ -141,7 +142,7 @@ object SampleData {
             favorite = false,
             bodyArea = "Legs"
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567902,
             title = "Plank with Leg Lift",
             description = "Plank with leg lift is an advanced core exercise. Perform a standard plank and alternate lifting one leg while keeping your back straight.",
@@ -151,7 +152,7 @@ object SampleData {
             favorite = false,
             bodyArea = null
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567903,
             title = "High Knees",
             description = "High knees are a high-intensity cardiovascular exercise that involves running in place while lifting your knees toward your chest with each step.",
@@ -161,7 +162,7 @@ object SampleData {
             favorite = false,
             bodyArea = "Legs"
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567904,
             title = "Box Jumps",
             description = "Box jumps are a plyometric exercise that involves jumping onto a box or platform. This exercise improves leg strength and power.",
@@ -171,7 +172,7 @@ object SampleData {
             favorite = false,
             bodyArea = "Legs"
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567905,
             title = "Russian Twists",
             description = "Russian twists are a core exercise where you sit on the floor, lift your legs, and twist your torso from side to side, reaching to touch the ground with your hands.",
@@ -181,7 +182,7 @@ object SampleData {
             favorite = false,
             bodyArea = null
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567906,
             title = "Plank with Arm Raise",
             description = "The plank with arm raise is a core exercise that begins in a standard plank position. Lift one arm at a time while keeping your body stable and parallel to the ground.",
@@ -191,7 +192,7 @@ object SampleData {
             favorite = false,
             bodyArea = null
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567907,
             title = "Side Plank",
             description = "The side plank is a core exercise that involves lying on your side with your elbow directly under your shoulder. Lift your hips and maintain a straight line from head to heels.",
@@ -201,7 +202,7 @@ object SampleData {
             favorite = false,
             bodyArea = null
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567908,
             title = "Wall Sits",
             description = "Wall sits are a leg exercise that require you to lean against a wall with your knees bent at a 90-degree angle. Hold this position for as long as possible to build leg strength.",
@@ -211,7 +212,7 @@ object SampleData {
             favorite = false,
             bodyArea = "Legs"
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567909,
             title = "Superman",
             description = "The Superman exercise is performed lying face down with your arms and legs extended. Lift your arms, chest, and legs off the ground, squeezing your lower back and glutes.",
@@ -221,7 +222,7 @@ object SampleData {
             favorite = false,
             bodyArea = "Back"
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567911,
             title = "Static Stretching",
             description = "Static stretching involves holding a stretch position for a period of time without moving. Perform static stretches for various upper body muscle groups, such as neck muscles, shoulders, and back.",
@@ -231,7 +232,7 @@ object SampleData {
             favorite = false,
             bodyArea = null
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567912,
             title = "Child's Pose",
             description = "Child's pose is a yoga stretch that relaxes and stretches your lower back, hips, and thighs. Kneel with your big toes touching and sit back on your heels, extending your arms forward.",
@@ -241,7 +242,7 @@ object SampleData {
             favorite = false,
             bodyArea = "Back"
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567913,
             title = "Seated Forward Bend",
             description = "The seated forward bend is a yoga stretch that targets the hamstrings and lower back. Sit with your legs extended, and reach for your toes while keeping your back straight.",
@@ -251,7 +252,7 @@ object SampleData {
             favorite = false,
             bodyArea = "Legs"
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567914,
             title = "Cobra Stretch",
             description = "The cobra stretch is a yoga pose that opens the chest and stretches the abs. Lie on your stomach, hands under shoulders, and lift your upper body while keeping your pelvis down.",
@@ -261,7 +262,7 @@ object SampleData {
             favorite = false,
             bodyArea = "Chest"
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567915,
             title = "Triceps Stretch",
             description = "The triceps stretch helps relieve tension in the triceps muscles. Raise one arm overhead and bend your elbow, reaching down your back with your opposite hand to gently pull on your bent elbow.",
@@ -271,7 +272,7 @@ object SampleData {
             favorite = false,
             bodyArea = "Arms"
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567916,
             title = "Neck Rolls",
             description = "Neck rolls help release tension in the neck and shoulders. Gently roll your neck in a circular motion, both clockwise and counterclockwise.",
@@ -281,7 +282,7 @@ object SampleData {
             favorite = false,
             bodyArea = null
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567917,
             title = "Hip Flexor Stretch",
             description = "The hip flexor stretch helps relieve tension in the hip flexor muscles. Kneel on one knee and push your hips forward, feeling the stretch in your hip area.",
@@ -291,7 +292,7 @@ object SampleData {
             favorite = false,
             bodyArea = "Legs"
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567918,
             title = "Butterfly Stretch",
             description = "The butterfly stretch is a seated stretch that opens up the groin and inner thighs. Sit with the soles of your feet together and gently push your knees toward the ground.",
@@ -301,7 +302,7 @@ object SampleData {
             favorite = false,
             bodyArea = "Legs"
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567919,
             title = "Ankle Circles",
             description = "Ankle circles help improve ankle mobility and flexibility. Lift one foot off the ground and rotate your ankle in circular motions, both clockwise and counterclockwise.",
@@ -311,7 +312,7 @@ object SampleData {
             favorite = false,
             bodyArea = "Legs"
         ),
-        ApiModels.Exercise(
+        Models.Exercise(
             id = 1234567920,
             title = "Deep Breathing",
             description = "Deep breathing exercises can help calm your body and reduce stress. Inhale deeply through your nose, hold your breath for a few seconds, and exhale slowly through your mouth. Repeat several times.",
@@ -325,8 +326,8 @@ object SampleData {
 
     // Sample routine data
 
-    val sportsRoutines: List<ApiModels.FullRoutine> = listOf(
-        ApiModels.FullRoutine(
+    val sportsRoutines: List<Models.FullRoutine> = listOf(
+        Models.FullRoutine(
             id = 1,
             name = "Beginner Full Body",
             detail = listOf(
@@ -338,19 +339,19 @@ object SampleData {
             date = 20231114,
             score = 80,
             isPublic = true,
-            difficulty = ApiModels.Difficulty.Beginner,
-            category = ApiModels.FullCategory(3, "Full Body", "Target all major muscle groups"),
-            user = ApiModels.PublicUser(
+            difficulty = Models.Difficulty.Beginner,
+            category = Models.FullCategory(3, "Full Body", "Target all major muscle groups"),
+            user = Models.PublicUser(
                 1,
                 "fitstarter",
-                ApiModels.Gender.Other,
+                Models.Gender.Other,
                 "avatar_url_4",
                 20231114,
                 20231115
             ),
             metadata = Any()
         ),
-        ApiModels.FullRoutine(
+        Models.FullRoutine(
             id = 2,
             name = "Cardio Blast",
             detail = listOf(
@@ -362,19 +363,19 @@ object SampleData {
             date = 20231115,
             score = 90,
             isPublic = true,
-            difficulty = ApiModels.Difficulty.Intermediate,
-            category = ApiModels.FullCategory(5, "Cardio", "Boost your cardiovascular endurance"),
-            user = ApiModels.PublicUser(
+            difficulty = Models.Difficulty.Intermediate,
+            category = Models.FullCategory(5, "Cardio", "Boost your cardiovascular endurance"),
+            user = Models.PublicUser(
                 2,
                 "cardiokid",
-                ApiModels.Gender.Male,
+                Models.Gender.Male,
                 "avatar_url_5",
                 20231114,
                 20231115
             ),
             metadata = Any()
         ),
-        ApiModels.FullRoutine(
+        Models.FullRoutine(
             id = 3,
             name = "Legs of Steel",
             detail = listOf(
@@ -386,19 +387,19 @@ object SampleData {
             date = 20231116,
             score = 85,
             isPublic = true,
-            difficulty = ApiModels.Difficulty.Intermediate,
-            category = ApiModels.FullCategory(4, "Legs", "Focus on leg strength and endurance"),
-            user = ApiModels.PublicUser(
+            difficulty = Models.Difficulty.Intermediate,
+            category = Models.FullCategory(4, "Legs", "Focus on leg strength and endurance"),
+            user = Models.PublicUser(
                 3,
                 "legdaylover",
-                ApiModels.Gender.Female,
+                Models.Gender.Female,
                 "avatar_url_6",
                 20231114,
                 20231115
             ),
             metadata = Any()
         ),
-        ApiModels.FullRoutine(
+        Models.FullRoutine(
             id = 4,
             name = "Upper Body Burnout",
             detail = listOf(
@@ -410,19 +411,19 @@ object SampleData {
             date = 20231117,
             score = 88,
             isPublic = true,
-            difficulty = ApiModels.Difficulty.Advanced,
-            category = ApiModels.FullCategory(2, "Upper Body", "Target your chest, arms, and back"),
-            user = ApiModels.PublicUser(
+            difficulty = Models.Difficulty.Advanced,
+            category = Models.FullCategory(2, "Upper Body", "Target your chest, arms, and back"),
+            user = Models.PublicUser(
                 4,
                 "armdaywarrior",
-                ApiModels.Gender.Male,
+                Models.Gender.Male,
                 "avatar_url_7",
                 20231114,
                 20231115
             ),
             metadata = Any()
         ),
-        ApiModels.FullRoutine(
+        Models.FullRoutine(
             id = 5,
             name = "Quick Flexibility Flow",
             detail = listOf(
@@ -434,19 +435,19 @@ object SampleData {
             date = 20231118,
             score = 86,
             isPublic = true,
-            difficulty = ApiModels.Difficulty.Beginner,
-            category = ApiModels.FullCategory(6, "Flexibility", "Improve your range of motion"),
-            user = ApiModels.PublicUser(
+            difficulty = Models.Difficulty.Beginner,
+            category = Models.FullCategory(6, "Flexibility", "Improve your range of motion"),
+            user = Models.PublicUser(
                 5,
                 "flexibleflow",
-                ApiModels.Gender.Female,
+                Models.Gender.Female,
                 "avatar_url_8",
                 20231114,
                 20231115
             ),
             metadata = Any()
         ),
-        ApiModels.FullRoutine(
+        Models.FullRoutine(
             id = 6,
             name = "Stress Relief Yoga",
             detail = listOf(
@@ -458,19 +459,19 @@ object SampleData {
             date = 20231119,
             score = 92,
             isPublic = true,
-            difficulty = ApiModels.Difficulty.Beginner,
-            category = ApiModels.FullCategory(7, "Yoga", "Relax your mind and body"),
-            user = ApiModels.PublicUser(
+            difficulty = Models.Difficulty.Beginner,
+            category = Models.FullCategory(7, "Yoga", "Relax your mind and body"),
+            user = Models.PublicUser(
                 6,
                 "yogalover",
-                ApiModels.Gender.Female,
+                Models.Gender.Female,
                 "avatar_url_9",
                 20231114,
                 20231115
             ),
             metadata = Any()
         ),
-        ApiModels.FullRoutine(
+        Models.FullRoutine(
             id = 7,
             name = "Balance and Core Stability",
             detail = listOf(
@@ -482,19 +483,19 @@ object SampleData {
             date = 20231120,
             score = 87,
             isPublic = true,
-            difficulty = ApiModels.Difficulty.Intermediate,
-            category = ApiModels.FullCategory(1, "Core", "Strengthen your core muscles"),
-            user = ApiModels.PublicUser(
+            difficulty = Models.Difficulty.Intermediate,
+            category = Models.FullCategory(1, "Core", "Strengthen your core muscles"),
+            user = Models.PublicUser(
                 7,
                 "corechamp",
-                ApiModels.Gender.Male,
+                Models.Gender.Male,
                 "avatar_url_10",
                 20231114,
                 20231115
             ),
             metadata = Any()
         ),
-        ApiModels.FullRoutine(
+        Models.FullRoutine(
             id = 8,
             name = "Quick Cardio Circuit",
             detail = listOf(
@@ -506,19 +507,19 @@ object SampleData {
             date = 20231121,
             score = 89,
             isPublic = true,
-            difficulty = ApiModels.Difficulty.Intermediate,
-            category = ApiModels.FullCategory(5, "Cardio", "Boost your heart rate"),
-            user = ApiModels.PublicUser(
+            difficulty = Models.Difficulty.Intermediate,
+            category = Models.FullCategory(5, "Cardio", "Boost your heart rate"),
+            user = Models.PublicUser(
                 8,
                 "cardiobeast",
-                ApiModels.Gender.Male,
+                Models.Gender.Male,
                 "avatar_url_11",
                 20231114,
                 20231115
             ),
             metadata = Any()
         ),
-        ApiModels.FullRoutine(
+        Models.FullRoutine(
             id = 9,
             name = "Quick Office Stretch",
             detail = listOf(
@@ -530,19 +531,19 @@ object SampleData {
             date = 20231122,
             score = 84,
             isPublic = true,
-            difficulty = ApiModels.Difficulty.Beginner,
-            category = ApiModels.FullCategory(8, "Stretching", "Relieve tension from desk work"),
-            user = ApiModels.PublicUser(
+            difficulty = Models.Difficulty.Beginner,
+            category = Models.FullCategory(8, "Stretching", "Relieve tension from desk work"),
+            user = Models.PublicUser(
                 9,
                 "deskstretcher",
-                ApiModels.Gender.Female,
+                Models.Gender.Female,
                 "avatar_url_12",
                 20231114,
                 20231115
             ),
             metadata = Any()
         ),
-        ApiModels.FullRoutine(
+        Models.FullRoutine(
             id = 10,
             name = "Quick Strength Boost",
             detail = listOf(
@@ -554,12 +555,12 @@ object SampleData {
             date = 20231123,
             score = 86,
             isPublic = true,
-            difficulty = ApiModels.Difficulty.Beginner,
-            category = ApiModels.FullCategory(2, "Strength", "Build overall body strength"),
-            user = ApiModels.PublicUser(
+            difficulty = Models.Difficulty.Beginner,
+            category = Models.FullCategory(2, "Strength", "Build overall body strength"),
+            user = Models.PublicUser(
                 10,
                 "strengthstarter",
-                ApiModels.Gender.Male,
+                Models.Gender.Male,
                 "avatar_url_13",
                 20231114,
                 20231115
