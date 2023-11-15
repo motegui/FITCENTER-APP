@@ -39,12 +39,13 @@ object Models {
     )
 
     data class PublicUser (
-        val id: Int,
-        val username: String,
-        val gender: Gender,
-        val avatarUrl: String,
-        val date: Int,
-        val lastActivity: Int
+        var id: Int,
+        var username: String,
+        var gender: Gender,
+        var avatarUrl: String,
+        var date: Int,
+        var lastActivity: Int
+    )
 
     )
 
