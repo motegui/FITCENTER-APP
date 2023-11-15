@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "ar.edu.itba.hci.fitcenter"
-        minSdk = 28
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"

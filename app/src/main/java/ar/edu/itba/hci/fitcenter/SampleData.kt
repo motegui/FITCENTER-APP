@@ -3,6 +3,11 @@ package ar.edu.itba.hci.fitcenter
 
 
 object SampleData {
+    val conversationSample = listOf(ComposeTutorial.Message(
+        "Lexi",
+        "Have you tried writing build.gradle with KTS?"
+    ))
+
     //Sample Exercise data
 
     val initialExercises: List<ApiModels.Exercise> = listOf(
@@ -564,7 +569,6 @@ object SampleData {
     )
 
 }
-
 
 
     /*

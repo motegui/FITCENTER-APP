@@ -43,7 +43,7 @@ fun Login() {
         modifier=Modifier
             .fillMaxSize()
             .paint(
-                painterResource(R.drawable.landing),
+                painterResource(R.drawable.landing2),
                 contentScale = ContentScale.Crop
             ),
     ) {
