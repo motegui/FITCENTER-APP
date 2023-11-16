@@ -7,7 +7,11 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 
 /**
  * Store
- * Use this to interface with the API. Please avoid using api.Routes directly outside of this class.
+ * Data Layer -> Repository
+ * Brings together the app's two data sources: the API and the Preferences Store.
+ * Provides methods for accessing the API that also save/cache necessary information.
+ *
+ * Use this to interface with the API. Please avoid using api.Routes outside of this class.
  * Objects like the current user can be added as properties on this object to cache them in memory.
  * Objects like the session token can be added to the dataStore to save them to the device's storage.
  */

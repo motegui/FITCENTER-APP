@@ -15,6 +15,11 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
+/**
+ * HTTP Client
+ * Boilerplate I copied from a tutorial. Does not need to be modified.
+ * https://rhythamnegi.com/http-request-with-ktor-client-jetpack-compose-android-project-example
+ */
 object Client {
     // Configure the HTTP client
     @OptIn(ExperimentalSerializationApi::class)
@@ -49,6 +54,5 @@ object Client {
             // Add this accept() for accept JSON Body or Raw JSON as Request Body
             accept(ContentType.Application.Json)
         }
-
     }
 }
