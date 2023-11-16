@@ -85,7 +85,17 @@ object Models {
         val category: FullCategory,
         val user: PublicUser,
         val metadata: Any
-    )
+    ){
+        val isFavorite: Boolean
+            get() {
+                if (metadata is FavoriteMetadata) {
+                    return metadata.isFavorite
+                }
+                return false
+            }
+    }
+
+    data class FavoriteMetadata(val isFavorite: Boolean)
 
     data class FullCategory (
         var id: Int,

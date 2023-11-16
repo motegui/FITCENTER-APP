@@ -2,7 +2,6 @@ package ar.edu.itba.hci.fitcenter.screens
 
 import android.content.res.Configuration
 import androidx.compose.runtime.Composable
-import androidx.compose.material3.Text
 import androidx.compose.ui.tooling.preview.Preview
 import ar.edu.itba.hci.fitcenter.RoutineSampleData
 import ar.edu.itba.hci.fitcenter.SortedRoutineList
@@ -14,7 +13,6 @@ import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
 @Composable
 fun FindWorkouts(store: Store? = null) {
-    //Text("This is the FindWorkouts screen")
     SortedRoutineList(routines = RoutineSampleData.sportsRoutines, sortingCriterion = SortingCriterion.DATE)
 
 }

@@ -2,15 +2,17 @@ package ar.edu.itba.hci.fitcenter.screens
 
 import android.content.res.Configuration
 import androidx.compose.runtime.Composable
-import androidx.compose.material3.Text
 import androidx.compose.ui.tooling.preview.Preview
+import ar.edu.itba.hci.fitcenter.RoutineSampleData
+import ar.edu.itba.hci.fitcenter.SortedFavoriteRoutineList
 import ar.edu.itba.hci.fitcenter.api.Store
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
 
 @Composable
 fun MyWorkouts(store: Store? = null) {
-    Text("This is the My Workouts screen")
+    SortedFavoriteRoutineList(routines = RoutineSampleData.sportsRoutines)
+
 }
 
 

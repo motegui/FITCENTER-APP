@@ -13,8 +13,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -23,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
@@ -62,58 +66,79 @@ fun DifficultyRating(difficulty: Models.Difficulty) {
 }
 
 @Composable
-fun RoutineCard(rt: Models.FullRoutine){
-    Row(modifier= Modifier
-        .padding(all = 8.dp)
-        .fillMaxWidth()
-    ){
-        // Keep track of whether the Routine is expanded or not
-        var isExpanded by remember { mutableStateOf(false) }
+fun RoutineCard(rt: Models.FullRoutine) {
+    var isFavorite by remember { mutableStateOf(rt.isFavorite) }
+    var isExpanded by remember { mutableStateOf(false) }
 
-        //Toggle the variable when this column is clicked
-        Column(modifier= Modifier
-            .clickable { isExpanded = !isExpanded }
+    Surface(
+        shape = MaterialTheme.shapes.medium,
+        shadowElevation = 4.dp,
+        modifier = Modifier
+            .animateContentSize()
+            .padding(4.dp)
             .fillMaxWidth()
-        ){
-            Surface(
-                shape= MaterialTheme.shapes.medium,
-                shadowElevation=4.dp,
-                modifier= Modifier
-                    .animateContentSize()
-                    .padding(4.dp)
-                    .fillMaxWidth()
-            ){
-                Column(modifier= Modifier.padding(12.dp)){
+    ) {
+        Row(
+            modifier = Modifier
+                .clickable { isExpanded = !isExpanded }
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Routine Information
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp)
+            ) {
+                Text(
+                    text = rt.name,
+                    style = MaterialTheme.typography.titleMedium
+                )
                     Text(
-                        text=rt.name,
-                        style= MaterialTheme.typography.titleMedium
+                        text = formatDate(rt.date),
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(top = 4.dp)
                     )
-                    Spacer(modifier= Modifier.padding(bottom=6.dp))
-                    if (isExpanded) {
+
+                    // Difficulty below the date, with category
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        DifficultyRating(difficulty = rt.difficulty)
                         Text(
-                            text="Clicking should open a new window with routine details"
+                            text= rt.category.name,
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(start=6.dp)
                         )
-                    } else {
-                        Text(
-                            text = formatDate(rt.date),
-                            style = MaterialTheme.typography.bodySmall ,
-                            modifier = Modifier.padding(bottom = 6.dp)
-                        )
-                        Row {
-                            DifficultyRating(difficulty = rt.difficulty)
-                            Text(
-                                text= rt.category.name,
-                                style = MaterialTheme.typography.bodyMedium,
-                                modifier = Modifier.padding(start=6.dp)
-                            )
-                        }
                     }
+
+                if (isExpanded) {
+                    Text(
+                        text = "Clicking should open a new window with routine details"
+                    )
                 }
+            }
+
+            // Heart icon
+            IconButton(
+                onClick = {
+                    isFavorite = !isFavorite
+                },
+                modifier = Modifier.align(Alignment.CenterVertically)
+            ) {
+                Icon(
+                    imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                    tint = if (isFavorite) Color(0xFFFF7F7F) else Color.Gray,
+                    contentDescription = "Favorite"
+                )
             }
         }
     }
 }
-
 
 
 //Not used because of changes, but for now kept because could be partly re-used elsewhere
@@ -155,7 +180,6 @@ enum class SortingCriterion {
     CATEGORY
 }
 
-
 @Composable
 fun RoutineList(routines: List<Models.FullRoutine>){
     LazyColumn{
@@ -174,6 +198,25 @@ fun SortedRoutineList(routines: List<Models.FullRoutine>, sortingCriterion: Sort
         SortingCriterion.CATEGORY -> routines.sortedBy { it.category.name }
     }
     RoutineList(sortedRoutines)
+}
+@Composable
+fun SortedFavoriteRoutineList(
+    routines: List<Models.FullRoutine>,
+    sortingCriterion: SortingCriterion = SortingCriterion.DATE
+) {
+    val favoriteRoutines = routines.filter { it.isFavorite }
+    val sortedRoutines = when (sortingCriterion) {
+        SortingCriterion.DATE -> favoriteRoutines.sortedByDescending { it.date }
+        SortingCriterion.SCORE -> favoriteRoutines.sortedByDescending { it.score }
+        SortingCriterion.DIFFICULTY -> favoriteRoutines.sortedBy { it.difficulty.ordinal }
+        SortingCriterion.CATEGORY -> favoriteRoutines.sortedBy { it.category.name }
+    }
+
+    LazyColumn {
+        items(sortedRoutines) { routine ->
+            RoutineCard(routine)
+        }
+    }
 }
 
 @Preview(name="Light Mode")

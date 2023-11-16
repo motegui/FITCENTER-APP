@@ -118,7 +118,7 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = Any()
+            metadata = Models.FavoriteMetadata(isFavorite = true)
         ),
         Models.FullRoutine(
             id = 7,
@@ -194,7 +194,7 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = Any()
+            metadata = Models.FavoriteMetadata(isFavorite = true)
         )
     )
 }
