@@ -1,8 +1,8 @@
 package ar.edu.itba.hci.fitcenter.api
 
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
+//import kotlinx.serialization.json.JsonPrimitive
 
 /**
  * API models from the swagger docs
@@ -88,18 +88,32 @@ object Models {
         val difficulty: Difficulty,
         val category: FullCategory,
         val user: PublicUser,
-        val metadata: Map<String, JsonElement>?
+        val metadata: JsonObject?
     ){
-        val isFavorite: Boolean
-            get() {
-                if (metadata is FavoriteMetadata) {
-                    return metadata.isFavorite
-                }
-                return false
-            }
+        val isFavorite: Boolean?
+            get() = metadata?.contains("isFavorite")
+
     }
 
-    data class FavoriteMetadata(val isFavorite: Boolean)
+//    private val exampleFullRoutine = FullRoutine(
+//        id = 1234,
+//        name = "bruh",
+//        detail = "",
+//        date = 0,
+//        score = 0,
+//        isPublic = false,
+//        difficulty = Difficulty.Rookie,
+//        category = FullCategory(id=1, name="ortg", detail=""),
+//        user = PublicUser(id=2, username="garlic", gender=Gender.Male, avatarUrl="", date=0, lastActivity=0),
+//        metadata = JsonObject(content = mapOf(
+//            "isFavorite" to JsonPrimitive(true)
+//        ))
+//    )
+//    private val isFavorite = exampleFullRoutine.isFavorite
+
+    @Serializable data class FavoriteMetadata (
+        val isFavorite: Boolean
+    )
 
     @Serializable data class FullCategory (
         var id: Int,
