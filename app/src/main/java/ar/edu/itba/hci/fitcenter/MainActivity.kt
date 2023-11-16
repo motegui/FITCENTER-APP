@@ -105,6 +105,7 @@ fun MainScreen(
     var currentScreen by remember { mutableStateOf(startScreen) }
     Scaffold(
         topBar = {
+            if (currentScreen.usesNav)
             TopAppBar(
                 colors = TopAppBarDefaults.smallTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.secondary,
