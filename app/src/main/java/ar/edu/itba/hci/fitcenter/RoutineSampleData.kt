@@ -1,6 +1,8 @@
 package ar.edu.itba.hci.fitcenter
 
 import ar.edu.itba.hci.fitcenter.api.Models
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 
 object RoutineSampleData {
     // Sample routine data
@@ -23,7 +25,7 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = Any()
+            metadata = null
         ),
         Models.FullRoutine(
             id = 2,
@@ -42,7 +44,7 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = Any()
+            metadata = null
         ),
         Models.FullRoutine(
             id = 3,
@@ -61,7 +63,7 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = Any()
+            metadata = null
         ),
         Models.FullRoutine(
             id = 4,
@@ -80,7 +82,7 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = Any()
+            metadata = null
         ),
         Models.FullRoutine(
             id = 5,
@@ -99,7 +101,9 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = Any()
+            metadata = JsonObject(content = mapOf(
+                "isFavorite" to JsonPrimitive(false)
+            ))
         ),
         Models.FullRoutine(
             id = 6,
@@ -118,7 +122,9 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = Models.FavoriteMetadata(isFavorite = true)
+            metadata = JsonObject(content = mapOf(
+                "isFavorite" to JsonPrimitive(true)
+            ))
         ),
         Models.FullRoutine(
             id = 7,
@@ -137,7 +143,7 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = Any()
+            metadata = null
         ),
         Models.FullRoutine(
             id = 8,
@@ -156,7 +162,7 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = Any()
+            metadata = null
         ),
         Models.FullRoutine(
             id = 9,
@@ -175,7 +181,7 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = Any()
+            metadata = null
         ),
         Models.FullRoutine(
             id = 10,
@@ -194,7 +200,9 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = Models.FavoriteMetadata(isFavorite = true)
+            metadata = JsonObject(content = mapOf(
+                "isFavorite" to JsonPrimitive(true)
+            ))
         )
     )
 }
