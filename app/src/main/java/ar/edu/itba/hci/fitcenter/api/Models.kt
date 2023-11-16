@@ -8,6 +8,7 @@ package ar.edu.itba.hci.fitcenter.api
  */
 object Models {
     enum class Gender(val value: String) { Male("male"), Female("female"), Other("other") }
+    enum class ExerciseType(val value: String){Exercise("exercise"), Rest("rest")}
     data class User (
         var username: String,
         var password: String,
@@ -76,7 +77,7 @@ object Models {
     data class FullRoutine(
         val id: Int,
         val name: String,
-        val detail: List<Exercise>,
+        val detail: String,
         val date: Int,
         val score: Int,
         val isPublic: Boolean,
@@ -92,14 +93,13 @@ object Models {
         var detail: String
     )
 
-    data class Exercise(
-        val id: Int,
-        val title: String,
-        val description: String,
-        val type: String?,
-        val equipment: List<String>,
-        val image: String,
-        val favorite: Boolean,
-        val bodyArea: String?
+    data class FullExercise(
+        val id: String,
+        val name: String,
+        val detail: String,
+        val type: ExerciseType,
+        val duration: Int,
+        val date: Int,
+        val metadata: Any?
     )
 }
