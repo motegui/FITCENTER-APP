@@ -90,8 +90,11 @@ object Models {
         val user: PublicUser,
         val metadata: JsonObject?
     ){
-        val isFavorite: Boolean?
-            get() = metadata?.contains("isFavorite")
+        val isFavorite: Boolean
+            get() {
+                if (metadata == null) return false
+                return metadata.contains("isFavorite")
+            }
 
     }
 
@@ -111,9 +114,9 @@ object Models {
 //    )
 //    private val isFavorite = exampleFullRoutine.isFavorite
 
-    @Serializable data class FavoriteMetadata (
-        val isFavorite: Boolean
-    )
+//    @Serializable data class FavoriteMetadata (
+//        val isFavorite: Boolean
+//    )
 
     @Serializable data class FullCategory (
         var id: Int,
