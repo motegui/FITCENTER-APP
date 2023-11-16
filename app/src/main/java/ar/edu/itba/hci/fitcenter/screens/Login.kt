@@ -36,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 
 
@@ -44,8 +45,8 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginForm(store: Store? = null) {
     val scope = rememberCoroutineScope()
+fun LoginForm(navController: NavController? = null, store: Store? = null) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -91,7 +92,7 @@ fun LoginForm(store: Store? = null) {
 
 
 @Composable
-fun Login(store: Store? = null) {
+fun Login(navController: NavController? = null, store: Store? = null) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -120,7 +121,7 @@ fun Login(store: Store? = null) {
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize(),
     ) {
-        LoginForm(store)
+        LoginForm(navController, store)
     }
 }
 

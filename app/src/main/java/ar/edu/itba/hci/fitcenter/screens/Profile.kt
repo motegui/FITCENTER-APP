@@ -5,11 +5,12 @@ import android.content.res.Configuration
 import androidx.compose.runtime.Composable
 import androidx.compose.material3.Text
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
 
 @Composable
-fun Profile(store: Store? = null) {
+fun Profile(navController: NavController? = null, store: Store? = null) {
     Text("This is the profile screen")
 }
 

@@ -173,11 +173,15 @@ fun MainScreen(
             }
         }
     ) { innerPadding ->
-        NavHost(navController, startDestination=currentScreen.route, Modifier.padding(innerPadding)) {
-            composable(Screen.Login.route) { Login(store) }
-            composable(Screen.Profile.route) { Profile(store) }
-            composable(Screen.MyWorkouts.route) { MyWorkouts(store) }
-            composable(Screen.FindWorkouts.route) { FindWorkouts(store) }
+        NavHost(
+            navController,
+            startDestination = currentScreen.route,
+            Modifier.padding(innerPadding)
+        ) {
+            composable(Screen.Login.route) { Login(navController, store) }
+            composable(Screen.Profile.route) { Profile(navController, store) }
+            composable(Screen.MyWorkouts.route) { MyWorkouts(navController, store) }
+            composable(Screen.FindWorkouts.route) { FindWorkouts(navController, store) }
         }
     }
 }

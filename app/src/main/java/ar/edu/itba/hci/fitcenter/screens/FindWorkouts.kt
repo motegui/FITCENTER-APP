@@ -6,15 +6,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import ar.edu.itba.hci.fitcenter.RoutineSampleData
 import ar.edu.itba.hci.fitcenter.SortedRoutineList
 import ar.edu.itba.hci.fitcenter.SortingCriterion
+import androidx.navigation.NavController
 import ar.edu.itba.hci.fitcenter.api.Store
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
 
 
 @Composable
-fun FindWorkouts(store: Store? = null) {
+fun FindWorkouts(navController: NavController? = null, store: Store? = null) {
     SortedRoutineList(routines = RoutineSampleData.sportsRoutines, sortingCriterion = SortingCriterion.DATE)
-
 }
 
 

@@ -5,14 +5,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import ar.edu.itba.hci.fitcenter.RoutineSampleData
 import ar.edu.itba.hci.fitcenter.SortedFavoriteRoutineList
+import androidx.navigation.NavController
 import ar.edu.itba.hci.fitcenter.api.Store
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
 
 @Composable
-fun MyWorkouts(store: Store? = null) {
+fun MyWorkouts(navController: NavController? = null, store: Store? = null) {
     SortedFavoriteRoutineList(routines = RoutineSampleData.sportsRoutines)
-
 }
 
 
