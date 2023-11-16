@@ -4,11 +4,6 @@ import ar.edu.itba.hci.fitcenter.api.Models
 
 
 object SampleData {
-    val conversationSample = listOf(ComposeTutorial.Message(
-        "Lexi",
-        "Have you tried writing build.gradle with KTS?"
-    ))
-
     // Sample Exercise data
 
     val initialExercises: List<Models.Exercise> = listOf(
