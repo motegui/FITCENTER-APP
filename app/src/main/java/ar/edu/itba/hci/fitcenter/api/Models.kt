@@ -1,5 +1,9 @@
 package ar.edu.itba.hci.fitcenter.api
 
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+
 /**
  * API models from the swagger docs
  * THE STRUCTURE OF THESE @Serializable data classES ARE DETERMINED BY THE API AND CANNOT BE CHANGED.
@@ -8,8 +12,8 @@ package ar.edu.itba.hci.fitcenter.api
  */
 object Models {
     enum class Gender(val value: String) { Male("male"), Female("female"), Other("other") }
-    enum class ExerciseType(val value: String){Exercise("exercise"), Rest("rest")}
-    data class User (
+    enum class ExerciseType(val value: String) { Exercise("exercise"), Rest("rest") }
+    @Serializable data class User (
         var username: String,
         var password: String,
         var firstName: String?,
@@ -19,10 +23,10 @@ object Models {
         var email: String,
         var phone: String?,
         var avatarUrl: String?,
-        var metadata: Any?
+        var metadata: JsonObject?
     )
 
-    data class FullUser (
+    @Serializable data class FullUser (
         var id: Int,
         var username: String,
         var password: String,
@@ -33,13 +37,13 @@ object Models {
         var email: String,
         var phone: String,
         var avatarUrl: String,
-        var metadata: Any,
+        var metadata: JsonObject?,
         var date: Int,
         var lastActivity: Int,
         var verified: Boolean
     )
 
-    data class PublicUser (
+    @Serializable data class PublicUser (
         var id: Int,
         var username: String,
         var gender: Gender,
@@ -48,16 +52,16 @@ object Models {
         var lastActivity: Int
     )
 
-    data class Credentials (
+    @Serializable data class Credentials (
         var username: String,
         var password: String
     )
 
-    data class AuthenticationToken (
+    @Serializable data class AuthenticationToken (
         var token: String
     )
 
-    data class SearchResult<T> (
+    @Serializable data class SearchResult<T> (
         var totalCount: Int,
         var orderBy: String,
         var direction: String,
@@ -74,7 +78,7 @@ object Models {
         Advanced("advanced"),
         Expert("expert")
     }
-    data class FullRoutine(
+    @Serializable data class FullRoutine (
         val id: Int,
         val name: String,
         val detail: String,
@@ -84,7 +88,7 @@ object Models {
         val difficulty: Difficulty,
         val category: FullCategory,
         val user: PublicUser,
-        val metadata: Any
+        val metadata: Map<String, JsonElement>?
     ){
         val isFavorite: Boolean
             get() {
@@ -97,19 +101,25 @@ object Models {
 
     data class FavoriteMetadata(val isFavorite: Boolean)
 
-    data class FullCategory (
+    @Serializable data class FullCategory (
         var id: Int,
         var name: String,
         var detail: String
     )
 
-    data class FullExercise(
-        val id: String,
-        val name: String,
-        val detail: String,
-        val type: ExerciseType,
-        val duration: Int,
-        val date: Int,
-        val metadata: Any?
+    @Serializable data class FullExercise (
+        var id: String,
+        var name: String,
+        var detail: String,
+        var type: ExerciseType,
+        var duration: Int,
+        var date: Int,
+        var metadata: JsonObject?
+    )
+    @Serializable data class Exercise (
+        var name: String,
+        var detail: String,
+        var type: ExerciseType,
+        var metadata: JsonObject?
     )
 }
