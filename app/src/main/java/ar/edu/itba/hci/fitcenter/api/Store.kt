@@ -2,8 +2,9 @@ package ar.edu.itba.hci.fitcenter.api
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
+import ar.edu.itba.hci.fitcenter.storage.Keys
+import ar.edu.itba.hci.fitcenter.storage.StorageRepository
+
 
 /**
  * Store
@@ -27,23 +28,25 @@ class Store private constructor(private val dataStore: DataStore<Preferences>) {
             }
     }
 
+    private val storage = StorageRepository.getStorageRepository(dataStore)
     private var user: Models.FullUser? = null
 
-    private val SESSION_TOKEN = stringPreferencesKey("session_token")
 
     suspend fun login(credentials: Models.Credentials) {
-        val tokenObject = Routes.login(credentials)
-        dataStore.edit { app ->
-            app[SESSION_TOKEN] = tokenObject.token
-        }
+        val token = ApiRepository.login(credentials).token
+        storage.set(Keys.SESSION_TOKEN, token)
     }
 
-//    suspend fun logout() {
-////         POST /users/logout
-//    }
+    suspend fun isLoggedIn(): Boolean = storage.get(Keys.SESSION_TOKEN, "") != ""
 
-//    suspend fun currentUser(): FullUser {
-//        if (user != null) return user
-//        // GET /users/current
-//    }
+    suspend fun logout() {
+        ApiRepository.logout()
+        storage.set(Keys.SESSION_TOKEN, "")
+    }
+
+    suspend fun currentUser(): Models.FullUser? {
+        val token = storage.get(Keys.SESSION_TOKEN) ?: return null
+        if (user != null) return user
+        return ApiRepository.getCurrentUser(token)
+    }
 }
