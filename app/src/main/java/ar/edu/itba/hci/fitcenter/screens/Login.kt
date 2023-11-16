@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -22,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -37,6 +39,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import ar.edu.itba.hci.fitcenter.Screen
 import kotlinx.coroutines.launch
 
 
@@ -45,7 +49,6 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-    val scope = rememberCoroutineScope()
 fun LoginForm(navController: NavController? = null, store: Store? = null) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -57,35 +60,63 @@ fun LoginForm(navController: NavController? = null, store: Store? = null) {
             )
             .padding(all = 28.dp),
     ) {
-        val credentials by remember { mutableStateOf(
-            Models.Credentials(
-                username = "",
-                password = "",
-            )
-        ) }
+        var username by remember { mutableStateOf("") }
+        var password by remember { mutableStateOf("") }
+
+        var loading by remember { mutableStateOf(false) }
+        var error: Exception? by remember { mutableStateOf(null) }
+
+        if (error != null) {
+            Text(error.toString())
+        }
 
         OutlinedTextField(
-            value = credentials.username,
-            onValueChange = { credentials.username = it },
+            value = username,
+            onValueChange = { username = it },
             label = { Text(stringResource(R.string.username)) },
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                containerColor = MaterialTheme.colorScheme.tertiary
-            )
+                containerColor = MaterialTheme.colorScheme.tertiary,
+                focusedBorderColor = MaterialTheme.colorScheme.secondary
+
+            ),
+            enabled = !loading
         )
         OutlinedTextField(
-            value = credentials.password,
-            onValueChange = { credentials.password = it },
+            value = password,
+            onValueChange = { password = it },
             label = { Text(stringResource(R.string.password)) },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 containerColor = MaterialTheme.colorScheme.tertiary
-            )
+            ),
+            enabled = !loading
         )
-        Button(onClick = {
-            scope.launch {
-                store?.login(credentials)
-            }
-        }) {
+        val scope = rememberCoroutineScope()
+        Button(
+            onClick = {
+                if (store != null && navController != null) {
+                    loading = true
+                    scope.launch {
+                        try {
+                            store.login(Models.Credentials(username = username, password = password))
+                        } catch (e: Exception) {
+                            error = e
+                            return@launch
+                        }
+                        navController.navigate(Screen.MyWorkouts.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                        }
+                    }
+                    loading = false
+                }
+            },
+            enabled = !loading
+        ) {
             Text(stringResource(R.string.log_in))
+        }
+        if (loading) {
+            CircularProgressIndicator()
         }
     }
 }
