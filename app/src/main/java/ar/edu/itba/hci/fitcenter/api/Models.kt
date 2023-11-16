@@ -1,9 +1,9 @@
 package ar.edu.itba.hci.fitcenter.api
 
 /**
- * API Models from the API's swagger documentation
- * THE STRUCTURE OF THESE OBJECTS CANNOT BE CHANGED.
- * If you add new objects, make sure they reflect exactly what the documentation says they will be.
+ * API models from the swagger docs
+ * THE STRUCTURE OF THESE @Serializable data classES ARE DETERMINED BY THE API AND CANNOT BE CHANGED.
+ * If you add new @Serializable data classes from the API, make sure they exactly reflect the documentation.
  * http://localhost:8080/docs/#/
  */
 object Models {
