@@ -7,7 +7,6 @@ import android.os.Bundle
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.StringRes
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -36,12 +35,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.FitnessCenter
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -103,6 +100,9 @@ fun MainScreen(
     navController: NavHostController = rememberNavController(),
 ) {
     var currentScreen by remember { mutableStateOf(startScreen) }
+    LaunchedEffect(store) {
+        if (store?.isLoggedIn() == false) currentScreen = Screen.Login
+    }
     Scaffold(
         topBar = {
             if (currentScreen.usesNav)
