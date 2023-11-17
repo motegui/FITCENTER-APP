@@ -11,3 +11,4 @@ adb connect.bat
 adb tcpip.bat
 adb reconnect.bat
 **/.env
+**/env
