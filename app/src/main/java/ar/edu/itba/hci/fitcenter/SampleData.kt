@@ -1,5 +1,5 @@
 package ar.edu.itba.hci.fitcenter
-
+/*
 import ar.edu.itba.hci.fitcenter.api.Models
 
 
@@ -564,3 +564,4 @@ object SampleData {
         )
     )
 }
+*/

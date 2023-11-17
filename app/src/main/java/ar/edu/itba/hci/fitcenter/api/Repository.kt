@@ -10,7 +10,7 @@ import io.ktor.client.request.header
 import io.ktor.client.request.setBody
 import io.ktor.http.HttpHeaders
 
-const val BASE_URL = "http://192.168.0.115:8080"
+const val BASE_URL = "http://127.0.0.1:8080"
 
 /**
  * Data Layer -> Data Source
