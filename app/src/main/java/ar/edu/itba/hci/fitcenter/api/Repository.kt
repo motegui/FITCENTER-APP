@@ -3,12 +3,12 @@ package ar.edu.itba.hci.fitcenter.api
 import ar.edu.itba.hci.fitcenter.api.Client.client
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import io.ktor.client.request.post
-import io.ktor.client.request.put
-import io.ktor.client.request.delete
 import io.ktor.client.request.header
+import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders
+import kotlin.math.pow
 
 const val BASE_URL = "http://127.0.0.1:8080"
 
@@ -17,21 +17,31 @@ const val BASE_URL = "http://127.0.0.1:8080"
  * Provides methods for accessing the app's API.
  */
 object ApiRepository {
+    private fun digit(a: Int, b: Int): Int {
+        return a / 10.0.pow((b - 1).toDouble()).toInt() % 10
+    }
+    private fun throwForStatus(response: HttpResponse): HttpResponse {
+        if (digit(response.status.value, 3) != 2) {
+            throw Unauthorized(response.status.description)
+        }
+        return response
+    }
+
     suspend fun login(credentials: Models.Credentials): Models.AuthenticationToken {
         val response = client.post("$BASE_URL/users/login") {
             setBody(credentials)
         }
-        val result = response.body<Models.AuthenticationToken>()
-        return result
+        return throwForStatus(response).body()
     }
 
     suspend fun logout() {
-        client.post("$BASE_URL/users/logout")
+        throwForStatus(client.post("$BASE_URL/users/logout"))
     }
 
     suspend fun getCurrentUser(sessionToken: String): Models.FullUser {
-        return client.get("$BASE_URL/users/current") {
+        val response = client.get("$BASE_URL/users/current") {
             header(HttpHeaders.Authorization, sessionToken)
-        }.body()
+        }
+        return throwForStatus(response).body()
     }
 }
