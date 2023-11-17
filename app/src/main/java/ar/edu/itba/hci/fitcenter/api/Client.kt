@@ -38,14 +38,7 @@ object Client {
 
         // JSON Response properties
         install(ContentNegotiation) {
-            json(
-                Json {
-                    ignoreUnknownKeys = true
-                    prettyPrint = true
-                    isLenient = true
-                    explicitNulls = false
-                }
-            )
+            json()
         }
 
         // Default request for POST, PUT, DELETE, etc.
