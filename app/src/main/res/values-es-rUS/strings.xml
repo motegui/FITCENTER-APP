@@ -5,4 +5,5 @@
     <string name="login">Inicio de sesión</string>
     <string name="password">Contraseña</string>
     <string name="log_in">Ingresar</string>
+    <string name="please_wait">Espere</string>
 </resources>

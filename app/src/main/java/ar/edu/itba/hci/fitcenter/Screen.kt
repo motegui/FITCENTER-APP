@@ -14,6 +14,11 @@ sealed class Screen(
     val isSubPage: Boolean = false,
     val icon: ImageVector? = null
 ) {
+    object Loading: Screen(
+        route = "loading",
+        resourceId = R.string.please_wait,
+        usesNav = false,
+    )
     object Login: Screen(
         route = "login",
         resourceId = R.string.login,
