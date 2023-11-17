@@ -53,6 +53,7 @@ android {
 }
 
 dependencies {
+    implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
     val ktorVersion = "2.3.6"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")

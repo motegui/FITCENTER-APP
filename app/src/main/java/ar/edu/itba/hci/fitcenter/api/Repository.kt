@@ -9,8 +9,13 @@ import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders
 import kotlin.math.pow
+import io.github.cdimascio.dotenv.dotenv
 
-const val BASE_URL = "http://127.0.0.1:8080"
+val dotenv = dotenv {
+    directory = "/assets"
+    filename = "env"
+}
+val BASE_URL = dotenv["API_URL"] ?: "http://localhost:8080"
 
 /**
  * Data Layer -> Data Source
