@@ -61,9 +61,6 @@ import ar.edu.itba.hci.fitcenter.Screen
 import kotlinx.coroutines.launch
 
 
-// TODO: Read this guide for improving this form's UX
-// https://medium.com/@WhiteBatCodes/simple-login-page-in-jetpack-compose-9c92af690234
-
 @Composable
 fun UsernameField(
     value: String,
@@ -151,7 +148,7 @@ fun PasswordField(
     )
 }
 
-suspend fun handleLogin(
+suspend fun submit(
     store: Store? = null,
     navController: NavController? = null,
     username: String,
@@ -195,6 +192,18 @@ fun LoginForm(navController: NavController? = null, store: Store? = null) {
         val error = remember { mutableStateOf<Exception?>(null) }
 
         val scope = rememberCoroutineScope()
+        val onSubmit: () -> Unit = {
+            scope.launch {
+                submit(
+                    store = store,
+                    navController = navController,
+                    username = username.value,
+                    password = password.value,
+                    loading = loading,
+                    error = error
+                )
+            }
+        }
 
         val textFieldColors = OutlinedTextFieldDefaults.colors(
             focusedContainerColor = MaterialTheme.colorScheme.tertiary,
@@ -207,7 +216,6 @@ fun LoginForm(navController: NavController? = null, store: Store? = null) {
         if (error.value != null) {
             Text(error.value?.message ?: "An unknown error has occurred")
         }
-
         UsernameField(
             value = username.value,
             onChange = { username.value = it },
@@ -221,32 +229,10 @@ fun LoginForm(navController: NavController? = null, store: Store? = null) {
             colors = textFieldColors,
             enabled = !loading.value,
             isError = error.value != null,
-            onSubmit = {
-                scope.launch {
-                    handleLogin(
-                        store = store,
-                        navController = navController,
-                        username = username.value,
-                        password = password.value,
-                        loading = loading,
-                        error = error
-                    )
-                }
-            }
+            onSubmit = onSubmit
         )
         Button(
-            onClick = {
-                scope.launch {
-                    handleLogin(
-                        store = store,
-                        navController = navController,
-                        username = username.value,
-                        password = password.value,
-                        loading = loading,
-                        error = error
-                    )
-                }
-            },
+            onClick = onSubmit,
             enabled = !loading.value
         ) {
             Text(stringResource(R.string.log_in))
