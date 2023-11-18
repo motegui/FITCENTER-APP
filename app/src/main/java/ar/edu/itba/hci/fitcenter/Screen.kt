@@ -7,40 +7,44 @@ import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.vector.ImageVector
 
-sealed class Screen(
-    val route: String,
+data class Screen(
     @StringRes val resourceId: Int,
     val usesNav: Boolean,
     val isSubPage: Boolean = false,
     val icon: ImageVector? = null
-) {
-    object Loading: Screen(
-        route = "loading",
+)
+
+class NonNullableMap<K, V>(private val content: Map<K, V>) {
+    operator fun get(key: K) = content[key] ?: throw Exception("Key $key does not exist")
+}
+
+
+val screens = NonNullableMap(mapOf(
+    "loading" to Screen(
         resourceId = R.string.please_wait,
         usesNav = false,
-    )
-    object Login: Screen(
-        route = "login",
+    ),
+
+    "login" to Screen(
         resourceId = R.string.login,
         usesNav = false,
-    )
-    object Profile: Screen(
-        route = "profile",
+    ),
+
+    "profile" to Screen(
         resourceId = R.string.profile,
         usesNav = true,
         icon = Icons.Filled.AccountCircle
-    )
+    ),
 
-    object MyWorkouts: Screen(
-        route = "my-workouts",
+    "my-workouts" to Screen(
         resourceId = R.string.my_workouts,
         usesNav = true,
         icon = Icons.Filled.FitnessCenter
-    )
-    object FindWorkouts: Screen(
-        route = "find-workouts",
+    ),
+
+    "find-workouts" to Screen(
         resourceId = R.string.find_workouts,
         usesNav = true,
         icon = Icons.Filled.Search
-    )
-}
+    ),
+))

@@ -15,7 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material.BottomNavigationItem
@@ -35,7 +34,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -56,7 +57,6 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             FitcenterTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier=Modifier.fillMaxSize(),
                     color=MaterialTheme.colorScheme.background,
@@ -70,10 +70,7 @@ class MainActivity : ComponentActivity() {
 }
 
 
-val bottomBarItems = listOf(
-    Screen.MyWorkouts,
-    Screen.FindWorkouts,
-)
+val bottomBarItems = listOf("my-workouts", "find-workouts")
 
 fun navigate(navController: NavHostController, route: String) {
     navController.navigate(route) {
@@ -94,100 +91,101 @@ fun navigate(navController: NavHostController, route: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(
-    store: Store? = null,
-    startScreen: Screen = Screen.Loading,
-    navController: NavHostController = rememberNavController(),
-) {
-    var currentScreen by remember { mutableStateOf(startScreen) }
+fun MainScreen(store: Store? = null) {
+    val navController = rememberNavController()
+    var currentRoute by remember { mutableStateOf("loading") }
+    
     LaunchedEffect(store) {
-        currentScreen = if (store?.isLoggedIn() == true) {
-            Screen.MyWorkouts
-        } else {
-            Screen.Login
-        }
+        currentRoute = if (store?.isLoggedIn() == true) "my-workouts" else "login"
     }
-    Scaffold(
-        topBar = {
-            if (currentScreen.usesNav)
-            TopAppBar(
-                colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.secondary,
-                    navigationIconContentColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onSecondary,
-                    actionIconContentColor = MaterialTheme.colorScheme.onSecondary
-                ),
-                title = {
-                    Text(stringResource(currentScreen.resourceId))
-                },
-                navigationIcon = {
-                    if (currentScreen.isSubPage) {
-                        IconButton(onClick = { navController.popBackStack() }) {
-                            Icon(
-                                imageVector = Icons.Filled.ArrowBack,
-                                contentDescription = stringResource(R.string.go_back)
-                            )
-                        }
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { navigate(navController, Screen.Profile.route) }) {
+    navController.addOnDestinationChangedListener { _, dest, _ ->
+        currentRoute = dest.route ?: ""
+    }
+    val currentScreen = remember { derivedStateOf { screens[currentRoute] } }
+
+    val topBar = @Composable {
+        TopAppBar(
+            colors = topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.secondary,
+                navigationIconContentColor = MaterialTheme.colorScheme.primary,
+                titleContentColor = MaterialTheme.colorScheme.onSecondary,
+                actionIconContentColor = MaterialTheme.colorScheme.onSecondary
+            ),
+            title = {
+                Text(stringResource(currentScreen.value.resourceId))
+            },
+            navigationIcon = {
+                if (currentScreen.value.isSubPage) {
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
-                            imageVector = Icons.Filled.AccountCircle,
-                            contentDescription = stringResource(R.string.profile)
-                        )
-                    }
-                },
-            )
-        },
-        bottomBar = {
-            if (currentScreen.usesNav) {
-                BottomAppBar(
-                    containerColor = MaterialTheme.colorScheme.secondary,
-                    contentColor = MaterialTheme.colorScheme.onSecondary
-                ) {
-//                    val navBackStackEntry by navController.currentBackStackEntryAsState()
-//                    val currentDestination = navBackStackEntry?.destination
-                    bottomBarItems.forEach { screen ->
-                        BottomNavigationItem(
-                            selectedContentColor = MaterialTheme.colorScheme.primary,
-                            unselectedContentColor = MaterialTheme.colorScheme.onSecondary,
-                            icon = {
-                                if (screen.icon != null) {
-                                    Icon(
-                                        imageVector = screen.icon,
-                                        contentDescription = null,
-                                    )
-                                }
-                            },
-                            label = {
-                                Text(
-                                    text = stringResource(screen.resourceId),
-                                    color = MaterialTheme.colorScheme.onSecondary
-                                )
-                            },
-//                            selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
-                            selected = screen.route == currentScreen.route,
-                            onClick = {
-                                currentScreen = screen
-                                navigate(navController, screen.route)
-                            }
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.go_back)
                         )
                     }
                 }
+            },
+            actions = {
+                IconButton(onClick = { navigate(navController, "profile") }) {
+                    Icon(
+                        imageVector = Icons.Filled.AccountCircle,
+                        contentDescription = stringResource(R.string.profile)
+                    )
+                }
+            },
+        )
+    }
+
+    val bottomBar = @Composable {
+        BottomAppBar(
+            containerColor = MaterialTheme.colorScheme.secondary,
+            contentColor = MaterialTheme.colorScheme.onSecondary
+        ) {
+            bottomBarItems.forEach { route ->
+                val screen = screens[route]
+                BottomNavigationItem(
+                    selectedContentColor = MaterialTheme.colorScheme.primary,
+                    unselectedContentColor = MaterialTheme.colorScheme.onSecondary,
+                    icon = {
+                        if (screen.icon != null) {
+                            Icon(
+                                imageVector = screen.icon,
+                                contentDescription = null,
+                            )
+                        }
+                    },
+                    label = {
+                        Text(
+                            text = stringResource(screen.resourceId),
+                            color = MaterialTheme.colorScheme.onSecondary
+                        )
+                    },
+                    selected = route == currentRoute,
+                    onClick = {
+                        currentRoute = route
+                        navigate(navController, route)
+                    }
+                )
             }
         }
+    }
+
+    Scaffold(
+        topBar = { if (currentScreen.value.usesNav) topBar() },
+        bottomBar = { if (currentScreen.value.usesNav) bottomBar() },
+        contentWindowInsets = WindowInsets(top=0)
     ) { innerPadding ->
-        NavHost(
-            navController,
-            startDestination = currentScreen.route,
-            Modifier.padding(innerPadding)
-        ) {
-            composable(Screen.Loading.route) { Loading() }
-            composable  (Screen.Login.route) { Login(navController, store) }
-            composable(Screen.Profile.route) { Profile(navController, store) }
-            composable(Screen.MyWorkouts.route) { MyWorkouts(navController, store) }
-            composable(Screen.FindWorkouts.route) { FindWorkouts(navController, store) }
+        Column {
+            NavHost(
+                navController,
+                startDestination = currentRoute,
+                Modifier.padding(innerPadding)
+            ) {
+                composable("loading") { Loading() }
+                composable("login") { Login(navController, store) }
+                composable("profile") { Profile(navController, store) }
+                composable("my-workouts") { MyWorkouts(navController, store) }
+                composable("find-workouts") { FindWorkouts(navController, store) }
+            }
         }
     }
 }
