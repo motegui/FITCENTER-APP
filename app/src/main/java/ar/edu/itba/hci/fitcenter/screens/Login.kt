@@ -11,8 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -44,6 +44,7 @@ import androidx.compose.ui.draw.paint
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -57,7 +58,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import ar.edu.itba.hci.fitcenter.Screen
 import kotlinx.coroutines.launch
 
 
@@ -164,7 +164,7 @@ suspend fun submit(
             error.value = e
             loading.value = false
         }
-        navController.navigate(Screen.MyWorkouts.route) {
+        navController.navigate("my-workouts") {
             popUpTo(navController.graph.findStartDestination().id) {
                 saveState = true
             }
@@ -257,8 +257,9 @@ fun Login(navController: NavController? = null, store: Store? = null) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(80.dp)
-                .background(color = MaterialTheme.colorScheme.secondary),
+                .background(color = MaterialTheme.colorScheme.secondary)
+                .safeDrawingPadding()
+                .padding(bottom = 20.dp),
             contentAlignment = Alignment.Center,
         ) {
             Text(
