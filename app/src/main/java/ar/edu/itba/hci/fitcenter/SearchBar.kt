@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
 
@@ -92,10 +93,9 @@ fun SearchBar(
 }
 
 @Composable
-fun MyScreen() {
-    val myRoutines = RoutineSampleData.sportsRoutines
+fun MyScreen(routines: List<Models.FullRoutine>) {
     var searchQuery by remember { mutableStateOf("") }
-    var filteredRoutines by remember { mutableStateOf(myRoutines) }
+    var filteredRoutines by remember { mutableStateOf(routines) }
 
     Column(
         modifier = Modifier
@@ -109,15 +109,16 @@ fun MyScreen() {
             },
             onSearch = { query ->
                 filteredRoutines = if (query.isEmpty()) {
-                    myRoutines
+                    routines
                 } else {
-                    myRoutines.filter { routine ->
+                    routines.filter { routine ->
                         routine.name.contains(query, ignoreCase = true)
                     }
                 }
             },
             modifier = Modifier.fillMaxWidth()
         )
+        RoutineList(routines = filteredRoutines)
     }
 }
 
@@ -129,7 +130,7 @@ fun PreviewMenu() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background,
         ) {
-            MyScreen()
+            MyScreen(polyvalentRoutineList(routines = RoutineSampleData.sportsRoutines, sortingCriterion = SortingCriterion.DATE, favorites = true))
         }
     }
 }

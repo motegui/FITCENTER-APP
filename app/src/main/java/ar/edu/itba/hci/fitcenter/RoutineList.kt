@@ -188,42 +188,11 @@ fun RoutineList(routines: List<Models.FullRoutine>){
         }
     }
 }
-
-@Composable
-fun SortedRoutineList(routines: List<Models.FullRoutine>, sortingCriterion: SortingCriterion) {
-    val sortedRoutines = when (sortingCriterion) {
-        SortingCriterion.DATE -> routines.sortedByDescending { it.date }
-        SortingCriterion.SCORE -> routines.sortedByDescending { it.score }
-        SortingCriterion.DIFFICULTY -> routines.sortedBy { it.difficulty.ordinal }
-        SortingCriterion.CATEGORY -> routines.sortedBy { it.category.name }
-    }
-    RoutineList(sortedRoutines)
-}
-@Composable
-fun SortedFavoriteRoutineList(
-    routines: List<Models.FullRoutine>,
-    sortingCriterion: SortingCriterion = SortingCriterion.DATE
-) {
-    val favoriteRoutines = routines.filter { it.isFavorite }
-    val sortedRoutines = when (sortingCriterion) {
-        SortingCriterion.DATE -> favoriteRoutines.sortedByDescending { it.date }
-        SortingCriterion.SCORE -> favoriteRoutines.sortedByDescending { it.score }
-        SortingCriterion.DIFFICULTY -> favoriteRoutines.sortedBy { it.difficulty.ordinal }
-        SortingCriterion.CATEGORY -> favoriteRoutines.sortedBy { it.category.name }
-    }
-
-    LazyColumn {
-        items(sortedRoutines) { routine ->
-            RoutineCard(routine)
-        }
-    }
-}
-@Composable
-fun PolyvalentRoutineList(
+fun polyvalentRoutineList(
     routines: List<Models.FullRoutine>,
     sortingCriterion: SortingCriterion = SortingCriterion.DATE,
     favorites: Boolean = false
-){
+): List<Models.FullRoutine> {
     var myRoutines = routines
     if(favorites){
         myRoutines = routines.filter { it.isFavorite }
@@ -234,11 +203,7 @@ fun PolyvalentRoutineList(
         SortingCriterion.DIFFICULTY -> myRoutines.sortedBy { it.difficulty.ordinal }
         SortingCriterion.CATEGORY -> myRoutines.sortedBy { it.category.name }
     }
-    LazyColumn {
-        items(sortedRoutines) { routine ->
-            RoutineCard(routine)
-        }
-    }
+    return sortedRoutines
 }
 
 @Preview(name="Light Mode")
@@ -254,7 +219,7 @@ fun PreviewRoutineList(){
             modifier= Modifier.fillMaxSize(),
             color= MaterialTheme.colorScheme.background,
         ){
-            SortedRoutineList(routines = RoutineSampleData.sportsRoutines, sortingCriterion = SortingCriterion.DATE)
+            RoutineList(polyvalentRoutineList(routines = RoutineSampleData.sportsRoutines, sortingCriterion = SortingCriterion.DATE, favorites = true))
         }
     }
 }
