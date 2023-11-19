@@ -218,6 +218,28 @@ fun SortedFavoriteRoutineList(
         }
     }
 }
+@Composable
+fun PolyvalentRoutineList(
+    routines: List<Models.FullRoutine>,
+    sortingCriterion: SortingCriterion = SortingCriterion.DATE,
+    favorites: Boolean = false
+){
+    var myRoutines = routines
+    if(favorites){
+        myRoutines = routines.filter { it.isFavorite }
+    }
+    val sortedRoutines = when (sortingCriterion) {
+        SortingCriterion.DATE -> myRoutines.sortedByDescending { it.date }
+        SortingCriterion.SCORE -> myRoutines.sortedByDescending { it.score }
+        SortingCriterion.DIFFICULTY -> myRoutines.sortedBy { it.difficulty.ordinal }
+        SortingCriterion.CATEGORY -> myRoutines.sortedBy { it.category.name }
+    }
+    LazyColumn {
+        items(sortedRoutines) { routine ->
+            RoutineCard(routine)
+        }
+    }
+}
 
 @Preview(name="Light Mode")
 @Preview(
