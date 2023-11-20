@@ -174,6 +174,7 @@ fun ExerciseDetails(exercise: List<Models.FullExercise>) {
 }
 
 enum class SortingCriterion {
+    NAME,
     DATE,
     SCORE,
     DIFFICULTY,
@@ -190,7 +191,7 @@ fun RoutineList(routines: List<Models.FullRoutine>){
 }
 fun polyvalentRoutineList(
     routines: List<Models.FullRoutine>,
-    sortingCriterion: SortingCriterion = SortingCriterion.DATE,
+    sortingCriterion: SortingCriterion = SortingCriterion.NAME,
     favorites: Boolean = false
 ): List<Models.FullRoutine> {
     var myRoutines = routines
@@ -198,6 +199,7 @@ fun polyvalentRoutineList(
         myRoutines = routines.filter { it.isFavorite }
     }
     val sortedRoutines = when (sortingCriterion) {
+        SortingCriterion.NAME -> myRoutines.sortedBy { it.name }
         SortingCriterion.DATE -> myRoutines.sortedByDescending { it.date }
         SortingCriterion.SCORE -> myRoutines.sortedByDescending { it.score }
         SortingCriterion.DIFFICULTY -> myRoutines.sortedBy { it.difficulty.ordinal }
@@ -219,7 +221,7 @@ fun PreviewRoutineList(){
             modifier= Modifier.fillMaxSize(),
             color= MaterialTheme.colorScheme.background,
         ){
-            RoutineList(polyvalentRoutineList(routines = RoutineSampleData.sportsRoutines, sortingCriterion = SortingCriterion.DATE, favorites = true))
+            RoutineList(polyvalentRoutineList(routines = RoutineSampleData.sportsRoutines, favorites = true))
         }
     }
 }

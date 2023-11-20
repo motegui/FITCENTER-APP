@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
@@ -95,7 +96,8 @@ fun SearchBar(
 @Composable
 fun MyScreen(routines: List<Models.FullRoutine>) {
     var searchQuery by remember { mutableStateOf("") }
-    var filteredRoutines by remember { mutableStateOf(routines) }
+    var filteredRoutines by remember { mutableStateOf(routines)}
+    var sortingCriterion by remember { mutableStateOf(SortingCriterion.NAME) }
 
     Column(
         modifier = Modifier
@@ -118,6 +120,27 @@ fun MyScreen(routines: List<Models.FullRoutine>) {
             },
             modifier = Modifier.fillMaxWidth()
         )
+
+        Text(
+            text = "Order by:",
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom= 8.dp).padding(horizontal = 8.dp)
+        )
+        SortingButtons(
+            sortingCriterion = sortingCriterion,
+            onSortingCriterionChanged = { newSortingCriterion ->
+                sortingCriterion = newSortingCriterion
+                filteredRoutines = polyvalentRoutineList(routines, sortingCriterion)
+            }
+        )
+        Divider(
+            color = Color.Green,
+            thickness = 2.dp,
+            modifier = Modifier.padding(bottom = 8.dp).padding(horizontal = 8.dp)
+        )
+
         RoutineList(routines = filteredRoutines)
     }
 }
@@ -130,7 +153,7 @@ fun PreviewMenu() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background,
         ) {
-            MyScreen(polyvalentRoutineList(routines = RoutineSampleData.sportsRoutines, sortingCriterion = SortingCriterion.DATE, favorites = true))
+            MyScreen(polyvalentRoutineList(routines = RoutineSampleData.sportsRoutines, favorites = true))
         }
     }
 }
