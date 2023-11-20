@@ -23,7 +23,7 @@ class StorageRepository private constructor(private val dataStore: DataStore<Pre
             }
     }
 
-    suspend fun <T> get(key: Preferences.Key<T>): T? =
+    suspend fun <T> get(key: Preferences.Key<T>): T =
         dataStore.data
             .catch { exception ->
                 // dataStore.data throws an IOException when an error is encountered when reading data
@@ -33,7 +33,7 @@ class StorageRepository private constructor(private val dataStore: DataStore<Pre
                     throw exception
                 }
             }.map { preferences ->
-                preferences[key] ?: null
+                preferences[key] ?: throw Exception("No such key in storage: $key")
             }.first()
 
     suspend fun <T> get(key: Preferences.Key<T>, default: T): T =
