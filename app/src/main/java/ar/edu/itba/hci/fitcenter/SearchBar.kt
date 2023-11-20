@@ -136,9 +136,9 @@ fun MyScreen(routines: List<Models.FullRoutine>) {
             }
         )
         Divider(
-            color = Color.Green,
+            color = Color.LightGray,
             thickness = 2.dp,
-            modifier = Modifier.padding(bottom = 8.dp).padding(horizontal = 8.dp)
+            modifier = Modifier.padding(bottom = 12.dp)
         )
 
         RoutineList(routines = filteredRoutines)
