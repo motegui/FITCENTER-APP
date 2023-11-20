@@ -6,8 +6,9 @@ import kotlinx.serialization.json.JsonObject
 
 /**
  * API models from the swagger docs
- * THE STRUCTURE OF THESE @Serializable data classES ARE DETERMINED BY THE API AND CANNOT BE CHANGED.
- * If you add new @Serializable data classes from the API, make sure they exactly reflect the documentation.
+ * THE STRUCTURE OF THESE CLASSES ARE DETERMINED BY THE API AND CANNOT BE CHANGED.
+ * If you add a property to a class's metadata, it must be done through getters and setters.
+ * If you add new classes from the API, make sure they exactly reflect the documentation.
  * http://localhost:8080/docs/#/
  */
 object Models {
