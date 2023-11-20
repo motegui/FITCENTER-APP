@@ -289,7 +289,6 @@ fun Login(navController: NavController? = null, store: Store? = null) {
 @Composable
 fun PreviewLogin() {
     FitcenterTheme {
-        // TO DO: use sample store or modify Login to partially work without a store
         Login()
     }
 }
