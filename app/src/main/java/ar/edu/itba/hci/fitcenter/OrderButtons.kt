@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-
 @Composable
 fun SortingButtons(
     sortingCriterion: SortingCriterion,
@@ -21,39 +20,58 @@ fun SortingButtons(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 8.dp).padding(horizontal = 8.dp),
+            .padding(bottom = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         SortingButton(
             text = "Date",
             isSelected = sortingCriterion == SortingCriterion.DATE,
             onClick = {
-                onSortingCriterionChanged(SortingCriterion.DATE)
+                if (sortingCriterion == SortingCriterion.DATE) {
+                    // Clicked on the already selected button, unselect and use default sorting
+                    onSortingCriterionChanged(SortingCriterion.NAME)
+                } else {
+                    // Clicked on a different button, change sorting
+                    onSortingCriterionChanged(SortingCriterion.DATE)
+                }
             }
         )
         SortingButton(
             text = "Score",
             isSelected = sortingCriterion == SortingCriterion.SCORE,
             onClick = {
-                onSortingCriterionChanged(SortingCriterion.SCORE)
+                if (sortingCriterion == SortingCriterion.SCORE) {
+                    onSortingCriterionChanged(SortingCriterion.NAME)
+                } else {
+                    onSortingCriterionChanged(SortingCriterion.SCORE)
+                }
             }
         )
         SortingButton(
             text = "Difficulty",
             isSelected = sortingCriterion == SortingCriterion.DIFFICULTY,
             onClick = {
-                onSortingCriterionChanged(SortingCriterion.DIFFICULTY)
+                if (sortingCriterion == SortingCriterion.DIFFICULTY) {
+                    onSortingCriterionChanged(SortingCriterion.NAME)
+                } else {
+                    onSortingCriterionChanged(SortingCriterion.DIFFICULTY)
+                }
             }
         )
         SortingButton(
             text = "Category",
             isSelected = sortingCriterion == SortingCriterion.CATEGORY,
             onClick = {
-                onSortingCriterionChanged(SortingCriterion.CATEGORY)
+                if (sortingCriterion == SortingCriterion.CATEGORY) {
+                    onSortingCriterionChanged(SortingCriterion.NAME)
+                } else {
+                    onSortingCriterionChanged(SortingCriterion.CATEGORY)
+                }
             }
         )
     }
 }
+
 
 @Composable
 fun SortingButton(
