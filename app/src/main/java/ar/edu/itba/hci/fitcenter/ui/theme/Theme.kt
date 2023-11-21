@@ -55,10 +55,12 @@ fun FitcenterTheme(
         else -> LightColorScheme
     }
     val view = LocalView.current
-    val window = (view.context as Activity).window
-    SideEffect {
-        window.statusBarColor = Color.Transparent.toArgb()
-        WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
+    if (!view.isInEditMode) {
+        val window = (view.context as Activity).window
+        SideEffect {
+            window.statusBarColor = Color.Transparent.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
+        }
     }
 
     MaterialTheme(
