@@ -416,6 +416,15 @@ fun StartButton(navController: NavController? = null){
             .fillMaxSize()
             .padding(16.dp),
         contentAlignment = Alignment.Center
+        /*
+fun Workout(navController: NavController? = null, store: Store? = null) {
+    val routine: Models.FullRoutine? = RoutineSampleData.sportsRoutines.find { it.id == 1L }
+    var isFavorite by remember { mutableStateOf(routine?.isFavorite) }
+    var isEquipmentExpanded by remember { mutableStateOf(false) }
+    var isDetailed by remember { mutableStateOf(false) }
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+        */
     ) {
         if(isDetailed){
         Button(
