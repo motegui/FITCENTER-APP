@@ -11,17 +11,25 @@ import io.ktor.http.HttpHeaders
 import kotlin.math.pow
 import io.github.cdimascio.dotenv.dotenv
 
-val dotenv = dotenv {
-    directory = "/assets"
-    filename = "env"
-}
-val BASE_URL = dotenv["API_URL"] ?: "http://localhost:8080"
-
 /**
  * Data Layer -> Data Source
  * Provides methods for accessing the app's API.
  */
 object ApiRepository {
+    private val BASE_URL: String
+        get() {
+            val defaultValue = "http://localhost:8080"
+            val dotenv = dotenv {
+                directory = "/assets"
+                filename = "env"
+            }
+            return try {
+                dotenv["API_URL"] ?: defaultValue
+            } catch (error: ExceptionInInitializerError) {
+                defaultValue
+            }
+        }
+
     private fun digit(a: Int, b: Int): Int {
         return a / 10.0.pow((b - 1).toDouble()).toInt() % 10
     }
