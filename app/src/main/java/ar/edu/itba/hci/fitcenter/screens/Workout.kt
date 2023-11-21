@@ -139,14 +139,12 @@ fun Workout(navController: NavController? = null, store: Store? = null) {
                     .animateContentSize()
                     .padding(16.dp)
                     .fillMaxWidth()
-                    .clip(MaterialTheme.shapes.medium)
-                    .border(1.dp, Color.Gray) // Agregar un borde gris de 1dp
             ) {
                 Column {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 4.dp, start = 6.dp, end = 6.dp, bottom = 4.dp),
+                            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
@@ -165,7 +163,7 @@ fun Workout(navController: NavController? = null, store: Store? = null) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 4.dp, start = 6.dp, end = 6.dp, bottom = 4.dp),
+                            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
@@ -180,7 +178,7 @@ fun Workout(navController: NavController? = null, store: Store? = null) {
                             Text(
                                 text = routine.category.name,
                                 style = MaterialTheme.typography.titleMedium,
-                                modifier = Modifier.weight(1f)
+                                //modifier = Modifier.weight(1f)
                             )
                         }
 
@@ -189,7 +187,7 @@ fun Workout(navController: NavController? = null, store: Store? = null) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 4.dp, start = 6.dp, end = 6.dp, bottom = 4.dp),
+                            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
@@ -204,7 +202,7 @@ fun Workout(navController: NavController? = null, store: Store? = null) {
                             Text(
                                 text = formatDate(routine.date),
                                 style = MaterialTheme.typography.titleMedium,
-                                modifier = Modifier.weight(1f)
+                                //modifier = Modifier.weight(1f)
                             )
                         }
                     }
@@ -219,52 +217,53 @@ fun Workout(navController: NavController? = null, store: Store? = null) {
                 .animateContentSize()
                 .padding(16.dp)
                 .fillMaxWidth()
-                .clip(MaterialTheme.shapes.medium)
-                .border(1.dp, Color.Gray) // Agregar un borde gris de 1dp
         ) {
                 Row(
                     modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 4.dp, start = 6.dp, end = 6.dp, bottom = 4.dp),
+                    .padding(top = 4.dp, start = 16.dp, end = 6.dp, bottom = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ){
                     Text(
                         text = stringResource(R.string.equipment),
+                        modifier = Modifier.weight(1f),
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.Bold,
                             color = Color.Black
-                        ) )
-                    Icon(
-                        imageVector = if (isEquipemntExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
-                        tint = Color.Black,
-                        contentDescription = "Expand/Collapse",
-                        modifier = Modifier.clickable { isEquipemntExpanded = !isEquipemntExpanded }
-                                .align(Alignment.CenterVertically)
+                        )
                     )
+                    IconButton(
+                        onClick = {
+                            isEquipemntExpanded = !isEquipemntExpanded
+                        },
+                        modifier = Modifier.align(Alignment.CenterVertically)
+                    ) {
+                        Icon(
+                            imageVector = if (isEquipemntExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                            tint = Color.Black,
+                            contentDescription = "Expand/Collapse",
+                        )
+                    }
                 }
         }
         if(isEquipemntExpanded==true){
             Surface(
                 shape = MaterialTheme.shapes.medium,
-                color = Color.White,
                 shadowElevation = 4.dp,
+                color = Color.White,
                 modifier = Modifier
                     .animateContentSize()
-                    .padding(16.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
                     .fillMaxWidth()
-                    .clip(MaterialTheme.shapes.medium)
-                    .border(1.dp, Color.Gray) // Agregar un borde gris de 1dp
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 4.dp, start = 6.dp, end = 6.dp, bottom = 4.dp),
+                        .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
                     verticalAlignment = Alignment.CenterVertically){
                     Text(
                         text = "the equipment here",
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Black))
+                        style = MaterialTheme.typography.titleMedium)
                 }
             }
         }
