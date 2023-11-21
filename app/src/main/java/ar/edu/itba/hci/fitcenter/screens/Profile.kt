@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,6 +29,8 @@ import androidx.navigation.NavController
 import ar.edu.itba.hci.fitcenter.api.Store
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 @Composable
 fun Profile(navController: NavController? = null, store: Store? = null) {
     Column(
@@ -42,16 +45,29 @@ fun Profile(navController: NavController? = null, store: Store? = null) {
         )
 
         // Add four rectangles with rounded corners
-        for (i in 1..4) {
+        for (i in 1..3) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth(0.8f) // reduce width here
-                    .height(50.dp)
+                    .height(60.dp) // increase height here
                     .padding(horizontal = 10.dp, vertical = 10.dp)
-                    .background(Color.White, shape = RoundedCornerShape(10.dp))
-                    .border(BorderStroke(1.dp, Color.Black), RoundedCornerShape(10.dp))
-            )
-            Spacer(modifier = Modifier.height(16.dp))
+                    .background(if (i == 1) MaterialTheme.colorScheme.primary else Color.White, shape = RoundedCornerShape(10.dp)) // change color for first rectangle
+                    .border(if (i != 1) BorderStroke(1.dp, Color.Black) else BorderStroke(0.dp, Color.Transparent), RoundedCornerShape(10.dp)), // remove border for first rectangle
+                contentAlignment = Alignment.Center // align content to center
+            ) {
+                when (i) {
+                    1 -> Text("John Doe", fontWeight = FontWeight.Bold, fontSize = 15.sp) // make text bold and increase font size
+                    2 -> Text("johndoe@email.com", fontSize = 15.sp) // increase font size
+                    3 -> Row(
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp), // add padding here
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text("User name", fontWeight = FontWeight.Bold, fontSize = 15.sp) // make text bold and increase font size
+                        Text("johndoe", fontSize = 15.sp) // increase font size
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(8.dp)) // reduce height here
         }
 
         // Add logout button
@@ -63,7 +79,7 @@ fun Profile(navController: NavController? = null, store: Store? = null) {
             shape = RoundedCornerShape(10.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.primary) // change the color here
         ) {
-            Text("Logout")
+            Text("Logout", fontWeight = FontWeight.Bold, fontSize = 15.sp) // make text bold and increase font size
         }
     }
 }
