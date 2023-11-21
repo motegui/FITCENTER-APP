@@ -1,5 +1,5 @@
 package ar.edu.itba.hci.fitcenter.screens
-/*
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,26 +26,7 @@ import ar.edu.itba.hci.fitcenter.R
 import ar.edu.itba.hci.fitcenter.SampleData
 import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
-<<<<<<< Updated upstream:app/src/main/java/ar/edu/itba/hci/fitcenter/screens/ExecuteRoutine.kt
 
-=======
-/*
-class ExecuteRoutineActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            FitcenterTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Execution(detailed = false)
-                }
-            }
-        }
-    }
-}
->>>>>>> Stashed changes:app/src/main/java/ar/edu/itba/hci/fitcenter/ExecuteRoutineActivity.kt
 
 @Composable
 fun Timer(seconds: Int, onExpire: () -> Unit) {
@@ -127,7 +108,3 @@ fun SimpleExecutionPreview() {
 fun DetailedExecutionPreview() {
     ExecutionPreview(detailed = true)
 }
-
- */
-
- */
