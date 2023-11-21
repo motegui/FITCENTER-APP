@@ -44,6 +44,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ar.edu.itba.hci.fitcenter.R
@@ -306,7 +307,7 @@ fun Info(routine: Models.FullRoutine?=null){
 
 @Composable
 fun EquipmentInfo(routine: Models.FullRoutine?=null){
-    var isEquipemntExpanded by remember { mutableStateOf(false) }
+    var isEquipmentExpanded by remember { mutableStateOf(false) }
     Surface(
         shape = MaterialTheme.shapes.medium,
         color = Color.White,
@@ -332,19 +333,19 @@ fun EquipmentInfo(routine: Models.FullRoutine?=null){
             )
             IconButton(
                 onClick = {
-                    isEquipemntExpanded = !isEquipemntExpanded
+                    isEquipmentExpanded = !isEquipmentExpanded
                 },
                 modifier = Modifier.align(Alignment.CenterVertically)
             ) {
                 Icon(
-                    imageVector = if (isEquipemntExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                    imageVector = if (isEquipmentExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
                     tint = Color.Black,
                     contentDescription = "Expand/Collapse",
                 )
             }
         }
     }
-    if (isEquipemntExpanded) {
+    if (isEquipmentExpanded) {
         Surface(
             shape = MaterialTheme.shapes.medium,
             shadowElevation = 4.dp,
@@ -436,38 +437,37 @@ fun StartButton(navController: NavController? = null){
 @Composable
 fun Workout(navController: NavController? = null, store: Store? = null) {
     val routine: Models.FullRoutine? = RoutineSampleData.sportsRoutines.find { it.id == 1L }
-    var routines: List<Models.FullRoutine?> = listOf(routine)
-    val cycles: Models.Cycles? = RoutineSampleData.cyclesRoutine
+    val routines: List<Models.FullRoutine?> = listOf(routine)
+    val cycles: Models.Cycles = RoutineSampleData.cyclesRoutine
 
     LazyColumn {
-            items(routines){
-                Title(routine)
-                Info(routine = routine)
-                EquipmentInfo(routine = routine)
+        items(routines){
+            Title(routine)
+            Info(routine = routine)
+            EquipmentInfo(routine = routine)
+        }
+        if (cycles != null) {
+            items(cycles.content) { cycle ->
+                CycleCard(cycle)
             }
-            if (cycles != null) {
-                items(cycles.content) { cycle ->
-                    CycleCard(cycle)
-                }
-            }
-            items(routines){
-                StartButton(navController = navController)
-            }
-
+        }
+        items(routines){
+            StartButton(navController = navController)
         }
     }
+}
 
 
 
 @Preview
 @Composable
-fun PreviewRoutineList(navController: NavController? = null, store: Store? = null){
-    FitcenterTheme{
+fun PreviewRoutineList() {
+    FitcenterTheme {
         Surface(
-            modifier= Modifier.fillMaxSize(),
-            color= MaterialTheme.colorScheme.background,
-        ){
-            Workout(navController, store)
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background,
+        ) {
+            Workout()
         }
     }
 }
