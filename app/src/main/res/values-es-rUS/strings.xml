@@ -9,5 +9,5 @@
     <string name="password">Contraseña</string>
     <string name="log_in">Ingresar</string>
     <string name="please_wait">Espere</string>
-    <string name="title_activity_execute_exercise">Ejecutar Rutina</string>
+    <string name="execute_routine">Ejecutar Rutina</string>
 </resources>

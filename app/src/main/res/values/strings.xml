@@ -9,5 +9,5 @@
     <string name="password">Password</string>
     <string name="log_in">Log in</string>
     <string name="please_wait">Please wait</string>
-    <string name="title_activity_execute_exercise">Execute Exercise</string>
+    <string name="execute_routine">Execute Workout</string>
 </resources>

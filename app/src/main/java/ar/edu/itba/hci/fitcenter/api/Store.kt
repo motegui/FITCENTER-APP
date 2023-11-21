@@ -44,9 +44,33 @@ class Store private constructor(private val dataStore: DataStore<Preferences>) {
         storage.set(Keys.SESSION_TOKEN, "")
     }
 
-    suspend fun currentUser(): Models.FullUser? {
-        val token = storage.get(Keys.SESSION_TOKEN) ?: return null
-        if (user != null) return user
-        return ApiRepository.getCurrentUser(token)
+    suspend fun currentUser(): Models.FullUser {
+        if (user != null) return user as Models.FullUser
+        val token = storage.get(Keys.SESSION_TOKEN)
+        user = ApiRepository.fetchCurrentUser(token)
+        return user as Models.FullUser
+    }
+
+    private suspend fun <T> collectSearchResult(searchFunction: suspend () -> Models.SearchResult<T>): List<T> {
+        val results = mutableListOf<T>()
+        do {
+            val page = searchFunction()
+            results.addAll(page.content)
+        } while (!page.isLastPage)
+        return results
+    }
+
+    suspend fun fetchCycles(routineId: Long): List<Models.FullCycle> {
+        val token = storage.get(Keys.SESSION_TOKEN)
+        return collectSearchResult {
+            ApiRepository.fetchCycles(token, routineId)
+        }.sortedBy { it.order }
+    }
+
+    suspend fun fetchCycleExercises(cycleId: Long): List<Models.FullCycleExercise> {
+        val token = storage.get(Keys.SESSION_TOKEN)
+        return collectSearchResult {
+            ApiRepository.fetchCycleExercises(token, cycleId)
+        }.sortedBy { it.order }
     }
 }
