@@ -459,6 +459,7 @@ fun Workout(navController: NavController? = null, store: Store? = null) {
 
 
 
+@Preview
 @Composable
 fun PreviewRoutineList(navController: NavController? = null, store: Store? = null){
     FitcenterTheme{
@@ -470,5 +471,3 @@ fun PreviewRoutineList(navController: NavController? = null, store: Store? = nul
         }
     }
 }
-
-

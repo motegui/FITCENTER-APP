@@ -39,14 +39,6 @@ import ar.edu.itba.hci.fitcenter.RoutineSampleData
 import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
-fun formatDate(dateValue: Long): String {
-    val date = LocalDate.parse(dateValue.toString(), DateTimeFormatter.BASIC_ISO_DATE)
-    val formatter =
-        DateTimeFormatter.ofPattern("dd/MM/yyyy") // You can adjust the pattern as needed
-    return date.format(formatter)
-}
-
-
 @Composable
 fun RoutineCard(rt: Models.FullRoutine, navController: NavController? = null) {
     var isFavorite by remember { mutableStateOf(rt.isFavorite) }
