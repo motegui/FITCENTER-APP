@@ -191,6 +191,7 @@ fun MainScreen(store: Store? = null) {
                 composable("profile") { Profile(navController, store) }
                 composable("my-workouts") { MyWorkouts(navController, store) }
                 composable("find-workouts") { FindWorkouts(navController, store) }
+                composable("workout") { Workout(navController, store) }
             }
         }
     }

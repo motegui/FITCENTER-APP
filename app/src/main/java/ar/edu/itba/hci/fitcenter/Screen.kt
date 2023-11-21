@@ -51,5 +51,10 @@ val screens = NonNullableMap(mapOf(
     "execute-routine" to Screen(
         resourceId = R.string.execute_routine,
         usesNav = false,
+    ),
+
+    "workout" to Screen(
+        resourceId = R.string.workout,
+        usesNav = true,
     )
 ))

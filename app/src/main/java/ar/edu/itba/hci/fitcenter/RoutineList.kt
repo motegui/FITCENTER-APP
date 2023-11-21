@@ -35,6 +35,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 import java.time.LocalDate
@@ -66,7 +68,7 @@ fun DifficultyRating(difficulty: Models.Difficulty) {
 }
 
 @Composable
-fun RoutineCard(rt: Models.FullRoutine) {
+fun RoutineCard(rt: Models.FullRoutine, navController: NavController? = null) {
     var isFavorite by remember { mutableStateOf(rt.isFavorite) }
     var isExpanded by remember { mutableStateOf(false) }
 
@@ -74,13 +76,14 @@ fun RoutineCard(rt: Models.FullRoutine) {
         shape = MaterialTheme.shapes.medium,
         shadowElevation = 4.dp,
         modifier = Modifier
+
             .animateContentSize()
             .padding(4.dp)
             .fillMaxWidth()
     ) {
         Row(
             modifier = Modifier
-                .clickable { isExpanded = !isExpanded }
+                .clickable { navController?.navigate("workout") }
                 .fillMaxWidth()
                 .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -182,10 +185,10 @@ enum class SortingCriterion {
 }
 
 @Composable
-fun RoutineList(routines: List<Models.FullRoutine>){
+fun RoutineList(routines: List<Models.FullRoutine>, navController: NavController? = null){
     LazyColumn{
         items(routines){routine ->
-            RoutineCard(routine)
+            RoutineCard(routine, navController)
         }
     }
 }

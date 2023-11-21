@@ -10,4 +10,10 @@
     <string name="log_in">Ingresar</string>
     <string name="please_wait">Espere</string>
     <string name="execute_routine">Ejecutar Rutina</string>
+    <string name="workout">Rutina</string>
+    <string name="difficulty">Dificultad</string>
+    <string name="category">Categoria</string>
+    <string name="date">Fecha</string>
+    <string name="equipment">Equipamiento</string>
+    <string name="start">Empezar</string>
 </resources>
