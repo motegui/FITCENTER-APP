@@ -25,7 +25,6 @@ object Models {
     @Serializable class FullUser (
         val id: Long,
         val username: String,
-        val password: String,
         val firstName: String,
         val lastName: String,
         val gender: Gender,
