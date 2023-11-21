@@ -1,8 +1,5 @@
-package ar.edu.itba.hci.fitcenter
+package ar.edu.itba.hci.fitcenter.screens
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,63 +9,56 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import ar.edu.itba.hci.fitcenter.SampleData
 import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
-class ExecuteRoutineActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            FitcenterTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Execution(detailed = false)
-                }
-            }
-        }
-    }
-}
 
 @Composable
 fun Execution(routine: Models.MegaRoutine, detailed: Boolean) {
     Column {
-        Text("Exit")
-        Text("Cycle #/#")
+        // Header
+        Row {
+            Text("Exit")
+        }
+
+        // Title
+        Text("Cycle #/${routine.megaCycles.size}")
         Text("Repetition #/#")
-        Text("Exercise Name")
+        Text(routine.name)
+
+        // Nav
         Row {
             Text("Previous")
             Text("Next")
         }
+
+        // Body
         Text("Timer")
         Text("Pause")
+    }
+}
+
+@Composable
+fun ExecutionPreview(detailed: Boolean) {
+    FitcenterTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            Execution(SampleData.megaRoutine, detailed)
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun SimpleExecutionPreview() {
-    FitcenterTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            Execution(detailed = false)
-        }
-    }
+    ExecutionPreview(detailed = false)
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DetailedExecutionPreview() {
-    FitcenterTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            Execution(detailed = true)
-        }
-    }
+    ExecutionPreview(detailed = true)
 }
