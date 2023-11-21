@@ -16,4 +16,7 @@
     <string name="date">Fecha</string>
     <string name="equipment">Equipamiento</string>
     <string name="start">Empezar</string>
+    <string name="detailed_mode">Modo Detallado</string>
+    <string name="detailed_description">Muestra los ejercicios con descripciones e imagenes</string>
+
 </resources>

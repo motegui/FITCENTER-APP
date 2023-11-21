@@ -26,6 +26,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -86,6 +87,7 @@ fun Workout(navController: NavController? = null, store: Store? = null) {
     val routine: Models.FullRoutine? = RoutineSampleData.sportsRoutines.find { it.id == 1L }
     var isFavorite by remember { mutableStateOf(routine?.isFavorite) }
     var isEquipemntExpanded by remember { mutableStateOf(false) }
+    var isDetailed by remember { mutableStateOf(false) }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -102,7 +104,7 @@ fun Workout(navController: NavController? = null, store: Store? = null) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 4.dp, start = 6.dp, end = 6.dp, bottom = 4.dp),
+                    .padding(top = 4.dp, start = 16.dp, end = 6.dp, bottom = 4.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if (routine != null) {
@@ -144,7 +146,7 @@ fun Workout(navController: NavController? = null, store: Store? = null) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
+                            .padding(top = 10.dp, start = 16.dp, end = 16.dp, bottom = 10.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
@@ -163,7 +165,7 @@ fun Workout(navController: NavController? = null, store: Store? = null) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
+                            .padding(top = 10.dp, start = 16.dp, end = 16.dp, bottom = 10.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
@@ -187,7 +189,7 @@ fun Workout(navController: NavController? = null, store: Store? = null) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
+                            .padding(top = 10.dp, start = 16.dp, end = 16.dp, bottom = 10.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
@@ -220,8 +222,8 @@ fun Workout(navController: NavController? = null, store: Store? = null) {
         ) {
                 Row(
                     modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp, start = 16.dp, end = 6.dp, bottom = 4.dp),
+                        .fillMaxWidth()
+                        .padding(top = 1.dp, start = 16.dp, end = 6.dp, bottom = 1.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ){
                     Text(
@@ -259,7 +261,7 @@ fun Workout(navController: NavController? = null, store: Store? = null) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
+                        .padding(top = 10.dp, start = 16.dp, end = 16.dp, bottom = 10.dp),
                     verticalAlignment = Alignment.CenterVertically){
                     Text(
                         text = "the equipment here",
@@ -267,6 +269,46 @@ fun Workout(navController: NavController? = null, store: Store? = null) {
                 }
             }
         }
+
+        Surface(
+            shape = MaterialTheme.shapes.medium,
+            color = Color.White,
+            shadowElevation = 4.dp,
+            modifier = Modifier
+                .animateContentSize()
+                .padding(16.dp)
+                .fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier.weight(1f)
+                    .padding(top = 1.dp, start = 16.dp, end = 6.dp, bottom = 1.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column{
+                    Text(
+                        text = stringResource(R.string.detailed_mode),
+
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Black
+                        )
+                    )
+                    Text(
+                        text = stringResource(R.string.detailed_description),
+                        style = MaterialTheme.typography.bodySmall
+                    )
+
+                }
+                Checkbox(
+                    checked = isDetailed,
+                    onCheckedChange = {
+                        isDetailed = it
+                    },
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
+            }
+        }
+
         Button(
             onClick = { navController?.navigate("workout") }
         ) {
