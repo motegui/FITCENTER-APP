@@ -36,7 +36,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 import java.time.LocalDate
@@ -70,8 +69,6 @@ fun DifficultyRating(difficulty: Models.Difficulty) {
 @Composable
 fun RoutineCard(rt: Models.FullRoutine, navController: NavController? = null) {
     var isFavorite by remember { mutableStateOf(rt.isFavorite) }
-    var isExpanded by remember { mutableStateOf(false) }
-
     Surface(
         shape = MaterialTheme.shapes.medium,
         shadowElevation = 4.dp,
@@ -119,11 +116,6 @@ fun RoutineCard(rt: Models.FullRoutine, navController: NavController? = null) {
                         )
                     }
 
-                if (isExpanded) {
-                    Text(
-                        text = "Clicking should open a new window with routine details"
-                    )
-                }
             }
 
             // Heart icon

@@ -14,7 +14,7 @@ import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
 @Composable
 fun FindWorkouts(navController: NavController? = null, store: Store? = null) {
-    MyScreen(polyvalentRoutineList(routines = RoutineSampleData.sportsRoutines))
+    MyScreen(polyvalentRoutineList(routines = RoutineSampleData.sportsRoutines), navController=navController)
 }
 
 
