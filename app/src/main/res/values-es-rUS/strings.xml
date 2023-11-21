@@ -2,8 +2,12 @@
 <resources>
     <string name="my_workouts">Mis rutinas</string>
     <string name="find_workouts">Buscinar rutinas</string>
+    <string name="profile">Perfil</string>
     <string name="login">Inicio de sesión</string>
+    <string name="go_back">Ir atrás</string>
+    <string name="username">Usuario</string>
     <string name="password">Contraseña</string>
     <string name="log_in">Ingresar</string>
     <string name="please_wait">Espere</string>
+    <string name="title_activity_execute_exercise">Ejecutar Rutina</string>
 </resources>
