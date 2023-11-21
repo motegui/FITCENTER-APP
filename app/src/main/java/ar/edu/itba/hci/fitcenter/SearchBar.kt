@@ -28,7 +28,6 @@ import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(
     value: String,
@@ -135,10 +134,10 @@ fun MyScreen(routines: List<Models.FullRoutine>) {
                 filteredRoutines = polyvalentRoutineList(routines, sortingCriterion)
             }
         )
-        Divider(
-            color = Color.LightGray,
+        HorizontalDivider(
+            modifier = Modifier.padding(bottom = 12.dp),
             thickness = 2.dp,
-            modifier = Modifier.padding(bottom = 12.dp)
+            color = Color.LightGray
         )
 
         RoutineList(routines = filteredRoutines)
