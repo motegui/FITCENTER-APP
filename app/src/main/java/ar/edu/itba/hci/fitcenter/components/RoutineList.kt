@@ -1,4 +1,4 @@
-package ar.edu.itba.hci.fitcenter
+package ar.edu.itba.hci.fitcenter.components
 
 import android.content.res.Configuration
 import androidx.compose.animation.animateContentSize
@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -36,35 +35,11 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import ar.edu.itba.hci.fitcenter.RoutineSampleData
 import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
-fun formatDate(dateValue: Long): String {
-    val date = LocalDate.parse(dateValue.toString(), DateTimeFormatter.BASIC_ISO_DATE)
-    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy") // You can adjust the pattern as needed
-    return date.format(formatter)
-}
 
-@Composable
-fun DifficultyRating(difficulty: Models.Difficulty) {
-    Row {
-        repeat(3) { index ->
-            val iconColor = if (index < difficulty.ordinal) {
-                Color.Red
-            } else {
-                Color.Gray
-            }
-            Icon(
-                imageVector = Icons.Default.LocalFireDepartment,
-                contentDescription = null,
-                tint = iconColor,
-                modifier = Modifier.padding(end = 4.dp)
-            )
-        }
-    }
-}
 
 @Composable
 fun RoutineCard(rt: Models.FullRoutine, navController: NavController? = null) {

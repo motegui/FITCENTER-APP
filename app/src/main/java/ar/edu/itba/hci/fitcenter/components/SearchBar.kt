@@ -1,4 +1,4 @@
-package ar.edu.itba.hci.fitcenter
+package ar.edu.itba.hci.fitcenter.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import ar.edu.itba.hci.fitcenter.RoutineSampleData
 import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
@@ -135,7 +136,7 @@ fun MyScreen(routines: List<Models.FullRoutine>, navController: NavController? =
                 filteredRoutines = polyvalentRoutineList(routines, sortingCriterion)
             }
         )
-        Divider(
+        HorizontalDivider(
             modifier = Modifier.padding(bottom = 12.dp),
             thickness = 2.dp,
             color = Color.LightGray

@@ -1,38 +1,24 @@
 package ar.edu.itba.hci.fitcenter.screens
 
 import ar.edu.itba.hci.fitcenter.api.Store
-import android.content.res.Configuration
-import android.opengl.Visibility
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,43 +30,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ar.edu.itba.hci.fitcenter.R
 import ar.edu.itba.hci.fitcenter.RoutineSampleData
-import ar.edu.itba.hci.fitcenter.SortingCriterion
 import ar.edu.itba.hci.fitcenter.api.Models
-import ar.edu.itba.hci.fitcenter.navigate
+import ar.edu.itba.hci.fitcenter.components.DifficultyRating
+import ar.edu.itba.hci.fitcenter.components.formatDate
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import androidx.compose.foundation.layout.Row as Row
 
-@Composable
-fun DifficultyRating(difficulty: Models.Difficulty) {
-    Row {
-        repeat(3) { index ->
-            val iconColor = if (index < difficulty.ordinal) {
-                Color.Red
-            } else {
-                Color.Gray
-            }
-            androidx.compose.material3.Icon(
-                imageVector = Icons.Default.LocalFireDepartment,
-                contentDescription = null,
-                tint = iconColor,
-                modifier = Modifier.padding(end = 4.dp)
-            )
-        }
-    }
-}
 
-fun formatDate(dateValue: Long): String {
-    val date = LocalDate.parse(dateValue.toString(), DateTimeFormatter.BASIC_ISO_DATE)
-    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy") // You can adjust the pattern as needed
-    return date.format(formatter)
-}
 
 @Composable
 fun Workout(navController: NavController? = null, store: Store? = null) {
@@ -248,7 +208,7 @@ fun Workout(navController: NavController? = null, store: Store? = null) {
                     }
                 }
         }
-        if(isEquipemntExpanded==true){
+        if(isEquipemntExpanded){
             Surface(
                 shape = MaterialTheme.shapes.medium,
                 shadowElevation = 4.dp,

@@ -1,4 +1,4 @@
-package ar.edu.itba.hci.fitcenter
+package ar.edu.itba.hci.fitcenter.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+
 @Composable
 fun SortingButtons(
     sortingCriterion: SortingCriterion,
