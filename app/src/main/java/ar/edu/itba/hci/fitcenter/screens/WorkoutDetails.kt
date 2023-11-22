@@ -54,7 +54,6 @@ import ar.edu.itba.hci.fitcenter.components.DifficultyRating
 import ar.edu.itba.hci.fitcenter.components.RoutineCard
 import ar.edu.itba.hci.fitcenter.components.formatDate
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
-import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -321,7 +320,7 @@ fun Info(routine: Models.FullRoutine? = null) {
 }
 
 @Composable
-fun EquipmentInfo(routine: Models.FullRoutine?=null){
+fun EquipmentInfo(routine: Models.FullRoutine? = null) {
     var isEquipmentExpanded by remember { mutableStateOf(false) }
     Surface(
         shape = MaterialTheme.shapes.medium,
@@ -428,7 +427,12 @@ fun Details(routine: Models.FullRoutine? = null) {
     }
 }
 
-suspend fun startRoutine(navController: NavController, store: Store, routine: Models.FullRoutine) {
+suspend fun startRoutine(
+    navController: NavController,
+    store: Store,
+    routine: Models.FullRoutine,
+    isDetailed: Boolean
+) {
     val gson = GsonBuilder().create()
     val megaRoutineJson = gson.toJson(Models.MegaRoutine(store, routine))
     navController.navigate(
@@ -469,13 +473,27 @@ fun StartButton(navController: NavController? = null){
                 androidx.compose.material3.Text(stringResource(R.string.start))
             }
         }
+        Button(
+            onClick = {
+                if (navController == null || store == null) return@Button
+                scope.launch {
+                    startRoutine(navController, store, routine, isDetailed)
+                }
+            }
+        ) {
+            Text(stringResource(R.string.start))
+        }
     }
+}
 
+/*
 @Composable
 fun Workout(navController: NavController? = null, store: Store? = null) {
     val routine: Models.FullRoutine? = RoutineSampleData.sportsRoutines.find { it.id == 1L }
     val routines: List<Models.FullRoutine?> = listOf(routine)
     val cycles: Models.Cycles = RoutineSampleData.cyclesRoutine
+
+    val scope = rememberCoroutineScope()
 
     LazyColumn {
         items(routines) {
@@ -496,6 +514,7 @@ fun Workout(navController: NavController? = null, store: Store? = null) {
 
     }
 }
+*/
 
 
 @Preview
