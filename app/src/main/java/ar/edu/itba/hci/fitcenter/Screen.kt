@@ -73,7 +73,7 @@ val screens = NonNullableMap(mapOf(
         usesNav = false,
     ),
 
-    "workout" to Screen(
+    "workout-details" to Screen(
         resourceId = R.string.workout,
         usesNav = true,
     )

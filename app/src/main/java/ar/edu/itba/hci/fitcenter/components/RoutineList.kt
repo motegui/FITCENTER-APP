@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,23 +38,66 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ar.edu.itba.hci.fitcenter.RoutineSampleData
 import ar.edu.itba.hci.fitcenter.api.Models
+import ar.edu.itba.hci.fitcenter.api.Store
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
+import com.google.gson.GsonBuilder
+import kotlinx.coroutines.launch
+
 
 @Composable
-fun RoutineCard(rt: Models.FullRoutine, navController: NavController? = null) {
+fun DifficultyRating(difficulty: Models.Difficulty) {
+    Row {
+        repeat(3) { index ->
+            val iconColor = if (index < difficulty.ordinal) {
+                Color.Red
+            } else {
+                Color.Gray
+            }
+            Icon(
+                imageVector = Icons.Default.LocalFireDepartment,
+                contentDescription = null,
+                tint = iconColor,
+                modifier = Modifier.padding(end = 4.dp)
+            )
+        }
+    }
+}
+
+
+@Composable
+fun RoutineCard(
+    rt: Models.FullRoutine,
+    navController: NavController? = null,
+    store: Store? = null
+) {
     var isFavorite by remember { mutableStateOf(rt.isFavorite) }
+
+    val scope = rememberCoroutineScope()
+
     Surface(
         shape = MaterialTheme.shapes.medium,
         shadowElevation = 4.dp,
         modifier = Modifier
-
             .animateContentSize()
             .padding(4.dp)
             .fillMaxWidth()
     ) {
         Row(
             modifier = Modifier
-                .clickable { navController?.navigate("workout") }
+                .clickable {
+                    if (store == null) return@clickable
+                    scope.launch {
+                        val gson = GsonBuilder().create()
+                        val routineJson = gson.toJson(rt)
+                        navController?.navigate(
+                            "workout-details/{routine}"
+                                .replace(
+                                    oldValue = "{routine}",
+                                    newValue = routineJson
+                                )
+                        )
+                    }
+                }
                 .fillMaxWidth()
                 .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -95,6 +139,9 @@ fun RoutineCard(rt: Models.FullRoutine, navController: NavController? = null) {
             IconButton(
                 onClick = {
                     isFavorite = !isFavorite
+                    scope.launch {
+                        store?.setFavorite(rt.id, isFavorite)
+                    }
                 },
                 modifier = Modifier.align(Alignment.CenterVertically)
             ) {
