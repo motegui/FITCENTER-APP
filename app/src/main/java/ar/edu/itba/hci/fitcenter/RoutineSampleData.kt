@@ -205,4 +205,51 @@ object RoutineSampleData {
             ))
         )
     )
+
+    val cyclesRoutine = Models.Cycles(
+        totalCount = 10,  // Aquí debes proporcionar el valor adecuado para totalCount
+        orderBy = "id",  // Proporciona el valor correcto para orderBy
+        direction = "asc",  // Proporciona el valor correcto para direction
+        content = listOf(
+            Models.FullCycle(
+                id = 1,
+                name = "Warm Up",
+                detail = "Details for Cycle 1",
+                type = Models.CycleType.Warmup,  // Ajusta según tu enumeración CycleType
+                order = 1,
+                repetitions = 5,
+                metadata = null  // Puedes proporcionar un objeto JsonObject aquí si es necesario
+            ),
+            Models.FullCycle(
+                id = 2,
+                name = "Cycle 1",
+                detail = "Details for Cycle 1",
+                type = Models.CycleType.Exercise,  // Ajusta según tu enumeración CycleType
+                order = 2,
+                repetitions = 1,
+                metadata = null  // Puedes proporcionar un objeto JsonObject aquí si es necesario
+            ),
+            Models.FullCycle(
+                id = 3,
+                name = "Cycle 2",
+                detail = "Details for Cycle 2",
+                type = Models.CycleType.Exercise,  // Ajusta según tu enumeración CycleType
+                order = 3,
+                repetitions = 3,
+                metadata = null  // Puedes proporcionar un objeto JsonObject aquí si es necesario
+            ),
+            Models.FullCycle(
+                id = 4,
+                name = "Cool Down",
+                detail = "Details for Cycle 1",
+                type = Models.CycleType.Cooldown,  // Ajusta según tu enumeración CycleType
+                order = 4,
+                repetitions = 1,
+                metadata = null  // Puedes proporcionar un objeto JsonObject aquí si es necesario
+            ),
+        ),
+        size = 20,  // Proporciona el valor correcto para size
+        page = 1,   // Proporciona el valor correcto para page
+        isLastPage = false  // Proporciona el valor correcto para isLastPage
+    )
 }
