@@ -103,7 +103,7 @@ fun FitcenterNavHost(navController: NavHostController, store: Store? = null, sta
             val megaRoutineJson = navBackStackEntry.arguments?.getString("mega-routine")
             val routine = gson.fromJson(megaRoutineJson, Models.MegaRoutine::class.java)
             val detailed = navBackStackEntry.arguments?.getBoolean("detailed") ?: false
-            Execution(routine = routine, detailed = detailed)
+            Execution(navController, routine = routine, detailed = detailed)
         }
     }
 }

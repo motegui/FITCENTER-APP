@@ -1,15 +1,21 @@
 package ar.edu.itba.hci.fitcenter.screens
 
+import android.os.CountDownTimer
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,6 +46,104 @@ import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
 
 @Composable
+fun CountdownTimer(initialTimeSeconds: Int) {
+    var currentTime by remember { mutableStateOf(initialTimeSeconds) }
+    var isRunning by remember { mutableStateOf(false) }
+
+    var timer: CountDownTimer? by remember { mutableStateOf(null) }
+
+    var timeInput by remember { mutableStateOf("") }
+
+    val density = LocalDensity.current.density
+
+    fun startTimer() {
+        timer = object : CountDownTimer(currentTime * 1000L, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                currentTime = (millisUntilFinished / 1000).toInt()
+            }
+
+            override fun onFinish() {
+                isRunning = false
+            }
+        }
+        timer?.start()
+    }
+
+    fun stopTimer() {
+        timer?.cancel()
+        timer = null
+        isRunning = false
+    }
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+
+        // Visualización del tiempo restante
+        Text(
+            text = formatTime(currentTime),
+            style = MaterialTheme.typography.displayMedium.copy(
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+        )
+
+        //Spacer(modifier = Modifier.weight(1f))
+
+        // Botones de control del temporizador
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Button(
+                onClick = {
+                    if (!isRunning) {
+                        startTimer()
+                        isRunning = true
+                    }
+                },
+                enabled = !isRunning
+            ) {
+                Icon(imageVector = Icons.Default.PlayArrow, contentDescription = "Start")
+            }
+
+            Button(
+                onClick = {
+                    stopTimer()
+                },
+                enabled = isRunning
+            ) {
+                Icon(imageVector = Icons.Default.Stop, contentDescription = "Stop")
+            }
+
+            Button(
+                onClick = {
+                    stopTimer()
+                    currentTime = initialTimeSeconds
+                },
+                enabled = !isRunning
+            ) {
+                Icon(imageVector = Icons.Default.Refresh, contentDescription = "Reset")
+            }
+        }
+
+    }
+}
+
+@Composable
+fun formatTime(seconds: Int): String {
+    val minutes = seconds / 60
+    val remainingSeconds = seconds % 60
+    return "%02d:%02d".format(minutes, remainingSeconds)
+}
+
+
+@Composable
 fun Timer(seconds: Int, onExpire: () -> Unit) {
     Text(seconds.toString())
     Button(onClick = onExpire) {
@@ -48,10 +153,10 @@ fun Timer(seconds: Int, onExpire: () -> Unit) {
 
 
 @Composable
-fun Execution(navController: NavController? = null) {
-    val cycles: Models.Cycles? = RoutineSampleData.cyclesRoutine
-    var currentCycle: Models.FullCycle? = cycles?.content?.get(0)
-    var cycleExercises: List<Models.FullCycleExercise> = RoutineSampleData.cylceInfo
+fun Execution(navController: NavController? = null, routine: Models.MegaRoutine? = null, detailed: Boolean) {
+    val cycles: List<Models.MegaCycle> = routine!!.megaCycles
+    var currentCycle: Models.FullCycle? = cycles[0]
+    var cycleExercises: List<Models.FullCycleExercise> = cycles[0].cycleExercises
     var cycleNum by remember { mutableIntStateOf(0) }
     var repNum by remember { mutableIntStateOf(0) }
     var exeNum by remember { mutableIntStateOf(0) }
@@ -85,9 +190,9 @@ fun Execution(navController: NavController? = null) {
                     color = Color.White))
         }
         Text(text = "${repNum + 1}/${cycleState?.repetitions}",
-                style = MaterialTheme.typography.titleLarge.copy(
+            style = MaterialTheme.typography.titleLarge.copy(
                 color = Color.White
-                ))
+            ))
 
         Text(text = exerciseState.exercise.name,
             style = MaterialTheme.typography.displayMedium.copy(
@@ -99,7 +204,7 @@ fun Execution(navController: NavController? = null) {
 
 
         // Nav
-        Row {
+        Row(modifier = Modifier.padding(top = 200.dp)) {
             if(exeNum>0 || cycleNum>0 || repNum>0){
             IconButton(
                 onClick = {
@@ -118,8 +223,8 @@ fun Execution(navController: NavController? = null) {
                     }
                     if(cycleNum>0){
                         cycleNum-=1;
-                        currentCycle = cycles?.content?.get(cycleNum);
-                        //cycleExercises = busco los nuevos ejercicios
+                        currentCycle = cycles[cycleNum];
+                        cycleExercises = cycles[cycleNum].cycleExercises;
                         cycleState = currentCycle;
                         exeNum=cycleExercises.size - 1;
                         currentExe =  cycleExercises[exeNum];
@@ -144,10 +249,10 @@ fun Execution(navController: NavController? = null) {
                         exerciseState = currentExe;
                         return@IconButton;
                     }
-                    if(cycleNum< cycles?.totalCount!!-1){
+                    if(cycleNum< cycles.size-1){
                         cycleNum+=1;
-                        currentCycle = cycles?.content?.get(cycleNum);
-                        //cycleExercises = busco los nuevos ejercicios
+                        currentCycle = cycles[cycleNum];
+                        cycleExercises = cycles[cycleNum].cycleExercises;
                         cycleState = currentCycle;
                         repNum=0;
                         exeNum=0;
@@ -159,12 +264,19 @@ fun Execution(navController: NavController? = null) {
             Icon(imageVector = Icons.Default.ArrowForward, contentDescription = null, tint = Color.Green, modifier = Modifier.size(36.dp))}
         }
 
-        Spacer(modifier = Modifier.weight(1f))
 
-        // Body
-//        Timer(currentRep.duration) {
-//
-//        }
+        if(exerciseState.repetitions>0){
+            Text(text = "x${exerciseState.repetitions}",
+                style = MaterialTheme.typography.displayMedium.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                ),
+                modifier = Modifier.padding(top = 20.dp))
+        }
+
+        if(exerciseState.duration>0){
+            CountdownTimer(initialTimeSeconds = exerciseState.duration)
+        }
     }
 }
 
@@ -175,7 +287,7 @@ fun ExecutionPreview(detailed: Boolean, navController: NavController? = null) {
             modifier = Modifier.fillMaxSize(),
             color = Color.Black
         ) {
-            Execution(navController)
+            //Execution(navController)
         }
     }
 }

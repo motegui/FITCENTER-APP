@@ -430,11 +430,11 @@ fun Details(routine: Models.FullRoutine? = null) {
 suspend fun startRoutine(
     navController: NavController,
     store: Store,
-    routine: Models.FullRoutine,
+    routine: Models.FullRoutine? = null,
     isDetailed: Boolean
 ) {
     val gson = GsonBuilder().create()
-    val megaRoutineJson = gson.toJson(Models.MegaRoutine(store, routine))
+    val megaRoutineJson = gson.toJson(routine?.let { Models.MegaRoutine(store, it) })
     navController.navigate(
         "execute-workout/{detailed}/{mega-routine}"
             .replace(
@@ -449,8 +449,8 @@ suspend fun startRoutine(
 }
 
 @Composable
-fun StartButton(navController: NavController? = null, store: Store? = null, routine: Models.FullRoutine){
-    var isFavorite by remember { mutableStateOf(routine.isFavorite) }
+fun StartButton(navController: NavController? = null, store: Store? = null, routine: Models.FullRoutine? = null){
+    var isFavorite by remember { mutableStateOf(routine?.isFavorite) }
     var isEquipmentExpanded by remember { mutableStateOf(false) }
     var isDetailed by remember { mutableStateOf(false) }
 
@@ -487,8 +487,7 @@ fun StartButton(navController: NavController? = null, store: Store? = null, rout
 
 
 @Composable
-fun WorkoutDetails(navController: NavController? = null, store: Store? = null) {
-    val routine: Models.FullRoutine = RoutineSampleData.sportsRoutines[0]
+fun WorkoutDetails(navController: NavController? = null, store: Store? = null, routine:Models.FullRoutine? = null) {
     val routines: List<Models.FullRoutine?> = listOf(routine)
     val cycles: Models.Cycles = RoutineSampleData.cyclesRoutine
 
