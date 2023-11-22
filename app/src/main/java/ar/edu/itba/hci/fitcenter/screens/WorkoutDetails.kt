@@ -511,8 +511,6 @@ fun WorkoutDetails(navController: NavController? = null, store: Store? = null) {
     }
 }
 
-    }
-}
 
 
 @Preview
