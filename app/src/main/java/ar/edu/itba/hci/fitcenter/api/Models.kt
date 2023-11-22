@@ -134,6 +134,16 @@ object Models {
         val metadata: JsonObject?
     )
 
+    @Serializable open class Cycles (
+        val totalCount: Long,
+        val orderBy: String,
+        val direction: String,
+        val content: List<FullCycle>,
+        val size: Long,
+        val page: Long,
+        val isLastPage: Boolean
+    )
+
     @Serializable class FullCycleExercise (
         val order: Int,
         val duration: Int,
