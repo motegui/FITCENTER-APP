@@ -244,7 +244,7 @@ fun PreviewMenu() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background,
         ) {
-            MyScreen(polyvalentRoutineList(routines = RoutineSampleData.sportsRoutines, favorites = true))
+            RoutineSearch(polyvalentRoutineList(routines = RoutineSampleData.sportsRoutines, favorites = true))
         }
     }
 }
