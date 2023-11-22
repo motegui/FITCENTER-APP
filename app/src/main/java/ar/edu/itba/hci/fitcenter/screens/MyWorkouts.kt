@@ -1,16 +1,21 @@
 package ar.edu.itba.hci.fitcenter.screens
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import ar.edu.itba.hci.fitcenter.RoutineSampleData
 import androidx.navigation.NavController
+import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.components.RoutineSearch
 import ar.edu.itba.hci.fitcenter.components.polyvalentRoutineList
 import ar.edu.itba.hci.fitcenter.api.Store
@@ -19,25 +24,19 @@ import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
 @Composable
 fun MyWorkouts(navController: NavController? = null, store: Store? = null) {
-    var routines by remember { mutableStateOf(RoutineSampleData.sportsRoutines) }
-    var loading by remember { mutableStateOf(true) }
+    var routines by remember { mutableStateOf<List<Models.FullRoutine>?>(RoutineSampleData.sportsRoutines) }
     LaunchedEffect(store) {
         if (store == null) return@LaunchedEffect
-        loading = true
+        routines = null
         routines = store.fetchRoutines()
-        loading = false
     }
-    if (!loading) {
-        RoutineSearch(
-            polyvalentRoutineList(
-                routines = routines,
-                favorites = true
-            ),
-            navController = navController
-        )
-    } else {
-        CircularProgressIndicator()
-    }
+    RoutineSearch(
+        if (routines != null) polyvalentRoutineList(
+            routines = routines!!,
+            favorites = true
+        ) else null,
+        navController = navController
+    )
 }
 
 
@@ -50,6 +49,11 @@ fun MyWorkouts(navController: NavController? = null, store: Store? = null) {
 @Composable
 fun PreviewMyWorkouts() {
     FitcenterTheme {
-        MyWorkouts()
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = Color.Black
+        ) {
+            MyWorkouts()
+        }
     }
 }
