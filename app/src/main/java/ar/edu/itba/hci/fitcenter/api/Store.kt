@@ -16,7 +16,7 @@ import ar.edu.itba.hci.fitcenter.storage.StorageRepository
  * Objects like the current user can be added as properties on this object to cache them in memory.
  * Objects like the session token can be added to the dataStore to save them to the device's storage.
  */
-class Store private constructor(private val dataStore: DataStore<Preferences>) {
+class Store private constructor(dataStore: DataStore<Preferences>) {
     // Singleton class constructor
     companion object {
         @Volatile
@@ -83,4 +83,9 @@ class Store private constructor(private val dataStore: DataStore<Preferences>) {
             ApiRepository.removeFavorite(storage.get(Keys.SESSION_TOKEN), routineId)
         }
     }
+
+    suspend fun fetchRoutines(): List<Models.FullRoutine> =
+        collectSearchResult {
+            ApiRepository.fetchRoutines(storage.get(Keys.SESSION_TOKEN))
+        }
 }
