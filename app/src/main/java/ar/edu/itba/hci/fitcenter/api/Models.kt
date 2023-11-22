@@ -12,6 +12,7 @@ import kotlinx.serialization.json.JsonObject
  * http://localhost:8080/docs/#/
  */
 object Models {
+
     @Serializable enum class Gender(val value: String) {
         Male("male"),
         Female("female"),

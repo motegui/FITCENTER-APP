@@ -252,4 +252,67 @@ object RoutineSampleData {
         page = 1,   // Proporciona el valor correcto para page
         isLastPage = false  // Proporciona el valor correcto para isLastPage
     )
+
+    val cylceInfo: List<Models.FullCycleExercise> = listOf(
+        Models.FullCycleExercise(
+            order = 1,
+            duration = 30,
+            repetitions = 1,
+            exercise = Models.FullExercise(
+                id = 1,
+                name = "Burpees",
+                detail = "",
+                type = Models.ExerciseType.Exercise,
+                duration = 30,
+                date = 20231114,
+                metadata = null
+            )
+        ),
+
+        Models.FullCycleExercise(
+            order = 2,
+            duration = 0,
+            repetitions = 5,
+            exercise = Models.FullExercise(
+                id = 3,
+                name = "Jump",
+                detail = "",
+                type = Models.ExerciseType.Exercise,
+                duration = 0,
+                date = 20231114,
+                metadata = null
+            )
+        ),
+
+        Models.FullCycleExercise(
+            order = 3,
+            duration = 30,
+            repetitions = 0,
+            exercise = Models.FullExercise(
+                id = 4,
+                name = "Break",
+                detail = "",
+                type = Models.ExerciseType.Rest,
+                duration = 30,
+                date = 20231114,
+                metadata = null
+            )
+        ),
+
+        Models.FullCycleExercise(
+            order = 4,
+            duration = 30,
+            repetitions = 6,
+            exercise = Models.FullExercise(
+                id = 4,
+                name = "Crunches",
+                detail = "",
+                type = Models.ExerciseType.Exercise,
+                duration = 30,
+                date = 20231114,
+                metadata = null
+            )
+        ),
+
+    )
 }
