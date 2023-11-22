@@ -139,7 +139,7 @@ fun RoutineSearchPortrait(routines: List<Models.FullRoutine>, navController: Nav
                 filteredRoutines = polyvalentRoutineList(routines, sortingCriterion)
             }
         )
-        Divider(
+        HorizontalDivider(
             modifier = Modifier.padding(bottom = 12.dp),
             thickness = 2.dp,
             color = Color.LightGray
@@ -207,7 +207,7 @@ fun RoutineSearchLandscape(routines: List<Models.FullRoutine>, navController: Na
             }
 
             // Vertical Divider
-            Divider(
+            VerticalDivider(
                 modifier = Modifier.padding(horizontal = 12.dp),
                 thickness = 2.dp,
                 color = Color.LightGray
