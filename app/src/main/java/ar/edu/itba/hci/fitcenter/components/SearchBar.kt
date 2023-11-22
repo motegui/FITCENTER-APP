@@ -97,36 +97,13 @@ fun SearchBar(
 }
 
 @Composable
-fun RoutineSearchPortrait(routines: List<Models.FullRoutine>, navController: NavController? = null) {
+fun RoutineSearchPortrait(routines: List<Models.FullRoutine>?, navController: NavController? = null) {
     var searchQuery by remember { mutableStateOf("") }
     var filteredRoutines by remember { mutableStateOf(routines)}
     var sortingCriterion by remember { mutableStateOf(SortingCriterion.NAME) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp)
-    ) {
-        SearchBar(
-            value = searchQuery,
-            onValueChange = {
-                searchQuery = it
-            },
-            onSearch = { query ->
-                filteredRoutines = if (query.isEmpty()) {
-                    routines
-                } else {
-                    routines.filter { routine ->
-                        routine.name.contains(query, ignoreCase = true)
-                    }
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Text(
-            text = "Order by:",
-            style = MaterialTheme.typography.titleMedium,
+    if (routines != null) {
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -145,18 +122,42 @@ fun RoutineSearchPortrait(routines: List<Models.FullRoutine>, navController: Nav
             color = Color.LightGray
         )
 
-        RoutineList(routines = filteredRoutines, navController = navController)
+            Text(
+                text = "Order by:",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp)
+                    .padding(horizontal = 8.dp)
+            )
+            SortingButtons(
+                sortingCriterion = sortingCriterion,
+                onSortingCriterionChanged = { newSortingCriterion ->
+                    sortingCriterion = newSortingCriterion
+                    filteredRoutines = polyvalentRoutineList(routines, sortingCriterion)
+                }
+            )
+            Divider(
+                modifier = Modifier.padding(bottom = 12.dp),
+                thickness = 2.dp,
+                color = Color.LightGray
+            )
+
+            RoutineList(routines = filteredRoutines!!, navController = navController)
+        }
+    } else {
+        CircularProgressIndicator()
     }
 }
 
 
 @Composable
-fun RoutineSearchLandscape(routines: List<Models.FullRoutine>, navController: NavController? = null) {
+fun RoutineSearchLandscape(routines: List<Models.FullRoutine>?, navController: NavController? = null) {
     var searchQuery by remember { mutableStateOf("") }
     var filteredRoutines by remember { mutableStateOf(routines) }
     var sortingCriterion by remember { mutableStateOf(SortingCriterion.NAME) }
 
-
+    if (routines != null) {
         // Row for buttons and routine list
         Row(
             modifier = Modifier
@@ -220,13 +221,16 @@ fun RoutineSearchLandscape(routines: List<Models.FullRoutine>, navController: Na
                     .fillMaxHeight()
                     .weight(2f)
             ) {
-                RoutineList(routines = filteredRoutines, navController = navController)
+                RoutineList(routines = filteredRoutines!!, navController = navController)
             }
         }
+    } else {
+        CircularProgressIndicator()
     }
+}
 
 @Composable
-fun RoutineSearch(routines: List<Models.FullRoutine>, navController: NavController? = null) {
+fun RoutineSearch(routines: List<Models.FullRoutine>?, navController: NavController? = null) {
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
