@@ -207,7 +207,7 @@ object RoutineSampleData {
     )
 
     val cyclesRoutine = Models.Cycles(
-        totalCount = 10,  // Aquí debes proporcionar el valor adecuado para totalCount
+        totalCount = 4,  // Aquí debes proporcionar el valor adecuado para totalCount
         orderBy = "id",  // Proporciona el valor correcto para orderBy
         direction = "asc",  // Proporciona el valor correcto para direction
         content = listOf(

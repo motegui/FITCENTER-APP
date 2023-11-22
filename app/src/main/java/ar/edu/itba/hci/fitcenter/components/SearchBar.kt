@@ -139,7 +139,7 @@ fun MyPortraitScreen(routines: List<Models.FullRoutine>, navController: NavContr
                 filteredRoutines = polyvalentRoutineList(routines, sortingCriterion)
             }
         )
-        HorizontalDivider(
+        Divider(
             modifier = Modifier.padding(bottom = 12.dp),
             thickness = 2.dp,
             color = Color.LightGray
@@ -207,7 +207,7 @@ fun MyLandscapeScreen(routines: List<Models.FullRoutine>, navController: NavCont
             }
 
             // Vertical Divider
-            VerticalDivider(
+            Divider(
                 modifier = Modifier.padding(horizontal = 12.dp),
                 thickness = 2.dp,
                 color = Color.LightGray

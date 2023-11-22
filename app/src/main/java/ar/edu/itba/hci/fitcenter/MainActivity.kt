@@ -258,6 +258,8 @@ fun MainScreen(store: Store? = null) {
                     composable("my-workouts") { MyWorkouts(navController, store) }
                     composable("find-workouts") { FindWorkouts(navController, store) }
                     composable("workout") { PreviewRoutineList(navController, store) }
+                    composable("detailed-execute") { DetailedExecutionPreview() }
+                    composable("execute") { SimpleExecutionPreview()}
                 }
             }
 
@@ -276,6 +278,8 @@ fun MainScreen(store: Store? = null) {
                     composable("my-workouts") { MyWorkouts(navController, store) }
                     composable("find-workouts") { FindWorkouts(navController, store) }
                     composable("workout") { PreviewRoutineList(navController, store) }
+                    composable("detailed-execute") { DetailedExecutionPreview(navController) }
+                    composable("execute") { SimpleExecutionPreview(navController)}
                 }
             }
         }

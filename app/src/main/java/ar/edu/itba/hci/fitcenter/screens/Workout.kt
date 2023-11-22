@@ -370,7 +370,7 @@ fun EquipmentInfo(routine: Models.FullRoutine?=null){
 }
 
 @Composable
-fun Details(routine: Models.FullRoutine?=null){
+fun StartButton(navController: NavController? = null){
     var isDetailed by remember { mutableStateOf(false) }
     Surface(
         shape = MaterialTheme.shapes.medium,
@@ -410,20 +410,24 @@ fun Details(routine: Models.FullRoutine?=null){
             )
         }
     }
-}
-
-@Composable
-fun StartButton(navController: NavController? = null){
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         contentAlignment = Alignment.Center
     ) {
+        if(isDetailed){
         Button(
-            onClick = { navController?.navigate("workout") }
+            onClick = { navController?.navigate("execute") }
         ) {
             androidx.compose.material3.Text(stringResource(R.string.start))
+        }}
+        if(!isDetailed){
+            Button(
+                onClick = { navController?.navigate("detailed-execute") }
+            ) {
+                androidx.compose.material3.Text(stringResource(R.string.start))
+            }
         }
     }
 }
@@ -447,7 +451,6 @@ fun Workout(navController: NavController? = null, store: Store? = null) {
                 }
             }
             items(routines){
-                Details(routine = routine)
                 StartButton(navController = navController)
             }
 

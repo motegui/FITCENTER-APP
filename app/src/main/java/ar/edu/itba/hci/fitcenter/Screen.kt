@@ -48,7 +48,12 @@ val screens = NonNullableMap(mapOf(
         icon = Icons.Filled.Search
     ),
 
-    "execute-routine" to Screen(
+    "execute" to Screen(
+        resourceId = R.string.execute_routine,
+        usesNav = false,
+    ),
+
+    "detailed-execute" to Screen(
         resourceId = R.string.execute_routine,
         usesNav = false,
     ),
