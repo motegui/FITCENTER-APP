@@ -248,40 +248,24 @@ fun MainScreen(store: Store? = null) {
                     .padding(innerPadding)
             ) {
                 sidebar()
-                NavHost(
-                    navController,
+                FitcenterNavHost(
+                    navController = navController,
+                    store = store,
                     startDestination = currentRoute,
-                    Modifier.fillMaxSize()
-                ) {
-                    composable("loading") { Loading() }
-                    composable("login") { Login(navController, store) }
-                    composable("profile") { Profile(navController, store) }
-                    composable("my-workouts") { MyWorkouts(navController, store) }
-                    composable("find-workouts") { FindWorkouts(navController, store) }
-                    composable("workout") { PreviewRoutineList(navController, store) }
-                    composable("detailed-execute") { DetailedExecutionPreview() }
-                    composable("execute") { SimpleExecutionPreview()}
-                }
+                    modifier = Modifier.padding(innerPadding)
+                )
             }
 
 
         } else {
             // Display the regular content
             Column {
-                NavHost(
-                    navController,
+                FitcenterNavHost(
+                    navController = navController,
+                    store = store,
                     startDestination = currentRoute,
-                    Modifier.padding(innerPadding)
-                ) {
-                    composable("loading") { Loading() }
-                    composable("login") { Login(navController, store) }
-                    composable("profile") { Profile(navController, store) }
-                    composable("my-workouts") { MyWorkouts(navController, store) }
-                    composable("find-workouts") { FindWorkouts(navController, store) }
-                    composable("workout") { PreviewRoutineList(navController, store) }
-                    composable("detailed-execute") { DetailedExecutionPreview(navController) }
-                    composable("execute") { SimpleExecutionPreview(navController)}
-                }
+                    modifier = Modifier.padding(innerPadding)
+                )
             }
         }
 

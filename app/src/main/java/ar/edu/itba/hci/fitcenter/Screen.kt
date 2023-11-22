@@ -5,7 +5,22 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.google.gson.GsonBuilder
+import ar.edu.itba.hci.fitcenter.api.Models
+import ar.edu.itba.hci.fitcenter.api.Store
+import ar.edu.itba.hci.fitcenter.screens.Execution
+import ar.edu.itba.hci.fitcenter.screens.FindWorkouts
+import ar.edu.itba.hci.fitcenter.screens.Loading
+import ar.edu.itba.hci.fitcenter.screens.Login
+import ar.edu.itba.hci.fitcenter.screens.MyWorkouts
+import ar.edu.itba.hci.fitcenter.screens.Profile
+import ar.edu.itba.hci.fitcenter.screens.WorkoutDetails
 
 data class Screen(
     @StringRes val resourceId: Int,
@@ -63,3 +78,32 @@ val screens = NonNullableMap(mapOf(
         usesNav = true,
     )
 ))
+
+@Composable
+fun FitcenterNavHost(navController: NavHostController, store: Store? = null, startDestination: String, modifier: Modifier) {
+    NavHost(
+        navController = navController,
+        startDestination = startDestination,
+        modifier = modifier
+    ) {
+        composable("loading") { Loading() }
+        composable("login") { Login(navController, store) }
+        composable("profile") { Profile(navController, store) }
+        composable("my-workouts") { MyWorkouts(navController, store) }
+        composable("find-workouts") { FindWorkouts(navController, store) }
+        composable("workout-details/{routine}") { navBackStackEntry ->
+            // Extract encoded Routine object from route
+            val gson = GsonBuilder().create()
+            val routineJson = navBackStackEntry.arguments?.getString("routine")
+            val routine = gson.fromJson(routineJson, Models.FullRoutine::class.java)
+            WorkoutDetails(navController, store, routine)
+        }
+        composable("execute-workout/{detailed}/{mega-routine}") { navBackStackEntry ->
+            val gson = GsonBuilder().create()
+            val megaRoutineJson = navBackStackEntry.arguments?.getString("mega-routine")
+            val routine = gson.fromJson(megaRoutineJson, Models.MegaRoutine::class.java)
+            val detailed = navBackStackEntry.arguments?.getBoolean("detailed") ?: false
+            Execution(routine = routine, detailed = detailed)
+        }
+    }
+}
