@@ -45,26 +45,6 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun DifficultyRating(difficulty: Models.Difficulty) {
-    Row {
-        repeat(3) { index ->
-            val iconColor = if (index < difficulty.ordinal) {
-                Color.Red
-            } else {
-                Color.Gray
-            }
-            Icon(
-                imageVector = Icons.Default.LocalFireDepartment,
-                contentDescription = null,
-                tint = iconColor,
-                modifier = Modifier.padding(end = 4.dp)
-            )
-        }
-    }
-}
-
-
-@Composable
 fun RoutineCard(
     rt: Models.FullRoutine,
     navController: NavController? = null,

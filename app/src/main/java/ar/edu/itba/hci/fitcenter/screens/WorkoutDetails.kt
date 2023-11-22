@@ -1,6 +1,5 @@
 package ar.edu.itba.hci.fitcenter.screens
 
-import android.annotation.SuppressLint
 import ar.edu.itba.hci.fitcenter.api.Store
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -63,53 +62,62 @@ import java.time.format.DateTimeFormatter
 import androidx.compose.foundation.layout.Row as Row
 
 @Composable
-fun CycleInfo(cycle: Models.FullCycle){
+fun CycleInfo(cycle: Models.FullCycle) {
     var cycleExercises: List<Models.FullCycleExercise> = RoutineSampleData.cylceInfo
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
-    ){
+    ) {
         Text(
             text = "x",
-            style = MaterialTheme.typography.titleMedium,)
+            style = MaterialTheme.typography.titleMedium,
+        )
         Text(
             text = cycle.repetitions.toString(),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(end = 16.dp)
-            )
+        )
         Column {
             for ((index, exercise) in cycleExercises.withIndex()) {
-                Row(modifier = Modifier.fillMaxWidth().padding(top = 5.dp, bottom = 5.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 5.dp, bottom = 5.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
                     Text(
                         text = exercise.exercise.name,
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(start = 16.dp)
-                        )
-                    Column(horizontalAlignment =  Alignment.CenterHorizontally){
-                        if(exercise.repetitions>0){
+                    )
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        if (exercise.repetitions > 0) {
                             Row(
 
-                            ){
-                            Text(
-                                text = "x",
-                                style = MaterialTheme.typography.bodySmall,)
-                            Text(
-                                text = exercise.repetitions.toString(),
-                                style = MaterialTheme.typography.bodySmall
-                            )}
+                            ) {
+                                Text(
+                                    text = "x",
+                                    style = MaterialTheme.typography.bodySmall,
+                                )
+                                Text(
+                                    text = exercise.repetitions.toString(),
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                            }
                         }
-                        if(exercise.duration>0){
+                        if (exercise.duration > 0) {
                             Row(
 
-                            ){
-                            Text(
-                                text = exercise.duration.toString(),
-                                style = MaterialTheme.typography.bodySmall
-                            )
-                            Text(
-                                text = "s",
-                                style = MaterialTheme.typography.bodySmall,)}
+                            ) {
+                                Text(
+                                    text = exercise.duration.toString(),
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                                Text(
+                                    text = "s",
+                                    style = MaterialTheme.typography.bodySmall,
+                                )
+                            }
                         }
                     }
                 }
@@ -138,7 +146,7 @@ fun CycleCard(cycle: Models.FullCycle) {
                 .fillMaxWidth()
                 .padding(top = 1.dp, start = 16.dp, end = 6.dp, bottom = 1.dp),
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Text(
                 text = cycle.name,
                 modifier = Modifier.weight(1f),
@@ -161,7 +169,7 @@ fun CycleCard(cycle: Models.FullCycle) {
             }
         }
     }
-    if(isCycleExpanded){
+    if (isCycleExpanded) {
         Surface(
             shape = MaterialTheme.shapes.medium,
             shadowElevation = 4.dp,
@@ -175,7 +183,8 @@ fun CycleCard(cycle: Models.FullCycle) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp, start = 16.dp, end = 16.dp, bottom = 10.dp),
-                verticalAlignment = Alignment.CenterVertically){
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 CycleInfo(cycle = cycle)
             }
         }
@@ -183,7 +192,7 @@ fun CycleCard(cycle: Models.FullCycle) {
 }
 
 @Composable
-fun Title(routine: Models.FullRoutine?=null){
+fun Title(routine: Models.FullRoutine? = null) {
     var isFavorite by remember { mutableStateOf(routine?.isFavorite) }
     Surface(
         shape = MaterialTheme.shapes.medium,
@@ -231,7 +240,7 @@ fun Title(routine: Models.FullRoutine?=null){
 }
 
 @Composable
-fun Info(routine: Models.FullRoutine?=null){
+fun Info(routine: Models.FullRoutine? = null) {
     Surface(
         shape = MaterialTheme.shapes.medium,
         shadowElevation = 4.dp,
@@ -377,7 +386,7 @@ fun EquipmentInfo(routine: Models.FullRoutine?=null){
 }
 
 @Composable
-fun StartButton(navController: NavController? = null){
+fun Details(routine: Models.FullRoutine? = null) {
     var isDetailed by remember { mutableStateOf(false) }
     Surface(
         shape = MaterialTheme.shapes.medium,
@@ -419,6 +428,22 @@ fun StartButton(navController: NavController? = null){
     }
 }
 
+suspend fun startRoutine(navController: NavController, store: Store, routine: Models.FullRoutine) {
+    val gson = GsonBuilder().create()
+    val megaRoutineJson = gson.toJson(Models.MegaRoutine(store, routine))
+    navController.navigate(
+        "execute-workout/{detailed}/{mega-routine}"
+            .replace(
+                oldValue = "{detailed}",
+                newValue = isDetailed.toString()
+            )
+            .replace(
+                oldValue = "{mega-routine}",
+                newValue = megaRoutineJson
+            )
+    )
+}
+
 @Composable
 fun StartButton(navController: NavController? = null){
 
@@ -445,9 +470,7 @@ fun StartButton(navController: NavController? = null){
             }
         }
     }
-}
 
-@SuppressLint("SuspiciousIndentation")
 @Composable
 fun Workout(navController: NavController? = null, store: Store? = null) {
     val routine: Models.FullRoutine? = RoutineSampleData.sportsRoutines.find { it.id == 1L }
@@ -455,7 +478,7 @@ fun Workout(navController: NavController? = null, store: Store? = null) {
     val cycles: Models.Cycles = RoutineSampleData.cyclesRoutine
 
     LazyColumn {
-        items(routines){
+        items(routines) {
             Title(routine)
             Info(routine = routine)
             EquipmentInfo(routine = routine)
@@ -471,6 +494,8 @@ fun Workout(navController: NavController? = null, store: Store? = null) {
     }
 }
 
+    }
+}
 
 
 @Preview
