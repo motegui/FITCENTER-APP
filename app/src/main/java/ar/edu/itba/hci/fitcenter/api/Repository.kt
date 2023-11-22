@@ -18,20 +18,21 @@ import io.ktor.http.HttpHeaders
  * Provides methods for accessing the app's API.
  */
 object ApiRepository {
-    private val BASE_URL: String
-        get() {
-            val defaultValue = "http://localhost:8080"
-            val dotenv = dotenv {
-                directory = "/assets"
-                filename = "env"
-            }
-            try {
-                val url = dotenv["API_URL"] ?: return defaultValue
-                return url.replace("\"", "").replace("'", "")
-            } catch (error: ExceptionInInitializerError) {
-                return defaultValue
-            }
+    private fun getBaseUrl(): String {
+        val defaultValue = "http://localhost:8080"
+        val dotenv = dotenv {
+            directory = "/assets"
+            filename = "env"
         }
+        try {
+            val url = dotenv["API_URL"] ?: return defaultValue
+            return url.replace("\"", "").replace("'", "")
+        } catch (error: ExceptionInInitializerError) {
+            return defaultValue
+        }
+    }
+
+    private val BASE_URL = getBaseUrl()
 
     private fun digit(a: Int, b: Int): Int {
         return a / 10.0.pow((b - 1).toDouble()).toInt() % 10
