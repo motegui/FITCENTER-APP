@@ -1,5 +1,6 @@
 package ar.edu.itba.hci.fitcenter.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -19,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
@@ -95,7 +97,7 @@ fun SearchBar(
 }
 
 @Composable
-fun MyScreen(routines: List<Models.FullRoutine>, navController: NavController? = null) {
+fun MyPortraitScreen(routines: List<Models.FullRoutine>, navController: NavController? = null) {
     var searchQuery by remember { mutableStateOf("") }
     var filteredRoutines by remember { mutableStateOf(routines)}
     var sortingCriterion by remember { mutableStateOf(SortingCriterion.NAME) }
@@ -127,7 +129,8 @@ fun MyScreen(routines: List<Models.FullRoutine>, navController: NavController? =
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom= 8.dp).padding(horizontal = 8.dp)
+                .padding(bottom = 8.dp)
+                .padding(horizontal = 8.dp)
         )
         SortingButtons(
             sortingCriterion = sortingCriterion,
@@ -146,6 +149,90 @@ fun MyScreen(routines: List<Models.FullRoutine>, navController: NavController? =
     }
 }
 
+
+@Composable
+fun MyLandscapeScreen(routines: List<Models.FullRoutine>, navController: NavController? = null) {
+    var searchQuery by remember { mutableStateOf("") }
+    var filteredRoutines by remember { mutableStateOf(routines) }
+    var sortingCriterion by remember { mutableStateOf(SortingCriterion.NAME) }
+
+
+        // Row for buttons and routine list
+        Row(
+            modifier = Modifier.fillMaxSize().padding(horizontal = 8.dp)
+        ) {
+            // Column for sorting buttons
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(1f) // Take up available vertical space
+            ) {
+                // Search bar
+                SearchBar(
+                    value = searchQuery,
+                    onValueChange = {
+                        searchQuery = it
+                    },
+                    onSearch = { query ->
+                        filteredRoutines = if (query.isEmpty()) {
+                            routines
+                        } else {
+                            routines.filter { routine ->
+                                routine.name.contains(query, ignoreCase = true)
+                            }
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp)
+                )
+                Text(
+                    text = "Order by:",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp)
+                        .padding(horizontal = 12.dp)
+                )
+                VerticalSortingButtons(
+                    sortingCriterion = sortingCriterion,
+                    onSortingCriterionChanged = { newSortingCriterion ->
+                        sortingCriterion = newSortingCriterion
+                        filteredRoutines = polyvalentRoutineList(routines, sortingCriterion)
+                    }
+                )
+            }
+
+            // Vertical Divider
+            VerticalDivider(
+                modifier = Modifier.padding(horizontal = 12.dp),
+                thickness = 2.dp,
+                color = Color.LightGray
+            )
+
+            // Column for RoutineList
+            Column(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxHeight()
+                    .weight(1f)
+            ) {
+                RoutineList(routines = filteredRoutines, navController = navController)
+            }
+        }
+    }
+
+@Composable
+fun MyScreen(routines: List<Models.FullRoutine>, navController: NavController? = null) {
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+    if (isLandscape) {
+        MyLandscapeScreen(routines = routines, navController = navController)
+    } else {
+        MyPortraitScreen(routines = routines, navController = navController)
+    }
+}
 @Preview(name = "Light Mode")
 @Composable
 fun PreviewMenu() {
