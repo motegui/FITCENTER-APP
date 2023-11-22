@@ -37,6 +37,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,6 +55,11 @@ import ar.edu.itba.hci.fitcenter.components.DifficultyRating
 import ar.edu.itba.hci.fitcenter.components.RoutineCard
 import ar.edu.itba.hci.fitcenter.components.formatDate
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
+import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
+import com.google.gson.GsonBuilder
+import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import androidx.compose.foundation.layout.Row as Row
 
 @Composable
@@ -411,20 +417,19 @@ fun StartButton(navController: NavController? = null){
             )
         }
     }
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-        /*
-fun Workout(navController: NavController? = null, store: Store? = null) {
-    val routine: Models.FullRoutine? = RoutineSampleData.sportsRoutines.find { it.id == 1L }
-    var isFavorite by remember { mutableStateOf(routine?.isFavorite) }
+}
+
+@Composable
+fun StartButton(navController: NavController? = null){
+
+    var isFavorite by remember { mutableStateOf(routine.isFavorite) }
     var isEquipmentExpanded by remember { mutableStateOf(false) }
     var isDetailed by remember { mutableStateOf(false) }
+
+    val scope = rememberCoroutineScope()
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
-        */
     ) {
         if(isDetailed){
         Button(
@@ -476,7 +481,7 @@ fun PreviewRoutineList() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background,
         ) {
-            Workout()
+            WorkoutDetails(routine = RoutineSampleData.sportsRoutines[0])
         }
     }
 }
