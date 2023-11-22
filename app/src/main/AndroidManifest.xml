@@ -22,6 +22,7 @@
             android:theme="@style/Theme.Fitcenter"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="unspecified"
+            android:configChanges="orientation|screenSize"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
