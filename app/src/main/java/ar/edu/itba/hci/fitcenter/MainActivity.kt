@@ -8,8 +8,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -30,23 +35,26 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.composable
 import ar.edu.itba.hci.fitcenter.api.Store
@@ -78,7 +86,7 @@ class MainActivity : ComponentActivity() {
 
 val bottomBarItems = listOf("my-workouts", "find-workouts")
 
-fun navigate(navController: NavHostController, route: String) {
+fun navigate(navController: NavController, route: String) {
     navController.navigate(route) {
         // Pop up to the start destination of the graph to
         // avoid building up a large stack of destinations
@@ -94,13 +102,51 @@ fun navigate(navController: NavHostController, route: String) {
     }
 }
 
+@Composable
+fun SideBar(
+    currentRoute: String,
+    onNavigate: (String) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxHeight()
+            .background(MaterialTheme.colorScheme.secondary)
+    ) {
+        Spacer(modifier = Modifier.weight(1f))
 
+        sideBarItems.forEach { route ->
+            val screen = screens[route]
+            Icon(
+                imageVector = screen.icon ?: Icons.Default.Home,
+                contentDescription = null,
+                tint = if (route == currentRoute) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onSecondary
+                },
+                modifier = Modifier
+                    .clickable {
+                        onNavigate(route)
+                    }
+                    .padding(16.dp)
+            )
+            Spacer(modifier = Modifier.weight(1f))
+
+        }
+    }
+}
+
+val sideBarItems = listOf("profile", "my-workouts", "find-workouts")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(store: Store? = null) {
     val navController = rememberNavController()
     var currentRoute by remember { mutableStateOf("loading") }
-    
+
+    // Detect the current screen orientation
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
     LaunchedEffect(store) {
         currentRoute = if (store?.isLoggedIn() == true) "my-workouts" else "login"
     }
@@ -175,25 +221,65 @@ fun MainScreen(store: Store? = null) {
         }
     }
 
+// Sidebar
+    val sidebar = @Composable {
+        SideBar(
+            currentRoute = currentRoute,
+            onNavigate = { route ->
+                currentRoute = route
+                navigate(navController, route)
+            }
+        )
+    }
+
+    val isPortrait = !isLandscape
+
     Scaffold(
-        topBar = { if (currentScreen.value.usesNav) topBar() },
-        bottomBar = { if (currentScreen.value.usesNav) bottomBar() },
+        topBar = { if (currentScreen.value.usesNav && isPortrait) topBar() },
+        bottomBar = { if (currentScreen.value.usesNav && isPortrait) bottomBar() },
         contentWindowInsets = WindowInsets(top=0)
     ) { innerPadding ->
-        Column {
-            NavHost(
-                navController,
-                startDestination = currentRoute,
-                Modifier.padding(innerPadding)
+        if(isLandscape){
+            // Display sidebar
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
             ) {
-                composable("loading") { Loading() }
-                composable("login") { Login(navController, store) }
-                composable("profile") { Profile(navController, store) }
-                composable("my-workouts") { MyWorkouts(navController, store) }
-                composable("find-workouts") { FindWorkouts(navController, store) }
-                composable("workout") { PreviewRoutineList(navController, store) }
+                sidebar()
+                NavHost(
+                    navController,
+                    startDestination = currentRoute,
+                    Modifier.fillMaxSize()
+                ) {
+                    composable("loading") { Loading() }
+                    composable("login") { Login(navController, store) }
+                    composable("profile") { Profile(navController, store) }
+                    composable("my-workouts") { MyWorkouts(navController, store) }
+                    composable("find-workouts") { FindWorkouts(navController, store) }
+                    composable("workout") { PreviewRoutineList(navController, store) }
+                }
+            }
+
+
+        } else {
+            // Display the regular content
+            Column {
+                NavHost(
+                    navController,
+                    startDestination = currentRoute,
+                    Modifier.padding(innerPadding)
+                ) {
+                    composable("loading") { Loading() }
+                    composable("login") { Login(navController, store) }
+                    composable("profile") { Profile(navController, store) }
+                    composable("my-workouts") { MyWorkouts(navController, store) }
+                    composable("find-workouts") { FindWorkouts(navController, store) }
+                    composable("workout") { PreviewRoutineList(navController, store) }
+                }
             }
         }
+
     }
 }
 

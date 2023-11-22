@@ -139,7 +139,7 @@ fun MyPortraitScreen(routines: List<Models.FullRoutine>, navController: NavContr
                 filteredRoutines = polyvalentRoutineList(routines, sortingCriterion)
             }
         )
-        Divider(
+        HorizontalDivider(
             modifier = Modifier.padding(bottom = 12.dp),
             thickness = 2.dp,
             color = Color.LightGray
@@ -159,12 +159,15 @@ fun MyLandscapeScreen(routines: List<Models.FullRoutine>, navController: NavCont
 
         // Row for buttons and routine list
         Row(
-            modifier = Modifier.fillMaxSize().padding(horizontal = 8.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 8.dp)
         ) {
             // Column for sorting buttons
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
+                    .padding(top = 8.dp)
                     .weight(1f) // Take up available vertical space
             ) {
                 // Search bar
@@ -213,9 +216,9 @@ fun MyLandscapeScreen(routines: List<Models.FullRoutine>, navController: NavCont
             // Column for RoutineList
             Column(
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(16.dp)
                     .fillMaxHeight()
-                    .weight(1f)
+                    .weight(2f)
             ) {
                 RoutineList(routines = filteredRoutines, navController = navController)
             }
