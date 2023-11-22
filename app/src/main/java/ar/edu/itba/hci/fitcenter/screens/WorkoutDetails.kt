@@ -449,8 +449,7 @@ suspend fun startRoutine(
 }
 
 @Composable
-fun StartButton(navController: NavController? = null){
-
+fun StartButton(navController: NavController? = null, store: Store? = null, routine: Models.FullRoutine){
     var isFavorite by remember { mutableStateOf(routine.isFavorite) }
     var isEquipmentExpanded by remember { mutableStateOf(false) }
     var isDetailed by remember { mutableStateOf(false) }
@@ -464,13 +463,13 @@ fun StartButton(navController: NavController? = null){
         Button(
             onClick = { navController?.navigate("execute") }
         ) {
-            androidx.compose.material3.Text(stringResource(R.string.start))
+            Text(stringResource(R.string.start))
         }}
         if(!isDetailed){
             Button(
                 onClick = { navController?.navigate("detailed-execute") }
             ) {
-                androidx.compose.material3.Text(stringResource(R.string.start))
+                Text(stringResource(R.string.start))
             }
         }
         Button(
@@ -486,10 +485,10 @@ fun StartButton(navController: NavController? = null){
     }
 }
 
-/*
+
 @Composable
-fun Workout(navController: NavController? = null, store: Store? = null) {
-    val routine: Models.FullRoutine? = RoutineSampleData.sportsRoutines.find { it.id == 1L }
+fun WorkoutDetails(navController: NavController? = null, store: Store? = null) {
+    val routine: Models.FullRoutine = RoutineSampleData.sportsRoutines[0]
     val routines: List<Models.FullRoutine?> = listOf(routine)
     val cycles: Models.Cycles = RoutineSampleData.cyclesRoutine
 
@@ -507,14 +506,13 @@ fun Workout(navController: NavController? = null, store: Store? = null) {
             }
         }
         items(routines){
-            StartButton(navController = navController)
+            StartButton(navController, store, routine)
         }
     }
 }
 
     }
 }
-*/
 
 
 @Preview
@@ -525,7 +523,7 @@ fun PreviewRoutineList() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background,
         ) {
-            WorkoutDetails(routine = RoutineSampleData.sportsRoutines[0])
+            WorkoutDetails()
         }
     }
 }
