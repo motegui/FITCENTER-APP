@@ -162,6 +162,7 @@ suspend fun submit(
         } catch (e: Exception) {
             error.value = e
             loading.value = false
+            return
         }
         navController.navigate("my-workouts") {
             popUpTo(navController.graph.findStartDestination().id) {
@@ -213,7 +214,10 @@ fun LoginForm(navController: NavController? = null, store: Store? = null) {
         )
 
         if (error.value != null) {
-            Text(error.value?.message ?: "An unknown error has occurred")
+            Text(
+                text = error.value?.message ?: "An unknown error has occurred",
+                color = Color.Red
+            )
         }
         UsernameField(
             value = username.value,

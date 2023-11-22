@@ -148,8 +148,12 @@ fun MainScreen(store: Store? = null) {
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     LaunchedEffect(store) {
-        store?.currentUser()  // Cache current user in memory
-        currentRoute = if (store?.isLoggedIn() == true) "my-workouts" else "login"
+        if (store?.isLoggedIn() == true) {
+            currentRoute = "my-workouts"
+            store.currentUser()  // Cache current user in memory
+        } else {
+            currentRoute = "login"
+        }
     }
     navController.addOnDestinationChangedListener { _, dest, _ ->
         currentRoute = dest.route ?: ""

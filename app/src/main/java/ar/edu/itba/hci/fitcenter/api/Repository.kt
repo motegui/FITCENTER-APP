@@ -25,10 +25,11 @@ object ApiRepository {
                 directory = "/assets"
                 filename = "env"
             }
-            return try {
-                dotenv["API_URL"] ?: defaultValue
+            try {
+                val url = dotenv["API_URL"] ?: return defaultValue
+                return url.replace("\"", "").replace("'", "")
             } catch (error: ExceptionInInitializerError) {
-                defaultValue
+                return defaultValue
             }
         }
 
