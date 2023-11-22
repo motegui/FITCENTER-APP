@@ -67,6 +67,7 @@ object ApiRepository {
         val response = client.get("$BASE_URL/routines/$routineId/cycles") {
             header(HttpHeaders.Authorization, sessionToken)
             parameter("size", Int.MAX_VALUE)
+            parameter("page", 1)
         }
         return throwForStatus(response).body()
     }
@@ -78,6 +79,7 @@ object ApiRepository {
         val response = client.get("$BASE_URL/cycles/$cycleId/exercises") {
             header(HttpHeaders.Authorization, sessionToken)
             parameter("size", Int.MAX_VALUE)
+            parameter("page", 1)
         }
         return throwForStatus(response).body()
     }
@@ -92,6 +94,17 @@ object ApiRepository {
     suspend fun removeFavorite(sessionToken: String, routineId: Long) {
         val response = client.delete("$BASE_URL/favourites/$routineId") {
             header(HttpHeaders.Authorization, sessionToken)
+        }
+        return throwForStatus(response).body()
+    }
+
+    suspend fun fetchRoutines(
+        sessionToken: String
+    ): Models.SearchResult<Models.FullRoutine> {
+        val response = client.get("$BASE_URL/routines") {
+            header(HttpHeaders.Authorization, sessionToken)
+            parameter("size", Int.MAX_VALUE)
+            parameter("page", 1)
         }
         return throwForStatus(response).body()
     }

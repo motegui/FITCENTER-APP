@@ -83,4 +83,9 @@ class Store private constructor(private val dataStore: DataStore<Preferences>) {
             ApiRepository.removeFavorite(storage.get(Keys.SESSION_TOKEN), routineId)
         }
     }
+
+    suspend fun fetchRoutines(): List<Models.FullRoutine> =
+        collectSearchResult {
+            ApiRepository.fetchRoutines(storage.get(Keys.SESSION_TOKEN))
+        }
 }
