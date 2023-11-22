@@ -51,7 +51,9 @@ class Store private constructor(private val dataStore: DataStore<Preferences>) {
         return user as Models.FullUser
     }
 
-    private suspend fun <T> collectSearchResult(searchFunction: suspend () -> Models.SearchResult<T>): List<T> {
+    private suspend fun <T> collectSearchResult(
+        searchFunction: suspend () -> Models.SearchResult<T>
+    ): List<T> {
         val results = mutableListOf<T>()
         do {
             val page = searchFunction()
@@ -72,5 +74,13 @@ class Store private constructor(private val dataStore: DataStore<Preferences>) {
         return collectSearchResult {
             ApiRepository.fetchCycleExercises(token, cycleId)
         }.sortedBy { it.order }
+    }
+
+    suspend fun setFavorite(routineId: Long, isFavorite: Boolean) {
+        if (isFavorite) {
+            ApiRepository.addFavorite(storage.get(Keys.SESSION_TOKEN), routineId)
+        } else {
+            ApiRepository.removeFavorite(storage.get(Keys.SESSION_TOKEN), routineId)
+        }
     }
 }
