@@ -148,6 +148,7 @@ fun MainScreen(store: Store? = null) {
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     LaunchedEffect(store) {
+        store?.currentUser()  // Cache current user in memory
         currentRoute = if (store?.isLoggedIn() == true) "my-workouts" else "login"
     }
     navController.addOnDestinationChangedListener { _, dest, _ ->
@@ -247,36 +248,24 @@ fun MainScreen(store: Store? = null) {
                     .padding(innerPadding)
             ) {
                 sidebar()
-                NavHost(
-                    navController,
+                FitcenterNavHost(
+                    navController = navController,
+                    store = store,
                     startDestination = currentRoute,
-                    Modifier.fillMaxSize()
-                ) {
-                    composable("loading") { Loading() }
-                    composable("login") { Login(navController, store) }
-                    composable("profile") { Profile(navController, store) }
-                    composable("my-workouts") { MyWorkouts(navController, store) }
-                    composable("find-workouts") { FindWorkouts(navController, store) }
-                    composable("workout") { PreviewRoutineList(navController, store) }
-                }
+                    modifier = Modifier.padding(innerPadding)
+                )
             }
 
 
         } else {
             // Display the regular content
             Column {
-                NavHost(
-                    navController,
+                FitcenterNavHost(
+                    navController = navController,
+                    store = store,
                     startDestination = currentRoute,
-                    Modifier.padding(innerPadding)
-                ) {
-                    composable("loading") { Loading() }
-                    composable("login") { Login(navController, store) }
-                    composable("profile") { Profile(navController, store) }
-                    composable("my-workouts") { MyWorkouts(navController, store) }
-                    composable("find-workouts") { FindWorkouts(navController, store) }
-                    composable("workout") { PreviewRoutineList(navController, store) }
-                }
+                    modifier = Modifier.padding(innerPadding)
+                )
             }
         }
 

@@ -29,17 +29,40 @@ import androidx.navigation.NavController
 import ar.edu.itba.hci.fitcenter.api.Store
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import ar.edu.itba.hci.fitcenter.Placeholder
+import ar.edu.itba.hci.fitcenter.R
+import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
+import kotlinx.coroutines.launch
+
 @Composable
 fun Profile(navController: NavController? = null, store: Store? = null) {
+    var user by remember { mutableStateOf(Placeholder.emptyUser) }
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(store) {
+        if (store != null) {
+            user = store.currentUser()
+        }
+    }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
-            Icons.Default.AccountCircle,
+            Icons.Default.AccountCircle,  // TODO: Show profile picture
             contentDescription = "User Icon",
             modifier = Modifier.size(100.dp)
         )
@@ -51,35 +74,46 @@ fun Profile(navController: NavController? = null, store: Store? = null) {
                     .fillMaxWidth(0.8f) // reduce width here
                     .height(60.dp) // increase height here
                     .padding(horizontal = 10.dp, vertical = 10.dp)
-                    .background(if (i == 1) MaterialTheme.colorScheme.primary else Color.White, shape = RoundedCornerShape(10.dp)) // change color for first rectangle
-                    .border(if (i != 1) BorderStroke(1.dp, Color.Black) else BorderStroke(0.dp, Color.Transparent), RoundedCornerShape(10.dp)), // remove border for first rectangle
+                    .background(
+                        if (i == 1) MaterialTheme.colorScheme.primary else Color.White,
+                        shape = RoundedCornerShape(10.dp)
+                    ) // change color for first rectangle
+                    .border(
+                        if (i != 1) BorderStroke(1.dp, Color.Black) else BorderStroke(
+                            0.dp,
+                            Color.Transparent
+                        ), RoundedCornerShape(10.dp)
+                    ), // remove border for first rectangle
                 contentAlignment = Alignment.Center // align content to center
             ) {
                 when (i) {
-                    1 -> Text("John Doe", fontWeight = FontWeight.Bold, fontSize = 15.sp) // make text bold and increase font size
-                    2 -> Text("johndoe@email.com", fontSize = 15.sp) // increase font size
-                    3 -> Row(
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp), // add padding here
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text("User name", fontWeight = FontWeight.Bold, fontSize = 15.sp) // make text bold and increase font size
-                        Text("johndoe", fontSize = 15.sp) // increase font size
-                    }
+                    1 -> Text("${user.firstName} ${user.lastName}", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                    2 -> Text(user.email, fontSize = 15.sp)
+                    3 -> Text("@${user.username}", fontSize = 15.sp)
                 }
             }
-            Spacer(modifier = Modifier.height(8.dp)) // reduce height here
+            Spacer(modifier = Modifier.height(8.dp))
         }
 
-        // Add logout button
+        // Logout button
         Button(
-            onClick = { /*TODO: Handle logout*/ },
+            onClick = {
+                scope.launch {
+                    store?.logout()
+                    navController?.navigate("login") {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                    }
+                }
+            },
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth(0.5f),
             shape = RoundedCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.primary) // change the color here
+            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.primary)
         ) {
-            Text("Logout", fontWeight = FontWeight.Bold, fontSize = 15.sp) // make text bold and increase font size
+            Text(stringResource(R.string.log_out), fontWeight = FontWeight.Bold, fontSize = 15.sp)
         }
     }
 }
@@ -87,7 +121,12 @@ fun Profile(navController: NavController? = null, store: Store? = null) {
 @Preview(name="Light Mode")
 @Composable
 fun PreviewProfile() {
-    MaterialTheme {
-        Profile()
+    FitcenterTheme {
+        Surface(
+            modifier=Modifier.fillMaxSize(),
+            color=MaterialTheme.colorScheme.background,
+        ) {
+            Profile()
+        }
     }
 }

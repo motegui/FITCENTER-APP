@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import ar.edu.itba.hci.fitcenter.RoutineSampleData
 import androidx.navigation.NavController
-import ar.edu.itba.hci.fitcenter.components.MyScreen
+import ar.edu.itba.hci.fitcenter.components.RoutineSearch
 import ar.edu.itba.hci.fitcenter.components.polyvalentRoutineList
 import ar.edu.itba.hci.fitcenter.api.Store
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
@@ -13,7 +13,7 @@ import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
 @Composable
 fun MyWorkouts(navController: NavController? = null, store: Store? = null) {
-    MyScreen(polyvalentRoutineList(routines = RoutineSampleData.sportsRoutines, favorites = true), navController=navController)
+    RoutineSearch(polyvalentRoutineList(routines = RoutineSampleData.sportsRoutines, favorites = true), navController=navController)
 }
 
 

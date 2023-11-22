@@ -279,11 +279,11 @@ fun Login(navController: NavController? = null, store: Store? = null) {
 }
 
 
-@Preview(name="Light Mode")
+@Preview(name = "Light Mode")
 @Preview(
-    name="Dark Mode",
-    showBackground=true,
-    uiMode=Configuration.UI_MODE_NIGHT_YES
+    name = "Dark Mode",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
 fun PreviewLogin() {

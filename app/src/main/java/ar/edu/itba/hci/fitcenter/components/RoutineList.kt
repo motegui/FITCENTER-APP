@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,25 +38,46 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ar.edu.itba.hci.fitcenter.RoutineSampleData
 import ar.edu.itba.hci.fitcenter.api.Models
+import ar.edu.itba.hci.fitcenter.api.Store
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
-
+import com.google.gson.GsonBuilder
+import kotlinx.coroutines.launch
 
 
 @Composable
-fun RoutineCard(rt: Models.FullRoutine, navController: NavController? = null) {
+fun RoutineCard(
+    rt: Models.FullRoutine,
+    navController: NavController? = null,
+    store: Store? = null
+) {
     var isFavorite by remember { mutableStateOf(rt.isFavorite) }
+
+    val scope = rememberCoroutineScope()
+
     Surface(
         shape = MaterialTheme.shapes.medium,
         shadowElevation = 4.dp,
         modifier = Modifier
-
             .animateContentSize()
             .padding(4.dp)
             .fillMaxWidth()
     ) {
         Row(
             modifier = Modifier
-                .clickable { navController?.navigate("workout") }
+                .clickable {
+                    if (store == null) return@clickable
+                    scope.launch {
+                        val gson = GsonBuilder().create()
+                        val routineJson = gson.toJson(rt)
+                        navController?.navigate(
+                            "workout-details/{routine}"
+                                .replace(
+                                    oldValue = "{routine}",
+                                    newValue = routineJson
+                                )
+                        )
+                    }
+                }
                 .fillMaxWidth()
                 .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -70,26 +92,26 @@ fun RoutineCard(rt: Models.FullRoutine, navController: NavController? = null) {
                     text = rt.name,
                     style = MaterialTheme.typography.titleMedium
                 )
-                    Text(
-                        text = formatDate(rt.date),
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.padding(top = 4.dp)
-                    )
+                Text(
+                    text = formatDate(rt.date),
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
 
-                    // Difficulty below the date, with category
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        DifficultyRating(difficulty = rt.difficulty)
-                        Text(
-                            text= rt.category.name,
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(start=6.dp)
-                        )
-                    }
+                // Difficulty below the date, with category
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    DifficultyRating(difficulty = rt.difficulty)
+                    Text(
+                        text = rt.category.name,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(start = 6.dp)
+                    )
+                }
 
             }
 
@@ -97,6 +119,9 @@ fun RoutineCard(rt: Models.FullRoutine, navController: NavController? = null) {
             IconButton(
                 onClick = {
                     isFavorite = !isFavorite
+                    scope.launch {
+                        store?.setFavorite(rt.id, isFavorite)
+                    }
                 },
                 modifier = Modifier.align(Alignment.CenterVertically)
             ) {
@@ -114,7 +139,7 @@ fun RoutineCard(rt: Models.FullRoutine, navController: NavController? = null) {
 //Not used because of changes, but for now kept because could be partly re-used elsewhere
 @Composable
 fun ExerciseDetails(exercise: List<Models.FullExercise>) {
-    Column(modifier= Modifier.padding(6.dp)) {
+    Column(modifier = Modifier.padding(6.dp)) {
         for (e in exercise) {
             Text(text = e.name, style = MaterialTheme.typography.titleMedium)
             Text(buildAnnotatedString {
@@ -152,20 +177,21 @@ enum class SortingCriterion {
 }
 
 @Composable
-fun RoutineList(routines: List<Models.FullRoutine>, navController: NavController? = null){
-    LazyColumn{
-        items(routines){routine ->
+fun RoutineList(routines: List<Models.FullRoutine>, navController: NavController? = null) {
+    LazyColumn {
+        items(routines) { routine ->
             RoutineCard(routine, navController)
         }
     }
 }
+
 fun polyvalentRoutineList(
     routines: List<Models.FullRoutine>,
     sortingCriterion: SortingCriterion = SortingCriterion.NAME,
     favorites: Boolean = false
 ): List<Models.FullRoutine> {
     var myRoutines = routines
-    if(favorites){
+    if (favorites) {
         myRoutines = routines.filter { it.isFavorite }
     }
     val sortedRoutines = when (sortingCriterion) {
@@ -178,20 +204,25 @@ fun polyvalentRoutineList(
     return sortedRoutines
 }
 
-@Preview(name="Light Mode")
+@Preview(name = "Light Mode")
 @Preview(
-    name="Dark Mode",
-    showBackground=true,
+    name = "Dark Mode",
+    showBackground = true,
     uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
-fun PreviewRoutineList(){
-    FitcenterTheme{
+fun PreviewRoutineList() {
+    FitcenterTheme {
         Surface(
-            modifier= Modifier.fillMaxSize(),
-            color= MaterialTheme.colorScheme.background,
-        ){
-            RoutineList(polyvalentRoutineList(routines = RoutineSampleData.sportsRoutines, favorites = true))
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background,
+        ) {
+            RoutineList(
+                polyvalentRoutineList(
+                    routines = RoutineSampleData.sportsRoutines,
+                    favorites = true
+                )
+            )
         }
     }
 }

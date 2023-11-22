@@ -97,7 +97,7 @@ fun SearchBar(
 }
 
 @Composable
-fun MyPortraitScreen(routines: List<Models.FullRoutine>, navController: NavController? = null) {
+fun RoutineSearchPortrait(routines: List<Models.FullRoutine>, navController: NavController? = null) {
     var searchQuery by remember { mutableStateOf("") }
     var filteredRoutines by remember { mutableStateOf(routines)}
     var sortingCriterion by remember { mutableStateOf(SortingCriterion.NAME) }
@@ -139,7 +139,7 @@ fun MyPortraitScreen(routines: List<Models.FullRoutine>, navController: NavContr
                 filteredRoutines = polyvalentRoutineList(routines, sortingCriterion)
             }
         )
-        HorizontalDivider(
+        Divider(
             modifier = Modifier.padding(bottom = 12.dp),
             thickness = 2.dp,
             color = Color.LightGray
@@ -151,7 +151,7 @@ fun MyPortraitScreen(routines: List<Models.FullRoutine>, navController: NavContr
 
 
 @Composable
-fun MyLandscapeScreen(routines: List<Models.FullRoutine>, navController: NavController? = null) {
+fun RoutineSearchLandscape(routines: List<Models.FullRoutine>, navController: NavController? = null) {
     var searchQuery by remember { mutableStateOf("") }
     var filteredRoutines by remember { mutableStateOf(routines) }
     var sortingCriterion by remember { mutableStateOf(SortingCriterion.NAME) }
@@ -207,7 +207,7 @@ fun MyLandscapeScreen(routines: List<Models.FullRoutine>, navController: NavCont
             }
 
             // Vertical Divider
-            VerticalDivider(
+            Divider(
                 modifier = Modifier.padding(horizontal = 12.dp),
                 thickness = 2.dp,
                 color = Color.LightGray
@@ -226,14 +226,14 @@ fun MyLandscapeScreen(routines: List<Models.FullRoutine>, navController: NavCont
     }
 
 @Composable
-fun MyScreen(routines: List<Models.FullRoutine>, navController: NavController? = null) {
+fun RoutineSearch(routines: List<Models.FullRoutine>, navController: NavController? = null) {
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     if (isLandscape) {
-        MyLandscapeScreen(routines = routines, navController = navController)
+        RoutineSearchLandscape(routines = routines, navController = navController)
     } else {
-        MyPortraitScreen(routines = routines, navController = navController)
+        RoutineSearchPortrait(routines = routines, navController = navController)
     }
 }
 @Preview(name = "Light Mode")
@@ -244,7 +244,7 @@ fun PreviewMenu() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background,
         ) {
-            MyScreen(polyvalentRoutineList(routines = RoutineSampleData.sportsRoutines, favorites = true))
+            RoutineSearch(polyvalentRoutineList(routines = RoutineSampleData.sportsRoutines, favorites = true))
         }
     }
 }

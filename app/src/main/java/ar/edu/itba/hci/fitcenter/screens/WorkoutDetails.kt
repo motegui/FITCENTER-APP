@@ -1,6 +1,5 @@
 package ar.edu.itba.hci.fitcenter.screens
 
-import android.annotation.SuppressLint
 import ar.edu.itba.hci.fitcenter.api.Store
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -37,6 +36,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +44,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ar.edu.itba.hci.fitcenter.R
@@ -53,56 +54,69 @@ import ar.edu.itba.hci.fitcenter.components.DifficultyRating
 import ar.edu.itba.hci.fitcenter.components.RoutineCard
 import ar.edu.itba.hci.fitcenter.components.formatDate
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
+import com.google.gson.GsonBuilder
+import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import androidx.compose.foundation.layout.Row as Row
 
 @Composable
-fun CycleInfo(cycle: Models.FullCycle){
+fun CycleInfo(cycle: Models.FullCycle) {
     var cycleExercises: List<Models.FullCycleExercise> = RoutineSampleData.cylceInfo
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
-    ){
+    ) {
         Text(
             text = "x",
-            style = MaterialTheme.typography.titleMedium,)
+            style = MaterialTheme.typography.titleMedium,
+        )
         Text(
             text = cycle.repetitions.toString(),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(end = 16.dp)
-            )
+        )
         Column {
             for ((index, exercise) in cycleExercises.withIndex()) {
-                Row(modifier = Modifier.fillMaxWidth().padding(top = 5.dp, bottom = 5.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 5.dp, bottom = 5.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
                     Text(
                         text = exercise.exercise.name,
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(start = 16.dp)
-                        )
-                    Column(horizontalAlignment =  Alignment.CenterHorizontally){
-                        if(exercise.repetitions>0){
+                    )
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        if (exercise.repetitions > 0) {
                             Row(
 
-                            ){
-                            Text(
-                                text = "x",
-                                style = MaterialTheme.typography.bodySmall,)
-                            Text(
-                                text = exercise.repetitions.toString(),
-                                style = MaterialTheme.typography.bodySmall
-                            )}
+                            ) {
+                                Text(
+                                    text = "x",
+                                    style = MaterialTheme.typography.bodySmall,
+                                )
+                                Text(
+                                    text = exercise.repetitions.toString(),
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                            }
                         }
-                        if(exercise.duration>0){
+                        if (exercise.duration > 0) {
                             Row(
 
-                            ){
-                            Text(
-                                text = exercise.duration.toString(),
-                                style = MaterialTheme.typography.bodySmall
-                            )
-                            Text(
-                                text = "s",
-                                style = MaterialTheme.typography.bodySmall,)}
+                            ) {
+                                Text(
+                                    text = exercise.duration.toString(),
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                                Text(
+                                    text = "s",
+                                    style = MaterialTheme.typography.bodySmall,
+                                )
+                            }
                         }
                     }
                 }
@@ -131,7 +145,7 @@ fun CycleCard(cycle: Models.FullCycle) {
                 .fillMaxWidth()
                 .padding(top = 1.dp, start = 16.dp, end = 6.dp, bottom = 1.dp),
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Text(
                 text = cycle.name,
                 modifier = Modifier.weight(1f),
@@ -154,7 +168,7 @@ fun CycleCard(cycle: Models.FullCycle) {
             }
         }
     }
-    if(isCycleExpanded){
+    if (isCycleExpanded) {
         Surface(
             shape = MaterialTheme.shapes.medium,
             shadowElevation = 4.dp,
@@ -168,7 +182,8 @@ fun CycleCard(cycle: Models.FullCycle) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp, start = 16.dp, end = 16.dp, bottom = 10.dp),
-                verticalAlignment = Alignment.CenterVertically){
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 CycleInfo(cycle = cycle)
             }
         }
@@ -176,7 +191,7 @@ fun CycleCard(cycle: Models.FullCycle) {
 }
 
 @Composable
-fun Title(routine: Models.FullRoutine?=null){
+fun Title(routine: Models.FullRoutine? = null) {
     var isFavorite by remember { mutableStateOf(routine?.isFavorite) }
     Surface(
         shape = MaterialTheme.shapes.medium,
@@ -224,7 +239,7 @@ fun Title(routine: Models.FullRoutine?=null){
 }
 
 @Composable
-fun Info(routine: Models.FullRoutine?=null){
+fun Info(routine: Models.FullRoutine? = null) {
     Surface(
         shape = MaterialTheme.shapes.medium,
         shadowElevation = 4.dp,
@@ -305,8 +320,8 @@ fun Info(routine: Models.FullRoutine?=null){
 }
 
 @Composable
-fun EquipmentInfo(routine: Models.FullRoutine?=null){
-    var isEquipemntExpanded by remember { mutableStateOf(false) }
+fun EquipmentInfo(routine: Models.FullRoutine? = null) {
+    var isEquipmentExpanded by remember { mutableStateOf(false) }
     Surface(
         shape = MaterialTheme.shapes.medium,
         color = Color.White,
@@ -332,19 +347,19 @@ fun EquipmentInfo(routine: Models.FullRoutine?=null){
             )
             IconButton(
                 onClick = {
-                    isEquipemntExpanded = !isEquipemntExpanded
+                    isEquipmentExpanded = !isEquipmentExpanded
                 },
                 modifier = Modifier.align(Alignment.CenterVertically)
             ) {
                 Icon(
-                    imageVector = if (isEquipemntExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                    imageVector = if (isEquipmentExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
                     tint = Color.Black,
                     contentDescription = "Expand/Collapse",
                 )
             }
         }
     }
-    if (isEquipemntExpanded) {
+    if (isEquipmentExpanded) {
         Surface(
             shape = MaterialTheme.shapes.medium,
             shadowElevation = 4.dp,
@@ -370,7 +385,7 @@ fun EquipmentInfo(routine: Models.FullRoutine?=null){
 }
 
 @Composable
-fun Details(routine: Models.FullRoutine?=null){
+fun Details(routine: Models.FullRoutine? = null) {
     var isDetailed by remember { mutableStateOf(false) }
     Surface(
         shape = MaterialTheme.shapes.medium,
@@ -412,60 +427,101 @@ fun Details(routine: Models.FullRoutine?=null){
     }
 }
 
-@Composable
-fun StartButton(navController: NavController? = null){
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Button(
-            onClick = { navController?.navigate("workout") }
-        ) {
-            androidx.compose.material3.Text(stringResource(R.string.start))
-        }
-    }
+suspend fun startRoutine(
+    navController: NavController,
+    store: Store,
+    routine: Models.FullRoutine,
+    isDetailed: Boolean
+) {
+    val gson = GsonBuilder().create()
+    val megaRoutineJson = gson.toJson(Models.MegaRoutine(store, routine))
+    navController.navigate(
+        "execute-workout/{detailed}/{mega-routine}"
+            .replace(
+                oldValue = "{detailed}",
+                newValue = isDetailed.toString()
+            )
+            .replace(
+                oldValue = "{mega-routine}",
+                newValue = megaRoutineJson
+            )
+    )
 }
 
-@SuppressLint("SuspiciousIndentation")
 @Composable
-fun Workout(navController: NavController? = null, store: Store? = null) {
-    val routine: Models.FullRoutine? = RoutineSampleData.sportsRoutines.find { it.id == 1L }
-    var routines: List<Models.FullRoutine?> = listOf(routine)
-    val cycles: Models.Cycles? = RoutineSampleData.cyclesRoutine
+fun StartButton(navController: NavController? = null, store: Store? = null, routine: Models.FullRoutine){
+    var isFavorite by remember { mutableStateOf(routine.isFavorite) }
+    var isEquipmentExpanded by remember { mutableStateOf(false) }
+    var isDetailed by remember { mutableStateOf(false) }
 
-    LazyColumn {
-            items(routines){
-                Title(routine)
-                Info(routine = routine)
-                EquipmentInfo(routine = routine)
+    val scope = rememberCoroutineScope()
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        if(isDetailed){
+        Button(
+            onClick = { navController?.navigate("execute") }
+        ) {
+            Text(stringResource(R.string.start))
+        }}
+        if(!isDetailed){
+            Button(
+                onClick = { navController?.navigate("detailed-execute") }
+            ) {
+                Text(stringResource(R.string.start))
             }
-            if (cycles != null) {
-                items(cycles.content) { cycle ->
-                    CycleCard(cycle)
+        }
+        Button(
+            onClick = {
+                if (navController == null || store == null) return@Button
+                scope.launch {
+                    startRoutine(navController, store, routine, isDetailed)
                 }
             }
-            items(routines){
-                Details(routine = routine)
-                StartButton(navController = navController)
-            }
-
-        }
-    }
-
-
-
-@Composable
-fun PreviewRoutineList(navController: NavController? = null, store: Store? = null){
-    FitcenterTheme{
-        Surface(
-            modifier= Modifier.fillMaxSize(),
-            color= MaterialTheme.colorScheme.background,
-        ){
-            Workout(navController, store)
+        ) {
+            Text(stringResource(R.string.start))
         }
     }
 }
 
 
+@Composable
+fun WorkoutDetails(navController: NavController? = null, store: Store? = null) {
+    val routine: Models.FullRoutine = RoutineSampleData.sportsRoutines[0]
+    val routines: List<Models.FullRoutine?> = listOf(routine)
+    val cycles: Models.Cycles = RoutineSampleData.cyclesRoutine
+
+    val scope = rememberCoroutineScope()
+
+    LazyColumn {
+        items(routines) {
+            Title(routine)
+            Info(routine = routine)
+            EquipmentInfo(routine = routine)
+        }
+        if (cycles != null) {
+            items(cycles.content) { cycle ->
+                CycleCard(cycle)
+            }
+        }
+        items(routines){
+            StartButton(navController, store, routine)
+        }
+    }
+}
+
+
+
+@Preview
+@Composable
+fun PreviewRoutineList() {
+    FitcenterTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background,
+        ) {
+            WorkoutDetails()
+        }
+    }
+}
