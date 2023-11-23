@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import ar.edu.itba.hci.fitcenter.RoutineSampleData
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.components.RoutineSearch
 import ar.edu.itba.hci.fitcenter.components.polyvalentRoutineList
@@ -27,7 +28,16 @@ fun MyWorkouts(navController: NavController? = null, store: Store? = null) {
     LaunchedEffect(store) {
         if (store == null) return@LaunchedEffect
         routines = null
-        routines = store.fetchRoutines()
+        try {
+            routines = store.fetchRoutines()
+        } catch (_: Exception) {
+            store.logout()
+            navController?.navigate("login") {
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                }
+            }
+        }
     }
     RoutineSearch(
         if (routines != null) polyvalentRoutineList(
