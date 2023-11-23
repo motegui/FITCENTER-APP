@@ -40,15 +40,15 @@ class Store private constructor(dataStore: DataStore<Preferences>) {
     suspend fun isLoggedIn(): Boolean = storage.get(Keys.SESSION_TOKEN, "") != ""
 
     suspend fun logout() {
-        ApiRepository.logout()
+        try {
+            ApiRepository.logout(storage.get(Keys.SESSION_TOKEN))
+        } catch (_: Exception) {}
         storage.set(Keys.SESSION_TOKEN, "")
     }
 
     suspend fun currentUser(): Models.FullUser {
         if (user != null) return user as Models.FullUser
-        val token = storage.get(Keys.SESSION_TOKEN)
-        user = ApiRepository.fetchCurrentUser(token)
-        return user as Models.FullUser
+        return ApiRepository.fetchCurrentUser(storage.get(Keys.SESSION_TOKEN))
     }
 
     private suspend fun <T> collectSearchResult(
