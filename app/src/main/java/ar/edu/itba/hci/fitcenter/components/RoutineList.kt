@@ -108,11 +108,13 @@ fun RoutineCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     DifficultyRating(difficulty = rt.difficulty)
-                    Text(
-                        text = rt.category.name,
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(start = 6.dp)
-                    )
+                    if (rt.category != null) {
+                        Text(
+                            text = rt.category.name,
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(start = 6.dp)
+                        )
+                    }
                 }
 
             }
@@ -205,7 +207,7 @@ fun polyvalentRoutineList(
         SortingCriterion.DATE -> myRoutines.sortedByDescending { it.date }
         SortingCriterion.SCORE -> myRoutines.sortedByDescending { it.score }
         SortingCriterion.DIFFICULTY -> myRoutines.sortedBy { it.difficulty.ordinal }
-        SortingCriterion.CATEGORY -> myRoutines.sortedBy { it.category.name }
+        SortingCriterion.CATEGORY -> myRoutines.sortedBy { it.category?.name }
     }
     return sortedRoutines
 }
