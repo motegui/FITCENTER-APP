@@ -108,7 +108,8 @@ fun RoutineSearchPortrait(routines: List<Models.FullRoutine>?, navController: Na
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
                 .padding(horizontal = 8.dp)
-        )
+        ){
+
         SortingButtons(
             sortingCriterion = sortingCriterion,
             onSortingCriterionChanged = { newSortingCriterion ->
