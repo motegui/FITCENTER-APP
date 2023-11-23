@@ -58,6 +58,8 @@ dependencies {
 
     implementation(platform("androidx.compose:compose-bom:2023.10.01"))
     implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation("org.slf4j:slf4j-api:2.0.9")
+    implementation("org.slf4j:slf4j-log4j12:2.0.9")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.10.01"))
 
     val ktorVersion = "2.3.6"
