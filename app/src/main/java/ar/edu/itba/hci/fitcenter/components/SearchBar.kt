@@ -110,17 +110,21 @@ fun RoutineSearchPortrait(routines: List<Models.FullRoutine>?, navController: Na
                 .padding(horizontal = 8.dp)
         ){
 
-        SortingButtons(
-            sortingCriterion = sortingCriterion,
-            onSortingCriterionChanged = { newSortingCriterion ->
-                sortingCriterion = newSortingCriterion
-                filteredRoutines = polyvalentRoutineList(routines, sortingCriterion)
-            }
-        )
-        HorizontalDivider(
-            modifier = Modifier.padding(bottom = 12.dp),
-            thickness = 2.dp,
-            color = Color.LightGray
+        SearchBar(
+            value = searchQuery,
+            onValueChange = {
+                searchQuery = it
+            },
+            onSearch = { query ->
+                filteredRoutines = if (query.isEmpty()) {
+                    routines
+                } else {
+                    routines.filter { routine ->
+                        routine.name.contains(query, ignoreCase = true)
+                    }
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
         )
 
             Text(
@@ -138,7 +142,7 @@ fun RoutineSearchPortrait(routines: List<Models.FullRoutine>?, navController: Na
                     filteredRoutines = polyvalentRoutineList(routines, sortingCriterion)
                 }
             )
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier.padding(bottom = 12.dp),
                 thickness = 2.dp,
                 color = Color.LightGray
