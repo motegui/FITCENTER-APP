@@ -469,8 +469,8 @@ fun WorkoutDetails(
     megaRoutine: Models.MegaRoutine = SampleData.megaRoutine,
 ) {
     val isDetailed = remember { mutableStateOf(false) }
-    Column {
-        Title(megaRoutine)
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Title(routine = megaRoutine)
         Info(routine = megaRoutine)
         EquipmentInfo(routine = megaRoutine)
         megaRoutine.megaCycles.forEach { megaCycle ->
