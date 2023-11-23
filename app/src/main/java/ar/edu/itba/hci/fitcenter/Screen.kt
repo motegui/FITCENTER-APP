@@ -25,6 +25,7 @@ import ar.edu.itba.hci.fitcenter.screens.WorkoutDetails
 data class Screen(
     @StringRes val resourceId: Int,
     val usesNav: Boolean,
+    @StringRes val navResourceId: Int? = null,
     val isSubPage: Boolean = false,
     val icon: ImageVector? = null
 )
@@ -53,12 +54,14 @@ val screens = NonNullableMap(mapOf(
 
     "my-workouts" to Screen(
         resourceId = R.string.my_workouts,
+        navResourceId = R.string.workouts,
         usesNav = true,
         icon = Icons.Filled.FitnessCenter
     ),
 
     "find-workouts" to Screen(
         resourceId = R.string.find_workouts,
+        navResourceId = R.string.find,
         usesNav = true,
         icon = Icons.Filled.Search
     ),

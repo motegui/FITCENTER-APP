@@ -24,4 +24,6 @@
     <string name="log_out">Cerrar Sesión</string>
     <string name="congrats">¡Felicidades!</string>
     <string name="comple_workout">Has completado el entrenamiento</string>
+    <string name="find">Buscar</string>
+    <string name="workouts">Rutinas</string>
 </resources>

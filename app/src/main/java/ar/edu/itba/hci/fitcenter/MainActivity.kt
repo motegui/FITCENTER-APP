@@ -34,18 +34,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,7 +53,6 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.composable
 import ar.edu.itba.hci.fitcenter.api.Store
 import ar.edu.itba.hci.fitcenter.screens.*
 
@@ -86,7 +80,11 @@ class MainActivity : ComponentActivity() {
 }
 
 
-val bottomBarItems = listOf("my-workouts", "find-workouts")
+val navItems = listOf(
+    "my-workouts",
+    "profile",
+    "find-workouts",
+)
 
 fun navigate(navController: NavController, route: String) {
     navController.navigate(route) {
@@ -116,7 +114,7 @@ fun SideBar(
     ) {
         Spacer(modifier = Modifier.weight(1f))
 
-        sideBarItems.forEach { route ->
+        navItems.forEach { route ->
             val screen = screens[route]
             Icon(
                 imageVector = screen.icon ?: Icons.Default.Home,
@@ -138,7 +136,6 @@ fun SideBar(
     }
 }
 
-val sideBarItems = listOf("profile", "my-workouts", "find-workouts")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(store: Store? = null) {
@@ -187,15 +184,7 @@ fun MainScreen(store: Store? = null) {
                         )
                     }
                 }
-            },
-            actions = {
-                IconButton(onClick = { navigate(navController, "profile") }) {
-                    Icon(
-                        imageVector = Icons.Filled.AccountCircle,
-                        contentDescription = stringResource(R.string.profile)
-                    )
-                }
-            },
+            }
         )
     }
 
@@ -204,7 +193,7 @@ fun MainScreen(store: Store? = null) {
             containerColor = MaterialTheme.colorScheme.secondary,
             contentColor = MaterialTheme.colorScheme.onSecondary
         ) {
-            bottomBarItems.forEach { route ->
+            navItems.forEach { route ->
                 val screen = screens[route]
                 BottomNavigationItem(
                     selectedContentColor = MaterialTheme.colorScheme.primary,
@@ -219,7 +208,7 @@ fun MainScreen(store: Store? = null) {
                     },
                     label = {
                         Text(
-                            text = stringResource(screen.resourceId),
+                            text = stringResource(screen.navResourceId ?: screen.resourceId),
                             color = MaterialTheme.colorScheme.onSecondary
                         )
                     },
