@@ -1,16 +1,27 @@
 package ar.edu.itba.hci.fitcenter.components
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
+//import androidx.compose.material3.HorizontalDivider
+//import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -213,11 +224,12 @@ fun RoutineSearchLandscape(routines: List<Models.FullRoutine>?, navController: N
             }
 
             // Vertical Divider
-            VerticalDivider(
-                modifier = Modifier.padding(horizontal = 12.dp),
-                thickness = 2.dp,
-                color = Color.LightGray
-            )
+//            VerticalDivider(
+//                modifier = Modifier.padding(horizontal = 12.dp),
+//                thickness = 2.dp,
+//                color = Color.LightGray
+//            )
+
 
             // Column for RoutineList
             Column(
