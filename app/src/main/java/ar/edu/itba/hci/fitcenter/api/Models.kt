@@ -1,6 +1,6 @@
 package ar.edu.itba.hci.fitcenter.api
 
-import com.google.gson.annotations.SerializedName
+
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
 //import kotlinx.serialization.json.JsonPrimitive
