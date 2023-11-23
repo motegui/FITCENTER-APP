@@ -167,7 +167,7 @@ fun Execution(
     var exerciseState by remember { mutableStateOf(currentExe) }
     var cycleState by remember { mutableStateOf(currentCycle) }
     var isLastPage by remember { mutableStateOf(lastPageOverride) }
-    if(!isLastPage) {
+    if (!isLastPage) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -215,12 +215,14 @@ fun Execution(
                 ),
                 modifier = Modifier.padding(top = 20.dp)
             )
-            if(detailed){
-            Text(
-                text = exerciseState.exercise.detail.substring(0, 200),
-                style = MaterialTheme.typography.titleMedium.copy(
-                    color = Color.White)
-            )}
+            if (detailed) {
+                Text(
+                    text = exerciseState.exercise.detail.substring(0, 200),
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        color = Color.White
+                    )
+                )
+            }
             Spacer(modifier = Modifier.weight(1f))
 
 
@@ -318,14 +320,14 @@ fun Execution(
             }
         }
     }
-    if(isLastPage){
+    if (isLastPage) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .padding(
                     top = 36.dp,
                     start = 48.dp,
-                    end   = 48.dp,
+                    end = 48.dp,
                     bottom = 84.dp
                 )
         ) {
@@ -342,18 +344,22 @@ fun Execution(
                 }
             }
 
-            Text(text = stringResource(R.string.congrats),
+            Text(
+                text = stringResource(R.string.congrats),
                 style = MaterialTheme.typography.displaySmall.copy(
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 ),
-                modifier = Modifier.padding(top = 20.dp))
-            Text(text = stringResource(R.string.comple_workout),
+                modifier = Modifier.padding(top = 20.dp)
+            )
+            Text(
+                text = stringResource(R.string.comple_workout),
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 ),
-                modifier = Modifier.padding(top = 20.dp))
+                modifier = Modifier.padding(top = 20.dp)
+            )
             Spacer(modifier = Modifier.weight(1f))
 
 
@@ -375,10 +381,12 @@ fun Execution(
             }
             Spacer(modifier = Modifier.weight(1f))
 
-            Row( modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly){
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
                 Button(
                     onClick = {
                         currentCycle = cycles[0]
