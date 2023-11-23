@@ -158,7 +158,8 @@ fun Timer(seconds: Int, onExpire: () -> Unit) {
 fun Execution(
     navController: NavController? = null,
     routine: Models.MegaRoutine = SampleData.megaRoutine,
-    detailed: Boolean
+    detailed: Boolean,
+    lastPageOverride: Boolean = false
 ) {
     val cycles: List<Models.MegaCycle> = routine.megaCycles
     var currentCycle: Models.FullCycle? = cycles[0]
@@ -169,7 +170,7 @@ fun Execution(
     var currentExe: Models.FullCycleExercise = cycleExercises[0]
     var exerciseState by remember { mutableStateOf(currentExe) }
     var cycleState by remember { mutableStateOf(currentCycle) }
-    var isLastPage by remember { mutableStateOf(false) }
+    var isLastPage by remember { mutableStateOf(lastPageOverride) }
     if(!isLastPage) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -420,13 +421,13 @@ fun Execution(
 }
 
 @Composable
-fun ExecutionPreview(detailed: Boolean) {
+fun ExecutionPreview(detailed: Boolean, lastPageOverride: Boolean = false) {
     FitcenterTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = Color.Black
         ) {
-            Execution(detailed = detailed)
+            Execution(detailed = detailed, lastPageOverride = lastPageOverride)
         }
     }
 }
@@ -442,4 +443,10 @@ fun SimpleExecutionPreview() {
 @Composable
 fun DetailedExecutionPreview() {
     ExecutionPreview(detailed = true)
+}
+
+@Preview
+@Composable
+fun ExecutionLastPagePreview() {
+    ExecutionPreview(detailed = false, lastPageOverride = true)
 }
