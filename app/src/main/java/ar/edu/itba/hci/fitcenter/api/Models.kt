@@ -12,6 +12,15 @@ import kotlinx.serialization.json.JsonObject
  * http://localhost:8080/docs/#/
  */
 object Models {
+    @Serializable data class ErrorMessage (
+        val message: String
+    )
+
+    @Serializable data class Error (
+        val code: Int,
+        val description: String,
+        val details: List<ErrorMessage>? = null
+    )
 
     @Serializable enum class Gender(val value: String) {
         Male("male"),

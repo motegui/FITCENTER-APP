@@ -34,32 +34,37 @@ object ApiRepository {
 
     private val BASE_URL = getBaseUrl()
 
-    private fun digit(a: Int, b: Int): Int {
-        return a / 10.0.pow((b - 1).toDouble()).toInt() % 10
+    // Check if HTTP status code is 2xx
+    private fun ok(response: HttpResponse): Boolean {
+        return response.status.value / 10.0.pow((2).toDouble()).toInt() % 10 == 2
     }
-    private fun throwForStatus(response: HttpResponse): HttpResponse {
-        if (digit(response.status.value, 3) != 2) {
-            throw Unauthorized(response.status.description)
+
+    private suspend inline fun <reified T> parse(response: HttpResponse): T {
+        if (!ok(response)) {
+            val data: Models.Error = response.body()
+            var message = data.description
+            if (data.details != null) message += " (${data.details.joinToString(", ")})"
+            throw Exception(message)
         }
-        return response
+        return response.body()
     }
 
     suspend fun login(credentials: Models.Credentials): Models.AuthenticationToken {
         val response = client.post("$BASE_URL/users/login") {
-            setBody(credentials)
+            setBody(body = credentials)
         }
-        return throwForStatus(response).body()
+        return parse(response)
     }
 
     suspend fun logout() {
-        throwForStatus(client.post("$BASE_URL/users/logout"))
+        parse<Unit>(client.post("$BASE_URL/users/logout"))
     }
 
     suspend fun fetchCurrentUser(sessionToken: String): Models.FullUser {
         val response = client.get("$BASE_URL/users/current") {
             header(HttpHeaders.Authorization, sessionToken)
         }
-        return throwForStatus(response).body()
+        return parse(response)
     }
 
     suspend fun fetchCycles(
@@ -71,7 +76,7 @@ object ApiRepository {
             parameter("size", Int.MAX_VALUE)
             parameter("page", 1)
         }
-        return throwForStatus(response).body()
+        return parse(response)
     }
 
     suspend fun fetchCycleExercises(
@@ -83,21 +88,21 @@ object ApiRepository {
             parameter("size", Int.MAX_VALUE)
             parameter("page", 1)
         }
-        return throwForStatus(response).body()
+        return parse(response)
     }
 
     suspend fun addFavorite(sessionToken: String, routineId: Long) {
         val response = client.post("$BASE_URL/favourites/$routineId") {
             header(HttpHeaders.Authorization, sessionToken)
         }
-        return throwForStatus(response).body()
+        return parse(response)
     }
 
     suspend fun removeFavorite(sessionToken: String, routineId: Long) {
         val response = client.delete("$BASE_URL/favourites/$routineId") {
             header(HttpHeaders.Authorization, sessionToken)
         }
-        return throwForStatus(response).body()
+        return parse(response)
     }
 
     suspend fun fetchRoutines(
@@ -108,6 +113,6 @@ object ApiRepository {
             parameter("size", Int.MAX_VALUE)
             parameter("page", 1)
         }
-        return throwForStatus(response).body()
+        return parse(response)
     }
 }
