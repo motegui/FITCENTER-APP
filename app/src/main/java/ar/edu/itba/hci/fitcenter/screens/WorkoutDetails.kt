@@ -258,28 +258,28 @@ fun Info(routine: Models.FullRoutine? = null) {
                 }
             }
             Divider(color = Color.Gray, thickness = 1.dp)
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 10.dp, start = 16.dp, end = 16.dp, bottom = 10.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(R.string.category),
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold, // Hacer el texto en negrita
-                        color = Color.Black
-                    ),
-                    modifier = Modifier.weight(1f) // Utilizar weight para ocupar el espacio disponible
-                )
-                if (routine != null) {
+            if (routine?.category != null) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp, start = 16.dp, end = 16.dp, bottom = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.category),
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.Bold, // Hacer el texto en negrita
+                            color = Color.Black
+                        ),
+                        modifier = Modifier.weight(1f) // Utilizar weight para ocupar el espacio disponible
+                    )
                     Text(
                         text = routine.category.name,
                         style = MaterialTheme.typography.titleMedium,
                         //modifier = Modifier.weight(1f)
                     )
-                }
 
+                }
             }
             Divider(color = Color.Gray, thickness = 1.dp)
             Row(
@@ -424,13 +424,13 @@ fun startRoutine(
     val gson = GsonBuilder().create()
     val megaRoutineJson = gson.toJson(megaRoutine)
     navController.navigate(
-        "execute-workout/{detailed}/{mega-routine}"
+        "execute-workout/?detailedMode={detailedMode}&megaRoutineJson={megaRoutineJson}"
             .replace(
-                oldValue = "{detailed}",
+                oldValue = "{detailedMode}",
                 newValue = isDetailed.toString()
             )
             .replace(
-                oldValue = "{mega-routine}",
+                oldValue = "{megaRoutineJson}",
                 newValue = megaRoutineJson
             )
     )
