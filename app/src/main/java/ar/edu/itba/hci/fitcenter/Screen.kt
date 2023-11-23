@@ -6,11 +6,17 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import com.google.gson.GsonBuilder
 import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.api.Store
@@ -82,6 +88,8 @@ val screens = NonNullableMap(mapOf(
     )
 ))
 
+const val uri = "www.fitcenter.com"
+
 @Composable
 fun FitcenterNavHost(navController: NavHostController, store: Store? = null, startDestination: String, modifier: Modifier) {
     NavHost(
@@ -94,18 +102,38 @@ fun FitcenterNavHost(navController: NavHostController, store: Store? = null, sta
         composable("profile") { Profile(navController, store) }
         composable("my-workouts") { MyWorkouts(navController, store) }
         composable("find-workouts") { FindWorkouts(navController, store) }
-        composable("workout-details/{mega-routine}") { navBackStackEntry ->
+        composable(
+            "workout-details/?routineId={routineId}&megaRoutineJson={megaRoutineJson}",
+            deepLinks = listOf(navDeepLink { uriPattern = "$uri/view-workout/{routineId}" })
+        ) { navBackStackEntry ->
             // Extract encoded Routine object from route
             val gson = GsonBuilder().create()
-            val megaRoutineJson = navBackStackEntry.arguments?.getString("mega-routine")
-            val megaRoutine = gson.fromJson(megaRoutineJson, Models.MegaRoutine::class.java)
-            WorkoutDetails(navController, store, megaRoutine)
+            val megaRoutineJson = navBackStackEntry.arguments?.getString("megaRoutineJson")
+            var megaRoutine by remember { mutableStateOf<Models.MegaRoutine?>(null) }
+            LaunchedEffect(store) {
+                megaRoutine = if (megaRoutineJson != null) {
+                    gson.fromJson(megaRoutineJson, Models.MegaRoutine::class.java)
+                } else {
+                    val routineId = navBackStackEntry.arguments?.getString("routineId")
+                        ?: throw Exception("megaRoutineJson and routineId cannot both be undefined")
+                    val routine = store?.fetchRoutine(routineId.toLong())
+                        ?: throw Exception("Invalid routine ID: $routineId")
+                    Models.MegaRoutine(store, routine)
+                }
+            }
+            if (megaRoutine != null) {
+                WorkoutDetails(navController, store, megaRoutine!!)
+            } else {
+                Loading()
+            }
         }
-        composable("execute-workout/{detailed}/{mega-routine}") { navBackStackEntry ->
+        composable(
+            "execute-workout/?detailedMode={detailedMode}&megaRoutineJson={megaRoutineJson}"
+        ) { navBackStackEntry ->
             val gson = GsonBuilder().create()
-            val megaRoutineJson = navBackStackEntry.arguments?.getString("mega-routine")
+            val megaRoutineJson = navBackStackEntry.arguments?.getString("megaRoutineJson")
             val megaRoutine = gson.fromJson(megaRoutineJson, Models.MegaRoutine::class.java)
-            val detailed = navBackStackEntry.arguments?.getBoolean("detailed") ?: false
+            val detailed = navBackStackEntry.arguments?.getBoolean("detailedMode") ?: false
             Execution(navController, routine = megaRoutine, detailed = detailed)
         }
     }

@@ -82,6 +82,9 @@ class Store private constructor(dataStore: DataStore<Preferences>) {
             ApiRepository.fetchRoutines(storage.get(Keys.SESSION_TOKEN))
         }
 
+    suspend fun fetchRoutine(routineId: Long): Models.FullRoutine =
+        ApiRepository.fetchRoutine(storage.get(Keys.SESSION_TOKEN), routineId)
+
     suspend fun setFavorite(routineId: Long, isFavorite: Boolean) {
         if (isFavorite) {
             ApiRepository.addFavorite(storage.get(Keys.SESSION_TOKEN), routineId)
