@@ -19,4 +19,9 @@
     <string name="detailed_mode">Modo Detallado</string>
     <string name="detailed_description">Muestra los ejercicios con descripciones e imagenes</string>
     <string name="pause">Pausar</string>
+    <string name="exit">Exit</string>
+    <string name="quit">Finalizar</string>
+    <string name="log_out">Cerrar Sesión</string>
+    <string name="congrats">¡Felicidades!</string>
+    <string name="comple_workout">Has completado el entrenamiento</string>
 </resources>

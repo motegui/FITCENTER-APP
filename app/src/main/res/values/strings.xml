@@ -22,4 +22,6 @@
     <string name="exit">Exit</string>
     <string name="quit">Quit</string>
     <string name="log_out">Log out</string>
+    <string name="congrats">Congratulations!</string>
+    <string name="comple_workout">You have completed the workout</string>
 </resources>
