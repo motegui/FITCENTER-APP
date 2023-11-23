@@ -217,7 +217,7 @@ fun Execution(
             )
             if(detailed){
             Text(
-                text = exerciseState.exercise.detail,
+                text = exerciseState.exercise.detail.substring(0, 200),
                 style = MaterialTheme.typography.titleMedium.copy(
                     color = Color.White)
             )}
