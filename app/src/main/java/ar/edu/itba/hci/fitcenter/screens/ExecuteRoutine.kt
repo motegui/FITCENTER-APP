@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
@@ -35,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -213,21 +215,31 @@ fun Execution(
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 ),
-                modifier = Modifier.padding(top = 20.dp)
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(top = 20.dp)
+                    .fillMaxWidth()
+                    .wrapContentHeight()
             )
+
             if (detailed) {
                 Text(
                     text = exerciseState.exercise.detail.substring(0, 200),
                     style = MaterialTheme.typography.titleMedium.copy(
                         color = Color.White
-                    )
+                    ),
+                    textAlign = TextAlign.Justify,
+                    modifier = Modifier
+                        .padding(top = 20.dp)
+                        .fillMaxWidth()
+                        .wrapContentHeight()
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
 
 
             // Nav
-            Row(modifier = Modifier.padding(top = 200.dp)) {
+            Row(modifier = Modifier.padding(top = if (detailed) 40.dp else 200.dp)) {
                 if (exeNum > 0 || cycleNum > 0 || repNum > 0) {
                     IconButton(
                         onClick = {
@@ -260,7 +272,7 @@ fun Execution(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = null,
                             tint = Color.Green,
-                            modifier = Modifier.size(36.dp)
+                            modifier = Modifier.size(45.dp)
                         )
                     }
                 }
@@ -298,11 +310,10 @@ fun Execution(
                         imageVector = Icons.Default.ArrowForward,
                         contentDescription = null,
                         tint = Color.Green,
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(45.dp)
                     )
                 }
             }
-
 
             if (exerciseState.repetitions > 0) {
                 Text(
