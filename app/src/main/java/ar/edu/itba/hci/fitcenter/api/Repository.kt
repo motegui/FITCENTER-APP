@@ -20,14 +20,14 @@ import io.ktor.http.HttpHeaders
 object ApiRepository {
     private fun getBaseUrl(): String {
         val defaultValue = "http://localhost:8080"
-        val dotenv = dotenv {
-            directory = "/assets"
-            filename = "env"
-        }
         try {
+            val dotenv = dotenv {
+                directory = "/assets"
+                filename = "env"
+            }
             val url = dotenv["API_URL"] ?: return defaultValue
             return url.replace("\"", "").replace("'", "")
-        } catch (error: ExceptionInInitializerError) {
+        } catch (error: Exception) {
             return defaultValue
         }
     }
