@@ -1,24 +1,15 @@
 package ar.edu.itba.hci.fitcenter.screens
 
+import android.content.res.Configuration
 import ar.edu.itba.hci.fitcenter.api.Store
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -42,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -51,13 +43,10 @@ import ar.edu.itba.hci.fitcenter.R
 import ar.edu.itba.hci.fitcenter.RoutineSampleData
 import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.components.DifficultyRating
-import ar.edu.itba.hci.fitcenter.components.RoutineCard
 import ar.edu.itba.hci.fitcenter.components.formatDate
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import androidx.compose.foundation.layout.Row as Row
 
 @Composable
@@ -510,11 +499,77 @@ fun WorkoutDetails(navController: NavController? = null, store: Store? = null, r
     }
 }
 
+@Composable
+fun WorkoutDetails2(navController: NavController? = null, store: Store? = null, routine: Models.FullRoutine? = null) {
+    val routines: List<Models.FullRoutine?> = listOf(routine)
+    val cycles: Models.Cycles = RoutineSampleData.cyclesRoutine
+
+    val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+    LazyColumn {
+        // Title at the top, full width
+        items(routines) {
+            Title(routine)
+        }
+
+        // If in landscape, use a Row for the two columns
+        if (isLandscape) {
+            items(routines) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                ) {
+                    // Left column for Info and EquipmentInfo
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(end = 8.dp)
+                    ) {
+                        Info(routine = routine)
+                        EquipmentInfo(routine = routine)
+                        StartButton(navController, store, routine)
+                    }
+
+                    // Right column for the list of cycles
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 8.dp)
+                    ) {
+                        if (cycles != null) {
+                            cycles.content.forEach { cycle ->
+                                CycleCard(cycle)
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            // Portrait mode: Info, EquipmentInfo, and Cycles in a single column
+            items(routines) {
+                Info(routine = routine)
+                EquipmentInfo(routine = routine)
+
+                if (cycles != null) {
+                    cycles.content.forEach { cycle ->
+                        CycleCard(cycle)
+                    }
+                }
+            }
+            items(routines) {
+                StartButton(navController, store, routine)
+            }
+        }
+
+
+    }
+}
 
 
 @Preview
 @Composable
-fun PreviewRoutineList() {
+fun PreviewRoutineDetail() {
     FitcenterTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
