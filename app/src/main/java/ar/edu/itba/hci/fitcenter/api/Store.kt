@@ -48,7 +48,8 @@ class Store private constructor(dataStore: DataStore<Preferences>) {
 
     suspend fun currentUser(): Models.FullUser {
         if (user != null) return user as Models.FullUser
-        return ApiRepository.fetchCurrentUser(storage.get(Keys.SESSION_TOKEN))
+        user = ApiRepository.fetchCurrentUser(storage.get(Keys.SESSION_TOKEN))
+        return user as Models.FullUser
     }
 
     private suspend fun <T> collectSearchResult(
@@ -76,6 +77,11 @@ class Store private constructor(dataStore: DataStore<Preferences>) {
         }.sortedBy { it.order }
     }
 
+    suspend fun fetchRoutines(): List<Models.FullRoutine> =
+        collectSearchResult {
+            ApiRepository.fetchRoutines(storage.get(Keys.SESSION_TOKEN))
+        }
+
     suspend fun setFavorite(routineId: Long, isFavorite: Boolean) {
         if (isFavorite) {
             ApiRepository.addFavorite(storage.get(Keys.SESSION_TOKEN), routineId)
@@ -83,9 +89,4 @@ class Store private constructor(dataStore: DataStore<Preferences>) {
             ApiRepository.removeFavorite(storage.get(Keys.SESSION_TOKEN), routineId)
         }
     }
-
-    suspend fun fetchRoutines(): List<Models.FullRoutine> =
-        collectSearchResult {
-            ApiRepository.fetchRoutines(storage.get(Keys.SESSION_TOKEN))
-        }
 }

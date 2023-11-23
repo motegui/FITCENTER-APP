@@ -10,7 +10,7 @@ object SampleData {
         id = 1337,
         name = "Sample Exercise 1",
         detail = "This is the description for Sample Exercise 1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce consectetur ex erat, a congue ligula rutrum at. Quisque tristique condimentum quam, dapibus ornare leo tristique vitae. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In pellentesque feugiat pretium.",
-        type = Models.ExerciseType.Exercise,
+        type = Models.ExerciseType.exercise,
         duration = 30,
         date = 1700517512,
         metadata = JsonObject(content=mapOf())
@@ -19,7 +19,7 @@ object SampleData {
         id = 9001,
         name = "Sample Exercise 2",
         detail = "This is the description for Sample Exercise 2. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis tellus diam, malesuada sed diam maximus, eleifend tempus urna. Suspendisse ac leo condimentum mi elementum dapibus.",
-        type = Models.ExerciseType.Exercise,
+        type = Models.ExerciseType.exercise,
         duration = 15,
         date = 1700517512,
         metadata = JsonObject(content=mapOf())
@@ -28,7 +28,7 @@ object SampleData {
         id = 777,
         name = "Sample Bread",
         detail = "Take a break! :)",
-        type = Models.ExerciseType.Rest,
+        type = Models.ExerciseType.rest,
         duration = 60,
         date = 1700517512,
         metadata = JsonObject(content=mapOf())
@@ -42,7 +42,7 @@ object SampleData {
             date = 1700517512,  // Nov 20 2023 18:58:32 ART
             score = 5,
             isPublic = true,
-            difficulty = Models.Difficulty.Beginner,
+            difficulty = Models.Difficulty.beginner,
             category = Models.FullCategory(
                 id = 2,
                 name = "Virtual Aerobics",
@@ -51,7 +51,7 @@ object SampleData {
             user = Models.PublicUser(
                 id = 2,
                 username = "previewUser123",
-                gender = Models.Gender.Other,
+                gender = Models.Gender.other,
                 avatarUrl = "https://placehold.co/512x512?text=P",
                 date = 1700517512,
                 lastActivity = 1700517512
@@ -64,7 +64,7 @@ object SampleData {
                     id = 4,
                     name = "Preview Warmup Cycle",
                     detail = "This is the description for a warmup. ",
-                    type = Models.CycleType.Warmup,
+                    type = Models.CycleType.warmup,
                     order = 999,
                     repetitions = 3,
                     metadata = JsonObject(content=mapOf())
@@ -96,7 +96,7 @@ object SampleData {
                     id = 5,
                     name = "Preview Exercise Cycle",
                     detail = "This is the description for an exercise cycle. According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground.",
-                    type = Models.CycleType.Exercise,
+                    type = Models.CycleType.exercise,
                     order = 999,
                     repetitions = 5,
                     metadata = JsonObject(content=mapOf())
@@ -135,7 +135,7 @@ object SampleData {
                     id = 6,
                     name = "Preview Cooldown Cycle",
                     detail = "This is the description for a cooldown cycle.",
-                    type = Models.CycleType.Cooldown,
+                    type = Models.CycleType.cooldown,
                     order = 999,
                     repetitions = 1,
                     metadata = JsonObject(content=mapOf())

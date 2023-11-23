@@ -8,7 +8,7 @@ object Placeholder {
         username = "",
         firstName = "",
         lastName = "",
-        gender = Models.Gender.Other,
+        gender = Models.Gender.other,
         birthdate = 0,
         email = "",
         phone = "",

@@ -1,5 +1,6 @@
 package ar.edu.itba.hci.fitcenter.api
 
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
 //import kotlinx.serialization.json.JsonPrimitive
@@ -22,25 +23,25 @@ object Models {
         val details: List<ErrorMessage>? = null
     )
 
-    @Serializable enum class Gender(val value: String) {
-        Male("male"),
-        Female("female"),
-        Other("other")
+    enum class Gender {
+        male,
+        female,
+        other
     }
-    @Serializable enum class ExerciseType(val value: String) {
-        Exercise("exercise"),
-        Rest("rest")
+    enum class ExerciseType {
+        exercise,
+        rest
     }
     @Serializable class FullUser (
         val id: Long,
         val username: String,
         val firstName: String,
         val lastName: String,
-        val gender: Gender,
-        val birthdate: Long,
+        val gender: Gender?,
+        val birthdate: Long?,
         val email: String,
-        val phone: String,
-        val avatarUrl: String,
+        val phone: String?,
+        val avatarUrl: String?,
         val metadata: JsonObject?,
         val date: Long,
         val lastActivity: Long,
@@ -65,12 +66,12 @@ object Models {
         val token: String
     )
 
-    @Serializable enum class Difficulty(val value: String) {
-        Rookie("rookie"),
-        Beginner("beginner"),
-        Intermediate("intermediate"),
-        Advanced("advanced"),
-        Expert("expert")
+    enum class Difficulty {
+        rookie,
+        beginner,
+        intermediate,
+        advanced,
+        expert
     }
     @Serializable open class FullRoutine (
         val id: Long,
@@ -128,10 +129,10 @@ object Models {
         val metadata: JsonObject?
     )
 
-    @Serializable enum class CycleType(val value: String) {
-        Warmup("warmup"),
-        Exercise("exercise"),
-        Cooldown("cooldown")
+    enum class CycleType {
+        warmup,
+        exercise,
+        cooldown
     }
     @Serializable open class FullCycle (
         val id: Long,
@@ -160,9 +161,9 @@ object Models {
         val exercise: FullExercise
     )
 
-    @Serializable enum class Direction(val value: String) {
-        Ascending("asc"),
-        Descending("desc")
+    @Serializable enum class Direction {
+        asc,
+        desc
 
     }
     @Serializable class SearchResult<T> (
