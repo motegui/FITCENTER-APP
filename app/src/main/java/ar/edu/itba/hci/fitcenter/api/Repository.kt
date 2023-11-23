@@ -79,7 +79,6 @@ object ApiRepository {
         val response = client.get("$BASE_URL/api/routines/$routineId/cycles") {
             header(HttpHeaders.Authorization, "bearer $sessionToken")
             parameter("size", Int.MAX_VALUE)
-            parameter("page", 1)
         }
         return parse(response)
     }
@@ -91,7 +90,6 @@ object ApiRepository {
         val response = client.get("$BASE_URL/api/cycles/$cycleId/exercises") {
             header(HttpHeaders.Authorization, "bearer $sessionToken")
             parameter("size", Int.MAX_VALUE)
-            parameter("page", 1)
         }
         return parse(response)
     }
@@ -113,10 +111,9 @@ object ApiRepository {
     suspend fun fetchRoutines(
         sessionToken: String
     ): Models.SearchResult<Models.FullRoutine> {
-        val response = client.get("$BASE_URL/api/routines") {
+        val response = client.get("$BASE_URL/api/users/current/routines") {
             header(HttpHeaders.Authorization, "bearer $sessionToken")
             parameter("size", Int.MAX_VALUE)
-            parameter("page", 1)
         }
         return parse(response)
     }

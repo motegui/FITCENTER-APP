@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -14,11 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import ar.edu.itba.hci.fitcenter.RoutineSampleData
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.components.RoutineSearch
 import ar.edu.itba.hci.fitcenter.components.polyvalentRoutineList
 import ar.edu.itba.hci.fitcenter.api.Store
+import ar.edu.itba.hci.fitcenter.components.RoutinesListEffect
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
 
@@ -26,24 +24,12 @@ import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 fun FindWorkouts(navController: NavController? = null, store: Store? = null) {
     var routines by remember {
         mutableStateOf(
-            if (store != null) null else RoutineSampleData.sportsRoutines
+            if (store != null) null
+            else RoutineSampleData.sportsRoutines
         )
     }
 
-    LaunchedEffect(store) {
-        if (store == null) return@LaunchedEffect
-        routines = null
-        try {
-            routines = store.fetchRoutines()
-        } catch (_: Exception) {
-            store.logout()
-            navController?.navigate("login") {
-                popUpTo(navController.graph.findStartDestination().id) {
-                    saveState = true
-                }
-            }
-        }
-    }
+    RoutinesListEffect(navController, store) { routines = it }
 
     RoutineSearch(
         if (routines != null) polyvalentRoutineList(

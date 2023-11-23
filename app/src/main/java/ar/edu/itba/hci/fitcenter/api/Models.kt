@@ -81,8 +81,8 @@ object Models {
         val score: Int,
         val isPublic: Boolean,
         val difficulty: Difficulty,
-        val category: FullCategory,
-        val user: PublicUser,
+        val category: FullCategory?,
+        val user: PublicUser?,
         val metadata: JsonObject?
     ) {
         val isFavorite: Boolean
