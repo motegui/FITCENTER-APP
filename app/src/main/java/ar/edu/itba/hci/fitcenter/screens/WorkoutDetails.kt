@@ -424,13 +424,13 @@ fun startRoutine(
     val gson = GsonBuilder().create()
     val megaRoutineJson = gson.toJson(megaRoutine)
     navController.navigate(
-        "execute-workout/{detailed}/{mega-routine}"
+        "execute-workout/?detailedMode={detailedMode}&megaRoutineJson={megaRoutineJson}"
             .replace(
-                oldValue = "{detailed}",
+                oldValue = "{detailedMode}",
                 newValue = isDetailed.toString()
             )
             .replace(
-                oldValue = "{mega-routine}",
+                oldValue = "{megaRoutineJson}",
                 newValue = megaRoutineJson
             )
     )

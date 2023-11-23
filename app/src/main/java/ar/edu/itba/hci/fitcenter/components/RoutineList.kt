@@ -72,9 +72,9 @@ fun RoutineCard(
                         val megaRoutine = Models.MegaRoutine(store, rt)
                         val megaRoutineJson = gson.toJson(megaRoutine)
                         navController?.navigate(
-                            "workout-details/{mega-routine}"
+                            "workout-details/?megaRoutineJson={megaRoutineJson}"
                                 .replace(
-                                    oldValue = "{mega-routine}",
+                                    oldValue = "{megaRoutineJson}",
                                     newValue = megaRoutineJson
                                 )
                         )
