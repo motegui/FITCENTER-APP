@@ -1,7 +1,6 @@
 package ar.edu.itba.hci.fitcenter.screens
 
 import android.os.CountDownTimer
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -26,7 +24,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -42,21 +39,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ar.edu.itba.hci.fitcenter.R
-import ar.edu.itba.hci.fitcenter.RoutineSampleData
 import ar.edu.itba.hci.fitcenter.SampleData
 import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
 @Composable
 fun CountdownTimer(initialTimeSeconds: Int) {
-    var currentTime by remember { mutableStateOf(initialTimeSeconds) }
+    var currentTime by remember { mutableIntStateOf(initialTimeSeconds) }
     var isRunning by remember { mutableStateOf(false) }
 
     var timer: CountDownTimer? by remember { mutableStateOf(null) }
 
-    var timeInput by remember { mutableStateOf("") }
+//    var timeInput by remember { mutableStateOf("") }
 
-    val density = LocalDensity.current.density
+//    val density = LocalDensity.current.density
 
     fun startTimer() {
         timer = object : CountDownTimer(currentTime * 1000L, 1000) {
