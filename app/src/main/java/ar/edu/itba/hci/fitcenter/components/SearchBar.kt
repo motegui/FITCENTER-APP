@@ -8,14 +8,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
-//import androidx.compose.material3.HorizontalDivider
-//import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -153,8 +152,8 @@ fun RoutineSearchPortrait(routines: List<Models.FullRoutine>?, navController: Na
                     filteredRoutines = polyvalentRoutineList(routines, sortingCriterion)
                 }
             )
-            HorizontalDivider(
-                modifier = Modifier.padding(bottom = 12.dp),
+            Divider(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
                 thickness = 2.dp,
                 color = Color.LightGray
             )
@@ -223,12 +222,14 @@ fun RoutineSearchLandscape(routines: List<Models.FullRoutine>?, navController: N
                 )
             }
 
-            // Vertical Divider
-//            VerticalDivider(
-//                modifier = Modifier.padding(horizontal = 12.dp),
-//                thickness = 2.dp,
-//                color = Color.LightGray
-//            )
+
+            Divider(
+                modifier = Modifier
+                    .padding(horizontal = 12.dp)
+                    .fillMaxHeight()
+                    .width(2.dp), // Adjust the width of the divider as needed
+                color = Color.LightGray // You can set the color of the divider
+            )
 
 
             // Column for RoutineList
