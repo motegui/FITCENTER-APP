@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="my_workouts">Mis rutinas</string>
-    <string name="find_workouts">Buscinar rutinas</string>
+    <string name="find_workouts">Buscar rutinas</string>
     <string name="profile">Perfil</string>
     <string name="login">Inicio de sesión</string>
     <string name="go_back">Ir atrás</string>
@@ -11,13 +11,13 @@
     <string name="please_wait">Espere</string>
     <string name="execute_routine">Ejecutar Rutina</string>
     <string name="workout">Workout</string>
-    <string name="difficulty">Difficulty</string>
-    <string name="category">Category</string>
-    <string name="date">Date</string>
+    <string name="difficulty">Dificultad</string>
+    <string name="category">Categoría</string>
+    <string name="date">Fecha</string>
     <string name="equipment">Equipment</string>
     <string name="start">Start</string>
-    <string name="detailed_mode">Detailed Mode</string>
-    <string name="detailed_description">Shows exercises with description and images</string>
+    <string name="detailed_mode">Modo Detallado</string>
+    <string name="detailed_description">Muestra los ejercicios con descripciones e imagenes</string>
     <string name="pause">Pausar</string>
     <string name="exit">Exit</string>
     <string name="quit">Quit</string>
