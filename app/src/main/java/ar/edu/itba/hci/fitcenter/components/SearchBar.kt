@@ -154,16 +154,19 @@ fun RoutineSearchPortrait(routines: List<Models.FullRoutine>?, navController: Na
                 }
             )
             Divider(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 12.dp),
                 thickness = 2.dp,
                 color = Color.LightGray
             )
-
-            RoutineList(
-                routines = filteredRoutines!!,
-                navController = navController,
-                store = store
-            )
+            if (filteredRoutines != null) {
+                RoutineList(
+                    routines = filteredRoutines!!,
+                    navController = navController,
+                    store = store
+                )
+            }
         }
     } else {
         CircularProgressIndicator()
