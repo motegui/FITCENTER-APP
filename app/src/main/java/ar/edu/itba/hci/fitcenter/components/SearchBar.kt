@@ -12,10 +12,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -60,6 +64,20 @@ fun SearchBar(
         )
     }
 
+    val trailingIcon = @Composable {
+        IconButton(onClick = {
+            onValueChange("")
+            onSearch("")
+            focusManager.clearFocus()
+        }) {
+            Icon(
+                Icons.Default.Cancel,
+                contentDescription = "Cancel",
+                tint = MaterialTheme.colorScheme.secondary
+            )
+        }
+    }
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -79,6 +97,7 @@ fun SearchBar(
                     isFocused = it.isFocused
                 },
             leadingIcon = leadingIcon,
+            trailingIcon = { if (value.isNotEmpty()) trailingIcon },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(
                 onSearch = {
@@ -91,19 +110,6 @@ fun SearchBar(
             visualTransformation = VisualTransformation.None,
 
         )
-        // Cancel button
-        if (isFocused) {
-            TextButton(
-                onClick = {
-                    onValueChange("")
-                    onSearch("")
-                    focusManager.clearFocus()
-                },
-                modifier = Modifier.padding(start = 8.dp)
-            ) {
-                Text(text = "Cancel", color = MaterialTheme.colorScheme.primary)
-            }
-        }
     }
 }
 
