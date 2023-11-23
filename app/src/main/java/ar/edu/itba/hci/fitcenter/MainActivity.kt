@@ -43,7 +43,9 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -150,7 +152,12 @@ fun MainScreen(store: Store? = null) {
     LaunchedEffect(store) {
         if (store?.isLoggedIn() == true) {
             currentRoute = "my-workouts"
-            store.currentUser()  // Cache current user in memory
+            try {
+                store.currentUser()  // Cache current user in memory
+            } catch (error: Exception) {
+                store.logout()  // Session token may have expired
+                currentRoute = "login"
+            }
         } else {
             currentRoute = "login"
         }
