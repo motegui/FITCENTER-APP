@@ -24,7 +24,12 @@ import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
 @Composable
 fun MyWorkouts(navController: NavController? = null, store: Store? = null) {
-    var routines by remember { mutableStateOf<List<Models.FullRoutine>?>(RoutineSampleData.sportsRoutines) }
+    var routines by remember {
+        mutableStateOf(
+            if (store != null) null else RoutineSampleData.sportsRoutines
+        )
+    }
+
     LaunchedEffect(store) {
         if (store == null) return@LaunchedEffect
         routines = null
@@ -39,12 +44,14 @@ fun MyWorkouts(navController: NavController? = null, store: Store? = null) {
             }
         }
     }
+
     RoutineSearch(
         if (routines != null) polyvalentRoutineList(
             routines = routines!!,
             favorites = true
         ) else null,
-        navController = navController
+        navController = navController,
+        store = store
     )
 }
 

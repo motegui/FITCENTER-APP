@@ -177,10 +177,14 @@ enum class SortingCriterion {
 }
 
 @Composable
-fun RoutineList(routines: List<Models.FullRoutine>, navController: NavController? = null) {
+fun RoutineList(
+    routines: List<Models.FullRoutine>,
+    navController: NavController? = null,
+    store: Store? = null
+) {
     LazyColumn {
         items(routines) { routine ->
-            RoutineCard(routine, navController)
+            RoutineCard(routine, navController, store)
         }
     }
 }

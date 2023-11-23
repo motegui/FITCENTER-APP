@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ar.edu.itba.hci.fitcenter.RoutineSampleData
 import ar.edu.itba.hci.fitcenter.api.Models
+import ar.edu.itba.hci.fitcenter.api.Store
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
 
@@ -107,7 +108,7 @@ fun SearchBar(
 }
 
 @Composable
-fun RoutineSearchPortrait(routines: List<Models.FullRoutine>?, navController: NavController? = null) {
+fun RoutineSearchPortrait(routines: List<Models.FullRoutine>?, navController: NavController? = null, store: Store? = null) {
     var searchQuery by remember { mutableStateOf("") }
     var filteredRoutines by remember { mutableStateOf(routines)}
     var sortingCriterion by remember { mutableStateOf(SortingCriterion.NAME) }
@@ -158,7 +159,11 @@ fun RoutineSearchPortrait(routines: List<Models.FullRoutine>?, navController: Na
                 color = Color.LightGray
             )
 
-            RoutineList(routines = filteredRoutines!!, navController = navController)
+            RoutineList(
+                routines = filteredRoutines!!,
+                navController = navController,
+                store = store
+            )
         }
     } else {
         CircularProgressIndicator()
@@ -167,7 +172,11 @@ fun RoutineSearchPortrait(routines: List<Models.FullRoutine>?, navController: Na
 
 
 @Composable
-fun RoutineSearchLandscape(routines: List<Models.FullRoutine>?, navController: NavController? = null) {
+fun RoutineSearchLandscape(
+    routines: List<Models.FullRoutine>?,
+    navController: NavController? = null,
+    store: Store? = null
+) {
     var searchQuery by remember { mutableStateOf("") }
     var filteredRoutines by remember { mutableStateOf(routines) }
     var sortingCriterion by remember { mutableStateOf(SortingCriterion.NAME) }
@@ -239,7 +248,11 @@ fun RoutineSearchLandscape(routines: List<Models.FullRoutine>?, navController: N
                     .fillMaxHeight()
                     .weight(2f)
             ) {
-                RoutineList(routines = filteredRoutines!!, navController = navController)
+                RoutineList(
+                    routines = filteredRoutines!!,
+                    navController = navController,
+                    store = store
+                )
             }
         }
     } else {
@@ -248,14 +261,18 @@ fun RoutineSearchLandscape(routines: List<Models.FullRoutine>?, navController: N
 }
 
 @Composable
-fun RoutineSearch(routines: List<Models.FullRoutine>?, navController: NavController? = null) {
+fun RoutineSearch(
+    routines: List<Models.FullRoutine>?,
+    navController: NavController? = null,
+    store: Store? = null
+) {
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     if (isLandscape) {
-        RoutineSearchLandscape(routines = routines, navController = navController)
+        RoutineSearchLandscape(routines, navController, store)
     } else {
-        RoutineSearchPortrait(routines = routines, navController = navController)
+        RoutineSearchPortrait(routines, navController, store)
     }
 }
 @Preview(name = "Light Mode")
