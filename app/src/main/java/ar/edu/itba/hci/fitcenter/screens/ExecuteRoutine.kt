@@ -155,8 +155,12 @@ fun Timer(seconds: Int, onExpire: () -> Unit) {
 
 
 @Composable
-fun Execution(navController: NavController? = null, routine: Models.MegaRoutine? = null, detailed: Boolean) {
-    val cycles: List<Models.MegaCycle> = routine!!.megaCycles
+fun Execution(
+    navController: NavController? = null,
+    routine: Models.MegaRoutine = SampleData.megaRoutine,
+    detailed: Boolean
+) {
+    val cycles: List<Models.MegaCycle> = routine.megaCycles
     var currentCycle: Models.FullCycle? = cycles[0]
     var cycleExercises: List<Models.FullCycleExercise> = cycles[0].cycleExercises
     var cycleNum by remember { mutableIntStateOf(0) }
@@ -191,7 +195,6 @@ fun Execution(navController: NavController? = null, routine: Models.MegaRoutine?
             }
 
             // Title
-
             cycleState?.let {
                 Text(
                     text = it.name,
@@ -417,25 +420,26 @@ fun Execution(navController: NavController? = null, routine: Models.MegaRoutine?
 }
 
 @Composable
-fun ExecutionPreview(detailed: Boolean, navController: NavController? = null) {
+fun ExecutionPreview(detailed: Boolean) {
     FitcenterTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = Color.Black
         ) {
-            //Execution(navController)
+            Execution(detailed = detailed)
         }
     }
 }
 
 
+@Preview
 @Composable
-fun SimpleExecutionPreview(navController: NavController? = null) {
-    ExecutionPreview(detailed = false, navController)
+fun SimpleExecutionPreview() {
+    ExecutionPreview(detailed = false)
 }
 
-
+@Preview
 @Composable
-fun DetailedExecutionPreview(navController: NavController? = null) {
-    ExecutionPreview(detailed = true, navController)
+fun DetailedExecutionPreview() {
+    ExecutionPreview(detailed = true)
 }
