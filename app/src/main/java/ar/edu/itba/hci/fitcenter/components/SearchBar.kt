@@ -97,7 +97,7 @@ fun SearchBar(
                     isFocused = it.isFocused
                 },
             leadingIcon = leadingIcon,
-            trailingIcon = { if (value.isNotEmpty()) trailingIcon },
+            trailingIcon = { if (value.isNotEmpty()) trailingIcon() },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(
                 onSearch = {
