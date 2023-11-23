@@ -50,19 +50,22 @@ object ApiRepository {
     }
 
     suspend fun login(credentials: Models.Credentials): Models.AuthenticationToken {
-        val response = client.post("$BASE_URL/users/login") {
-            setBody(body = credentials)
+        val response = client.post("$BASE_URL/api/users/login") {
+            setBody(credentials)
         }
         return parse(response)
     }
 
-    suspend fun logout() {
-        parse<Unit>(client.post("$BASE_URL/users/logout"))
+    suspend fun logout(sessionToken: String) {
+        val response = client.post("$BASE_URL/api/users/logout") {
+            header(HttpHeaders.Authorization, "bearer $sessionToken")
+        }
+        parse<Unit>(response)
     }
 
     suspend fun fetchCurrentUser(sessionToken: String): Models.FullUser {
-        val response = client.get("$BASE_URL/users/current") {
-            header(HttpHeaders.Authorization, sessionToken)
+        val response = client.get("$BASE_URL/api/users/current") {
+            header(HttpHeaders.Authorization, "bearer $sessionToken")
         }
         return parse(response)
     }
@@ -71,8 +74,8 @@ object ApiRepository {
         sessionToken: String,
         routineId: Long,
     ): Models.SearchResult<Models.FullCycle> {
-        val response = client.get("$BASE_URL/routines/$routineId/cycles") {
-            header(HttpHeaders.Authorization, sessionToken)
+        val response = client.get("$BASE_URL/api/routines/$routineId/cycles") {
+            header(HttpHeaders.Authorization, "bearer $sessionToken")
             parameter("size", Int.MAX_VALUE)
             parameter("page", 1)
         }
@@ -83,8 +86,8 @@ object ApiRepository {
         sessionToken: String,
         cycleId: Long,
     ): Models.SearchResult<Models.FullCycleExercise> {
-        val response = client.get("$BASE_URL/cycles/$cycleId/exercises") {
-            header(HttpHeaders.Authorization, sessionToken)
+        val response = client.get("$BASE_URL/api/cycles/$cycleId/exercises") {
+            header(HttpHeaders.Authorization, "bearer $sessionToken")
             parameter("size", Int.MAX_VALUE)
             parameter("page", 1)
         }
@@ -92,15 +95,15 @@ object ApiRepository {
     }
 
     suspend fun addFavorite(sessionToken: String, routineId: Long) {
-        val response = client.post("$BASE_URL/favourites/$routineId") {
-            header(HttpHeaders.Authorization, sessionToken)
+        val response = client.post("$BASE_URL/api/favourites/$routineId") {
+            header(HttpHeaders.Authorization, "bearer $sessionToken")
         }
         return parse(response)
     }
 
     suspend fun removeFavorite(sessionToken: String, routineId: Long) {
-        val response = client.delete("$BASE_URL/favourites/$routineId") {
-            header(HttpHeaders.Authorization, sessionToken)
+        val response = client.delete("$BASE_URL/api/favourites/$routineId") {
+            header(HttpHeaders.Authorization, "bearer $sessionToken")
         }
         return parse(response)
     }
@@ -108,8 +111,8 @@ object ApiRepository {
     suspend fun fetchRoutines(
         sessionToken: String
     ): Models.SearchResult<Models.FullRoutine> {
-        val response = client.get("$BASE_URL/routines") {
-            header(HttpHeaders.Authorization, sessionToken)
+        val response = client.get("$BASE_URL/api/routines") {
+            header(HttpHeaders.Authorization, "bearer $sessionToken")
             parameter("size", Int.MAX_VALUE)
             parameter("page", 1)
         }
