@@ -1,18 +1,19 @@
 package ar.edu.itba.hci.fitcenter.screens
 
+import android.graphics.drawable.Drawable
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
@@ -36,6 +37,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -43,7 +48,36 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import ar.edu.itba.hci.fitcenter.Placeholder
 import ar.edu.itba.hci.fitcenter.R
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
+import coil.request.ImageRequest
+import coil.compose.AsyncImage
 import kotlinx.coroutines.launch
+
+@Composable
+private fun Avatar(imageUrl: String? = null) {
+    Surface(
+        modifier = Modifier.size(200.dp),
+        shape = CircleShape
+    ) {
+        if (imageUrl != null) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(imageUrl)
+                    .crossfade(true)
+                    .build(),
+                placeholder = rememberVectorPainter(Icons.Default.AccountCircle),
+                contentDescription = "Avatar",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+        } else {
+            Icon(
+                Icons.Default.AccountCircle,
+                contentDescription = "Avatar",
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+    }
+}
 
 @Composable
 fun Profile(navController: NavController? = null, store: Store? = null) {
@@ -57,15 +91,13 @@ fun Profile(navController: NavController? = null, store: Store? = null) {
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 28.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Icon(
-            Icons.Default.AccountCircle,  // TODO: Show profile picture
-            contentDescription = "User Icon",
-            modifier = Modifier.size(100.dp)
-        )
+        Avatar(user.avatarUrl)
 
         // Add four rectangles with rounded corners
         for (i in 1..3) {
