@@ -94,19 +94,19 @@ fun FitcenterNavHost(navController: NavHostController, store: Store? = null, sta
         composable("profile") { Profile(navController, store) }
         composable("my-workouts") { MyWorkouts(navController, store) }
         composable("find-workouts") { FindWorkouts(navController, store) }
-        composable("workout-details/{routine}") { navBackStackEntry ->
+        composable("workout-details/{mega-routine}") { navBackStackEntry ->
             // Extract encoded Routine object from route
             val gson = GsonBuilder().create()
-            val routineJson = navBackStackEntry.arguments?.getString("routine")
-            val routine = gson.fromJson(routineJson, Models.FullRoutine::class.java)
-            WorkoutDetails(navController, store, routine)
+            val megaRoutineJson = navBackStackEntry.arguments?.getString("mega-routine")
+            val megaRoutine = gson.fromJson(megaRoutineJson, Models.MegaRoutine::class.java)
+            WorkoutDetails(navController, store, megaRoutine)
         }
         composable("execute-workout/{detailed}/{mega-routine}") { navBackStackEntry ->
             val gson = GsonBuilder().create()
             val megaRoutineJson = navBackStackEntry.arguments?.getString("mega-routine")
-            val routine = gson.fromJson(megaRoutineJson, Models.MegaRoutine::class.java)
+            val megaRoutine = gson.fromJson(megaRoutineJson, Models.MegaRoutine::class.java)
             val detailed = navBackStackEntry.arguments?.getBoolean("detailed") ?: false
-            Execution(navController, routine = routine, detailed = detailed)
+            Execution(navController, routine = megaRoutine, detailed = detailed)
         }
     }
 }
