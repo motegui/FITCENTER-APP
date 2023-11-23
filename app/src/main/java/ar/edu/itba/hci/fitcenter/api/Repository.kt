@@ -1,5 +1,6 @@
 package ar.edu.itba.hci.fitcenter.api
 
+import android.util.Log
 import ar.edu.itba.hci.fitcenter.api.Client.client
 import kotlin.math.pow
 import io.github.cdimascio.dotenv.dotenv
@@ -26,6 +27,7 @@ object ApiRepository {
                 filename = "env"
             }
             val url = dotenv["API_URL"] ?: return defaultValue
+            Log.d("ApiRepository", url)
             return url.replace("\"", "").replace("'", "")
         } catch (error: Exception) {
             return defaultValue
