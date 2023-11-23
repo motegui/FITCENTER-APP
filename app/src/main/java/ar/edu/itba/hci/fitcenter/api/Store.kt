@@ -30,6 +30,7 @@ class Store private constructor(dataStore: DataStore<Preferences>) {
 
     private val storage = StorageRepository.getStorageRepository(dataStore)
     private var user: Models.FullUser? = null
+    private var routines: List<Models.FullRoutine>? = null
 
 
     suspend fun login(credentials: Models.Credentials) {
@@ -77,10 +78,13 @@ class Store private constructor(dataStore: DataStore<Preferences>) {
         }.sortedBy { it.order }
     }
 
-    suspend fun fetchRoutines(): List<Models.FullRoutine> =
-        collectSearchResult {
+    suspend fun fetchRoutines(): List<Models.FullRoutine> {
+        if (routines != null) return routines!!
+        routines = collectSearchResult {
             ApiRepository.fetchRoutines(storage.get(Keys.SESSION_TOKEN))
         }
+        return routines!!
+    }
 
     suspend fun fetchRoutine(routineId: Long): Models.FullRoutine =
         ApiRepository.fetchRoutine(storage.get(Keys.SESSION_TOKEN), routineId)
