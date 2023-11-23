@@ -261,8 +261,7 @@ fun Login(navController: NavController? = null, store: Store? = null) {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = MaterialTheme.colorScheme.secondary)
-                .safeDrawingPadding()
-                .padding(bottom = 20.dp),
+                .padding(top=28.dp, bottom = 20.dp),
             contentAlignment = Alignment.Center,
         ) {
             Text(
