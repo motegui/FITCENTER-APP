@@ -61,6 +61,7 @@ fun RoutineCard(
     onCardClick: (Int) -> Unit
 ) {
     var isFavorite by remember { mutableStateOf(rt.isFavorite) }
+    var clicked by remember { mutableStateOf(false) }
 
     val scope = rememberCoroutineScope()
 
