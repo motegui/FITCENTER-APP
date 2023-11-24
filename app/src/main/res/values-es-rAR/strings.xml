@@ -29,5 +29,6 @@
     <string name="score">Clasificación</string>
     <string name="order_by">Ordenar por</string>
     <string name="search">Buscar</string>
-    <string name="empty_favorites">Las rutinas que marcás como favoritos se aparecerán acá.</string>
+    <string name="empty_favorites">Ve a nuestra pagina para crear nuevas rutinas</string>
+    <string name="no_selected_routine">Seleccione una rutina de la lista para visualizarlo</string>
 </resources>

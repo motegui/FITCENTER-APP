@@ -23,8 +23,25 @@ import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.api.Store
 import ar.edu.itba.hci.fitcenter.screens.WorkoutDetails
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
+import androidx.compose.ui.platform.LocalContext
 
-
+@Composable
+fun isTablet(): Boolean {
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+    // Obtener el ancho de la pantalla en pulgadas
+    val screenWidthInInches = with(LocalContext.current.resources.displayMetrics) {
+        (widthPixels / xdpi).toDouble()
+    }
+    // Establecer un umbral para determinar si es una tablet
+    return if (isLandscape) {
+        // En orientación apaisada, se puede ajustar según tus necesidades
+        screenWidthInInches >= 7
+    } else {
+        // En orientación vertical, se puede ajustar según tus necesidades
+        screenWidthInInches >= 5
+    }
+}
 @Composable
 fun DetectDeviceTypeScreen(routines: List<Models.FullRoutine>,
                            navController: NavController? = null,
@@ -41,6 +58,8 @@ fun DetectDeviceTypeScreen(routines: List<Models.FullRoutine>,
         RoutineSearch(routines, navController, store, favorites)
     }
 }
+
+
 
 @Composable
 fun TabletScreen(

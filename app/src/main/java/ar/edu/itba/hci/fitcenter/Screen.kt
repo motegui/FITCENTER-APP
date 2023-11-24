@@ -25,6 +25,7 @@ import ar.edu.itba.hci.fitcenter.screens.MyWorkouts
 import ar.edu.itba.hci.fitcenter.screens.Profile
 import ar.edu.itba.hci.fitcenter.screens.ProfileL
 import ar.edu.itba.hci.fitcenter.screens.WorkoutDetails
+import ar.edu.itba.hci.fitcenter.screens.MyWorkoutsT
 
 data class Screen(
     @StringRes val resourceId: Int,
@@ -90,7 +91,7 @@ val screens = NonNullableMap(mapOf(
 const val uri = "www.fitcenter.com"
 
 @Composable
-fun FitcenterNavHost(navController: NavHostController, store: Store? = null, startDestination: String, modifier: Modifier, isLandscape: Boolean) {
+fun FitcenterNavHost(navController: NavHostController, store: Store? = null, startDestination: String, modifier: Modifier, isLandscape: Boolean, isDeviceTablet: Boolean) {
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -102,7 +103,12 @@ fun FitcenterNavHost(navController: NavHostController, store: Store? = null, sta
             composable("profile") { ProfileL(navController, store) }}
         else{
             composable("profile") { Profile(navController, store) }}
-        composable("my-workouts") { MyWorkouts(navController, store) }
+        if(isDeviceTablet){
+            composable("my-workouts") { MyWorkoutsT(navController, store) }
+        }
+        else{
+            composable("my-workouts") { MyWorkouts(navController, store) }
+        }
         composable("find-workouts") { FindWorkouts(navController, store) }
         composable(
             route = "workout-details/{id}",

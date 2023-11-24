@@ -56,6 +56,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import ar.edu.itba.hci.fitcenter.api.Store
 import ar.edu.itba.hci.fitcenter.screens.*
+import ar.edu.itba.hci.fitcenter.components.isTablet
 
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "app")
@@ -142,7 +143,7 @@ fun SideBar(
 fun MainScreen(store: Store? = null) {
     val navController = rememberNavController()
     var currentRoute by remember { mutableStateOf("loading") }
-
+    val isDeviceTablet = isTablet()
     // Detect the current screen orientation
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
@@ -256,7 +257,8 @@ fun MainScreen(store: Store? = null) {
                     store = store,
                     startDestination = currentRoute,
                     modifier = Modifier.padding(innerPadding),
-                    isLandscape  = isLandscape
+                    isLandscape  = isLandscape,
+                    isDeviceTablet = isDeviceTablet
                 )
             }
 
@@ -269,7 +271,8 @@ fun MainScreen(store: Store? = null) {
                     store = store,
                     startDestination = currentRoute,
                     modifier = Modifier.padding(innerPadding),
-                    isLandscape  = isLandscape
+                    isLandscape  = isLandscape,
+                    isDeviceTablet = isDeviceTablet
                 )
             }
         }
