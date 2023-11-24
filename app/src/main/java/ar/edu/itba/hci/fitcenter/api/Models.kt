@@ -92,10 +92,10 @@ object Models {
             get() {
                 return metadata?.equipment ?: emptyList()
             }
-//        val category: String?
-//            get() {
-//                return metadata?.category
-//            }
+        val metadataCategory: String?
+            get() {
+                return metadata?.category
+            }
     }
 
     @Serializable open class RoutineMetadata (
