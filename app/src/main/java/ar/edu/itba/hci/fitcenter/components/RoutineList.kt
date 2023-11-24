@@ -60,7 +60,7 @@ fun RoutineCard(
     tablet: Boolean? = false,
     onCardClick: (Long) -> Unit
 ) {
-    var isFavorite by remember { mutableStateOf(rt.isFavorite) }
+    //var isFavorite by remember { mutableStateOf(rt.isFavorite) }
     var clicked by remember { mutableStateOf(false) }
 
     val scope = rememberCoroutineScope()
@@ -113,10 +113,9 @@ fun RoutineCard(
                         .padding(top = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    DifficultyRating(difficulty = rt.difficulty)
-                    if (rt.category != null) {
+                    if (rt.metadataCategory != null) {
                         Text(
-                            text = rt.category.name,
+                            text = rt?.metadataCategory!!,
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.padding(start = 6.dp)
                         )
@@ -124,23 +123,23 @@ fun RoutineCard(
                 }
 
             }
-
+            DifficultyRating(difficulty = rt.difficulty)
             // Heart icon
-            IconButton(
-                onClick = {
-                    isFavorite = !isFavorite
-                    scope.launch {
-                        store?.setFavorite(rt.id, isFavorite)
-                    }
-                },
-                modifier = Modifier.align(Alignment.CenterVertically)
-            ) {
-                Icon(
-                    imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                    tint = if (isFavorite) Color(0xFFFF7F7F) else Color.Gray,
-                    contentDescription = "Favorite"
-                )
-            }
+//            IconButton(
+//                onClick = {
+//                    isFavorite = !isFavorite
+//                    scope.launch {
+//                        store?.setFavorite(rt.id, isFavorite)
+//                    }
+//                },
+//                modifier = Modifier.align(Alignment.CenterVertically)
+//            ) {
+//                Icon(
+//                    imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+//                    tint = if (isFavorite) Color(0xFFFF7F7F) else Color.Gray,
+//                    contentDescription = "Favorite"
+//                )
+//            }
         }
     }
 }

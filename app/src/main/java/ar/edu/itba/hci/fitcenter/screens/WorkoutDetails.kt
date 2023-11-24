@@ -184,7 +184,7 @@ fun CycleCard(megaCycle: Models.MegaCycle) {
 
 @Composable
 fun Title(routine: Models.FullRoutine? = null, onFavoriteChanged: (Boolean) -> Unit) {
-    var isFavorite by remember { mutableStateOf(routine?.isFavorite ?: false) }
+    //var isFavorite by remember { mutableStateOf(routine?.isFavorite ?: false) }
     Surface(
         shape = MaterialTheme.shapes.medium,
         color = Color.LightGray,
@@ -209,23 +209,23 @@ fun Title(routine: Models.FullRoutine? = null, onFavoriteChanged: (Boolean) -> U
                         fontWeight = FontWeight.Bold, // Hacer el texto en negrita
                         color = Color.Black
                     ),
-                    modifier = Modifier.weight(1f) // Utilizar weight para ocupar el espacio disponible
+                    modifier = Modifier.weight(1f).padding(top = 15.dp, bottom = 15.dp) // Utilizar weight para ocupar el espacio disponible
                 )
 
                 // Corazón a la derecha
-                IconButton(
-                    onClick = {
-                        isFavorite = !isFavorite
-                        onFavoriteChanged(isFavorite)
-                    },
-                    modifier = Modifier.align(Alignment.CenterVertically)
-                ) {
-                    Icon(
-                        imageVector = if (isFavorite == true) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                        tint = if (isFavorite == true) Color(0xFFFF7F7F) else Color.Black,
-                        contentDescription = "Favorite"
-                    )
-                }
+//                IconButton(
+//                    onClick = {
+//                        isFavorite = !isFavorite
+//                        onFavoriteChanged(isFavorite)
+//                    },
+//                    modifier = Modifier.align(Alignment.CenterVertically)
+//                ) {
+//                    Icon(
+//                        imageVector = if (isFavorite == true) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+//                        tint = if (isFavorite == true) Color(0xFFFF7F7F) else Color.Black,
+//                        contentDescription = "Favorite"
+//                    )
+//                }
             }
         }
     }
