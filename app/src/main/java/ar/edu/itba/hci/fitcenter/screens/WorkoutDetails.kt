@@ -29,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -388,10 +389,13 @@ fun DetailedModeSetting(isDetailed: MutableState<Boolean>) {
                 .padding(top = 1.dp, start = 16.dp, end = 6.dp, bottom = 1.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column {
+            // Columna con texto
+            Column(
+                modifier = Modifier
+                    .weight(1f) // Ocupa el espacio disponible
+            ) {
                 Text(
                     text = stringResource(R.string.detailed_mode),
-
                     style = MaterialTheme.typography.titleMedium.copy(
                         fontWeight = FontWeight.Bold,
                         color = Color.Black
@@ -401,8 +405,9 @@ fun DetailedModeSetting(isDetailed: MutableState<Boolean>) {
                     text = stringResource(R.string.detailed_description),
                     style = MaterialTheme.typography.bodySmall
                 )
-
             }
+
+            // Checkbox
             Checkbox(
                 checked = isDetailed.value,
                 onCheckedChange = {
@@ -460,9 +465,10 @@ fun StartButton(
 fun WorkoutDetails(
     navController: NavController? = null,
     store: Store? = null,
-    routineId: Long
+    currentRoutineId: Long
 ) {
     var megaRoutine by remember { mutableStateOf<Models.MegaRoutine?>(null) }
+    var routineId by remember { mutableLongStateOf(currentRoutineId) }
     LaunchedEffect(store) {
         if (store == null) throw Exception("Store is missing")
         try {
