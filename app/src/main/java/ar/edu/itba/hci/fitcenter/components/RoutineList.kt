@@ -5,10 +5,8 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -29,10 +27,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -140,42 +134,9 @@ fun RoutineCard(
 }
 
 
-//Not used because of changes, but for now kept because could be partly re-used elsewhere
-@Composable
-fun ExerciseDetails(exercise: List<Models.FullExercise>) {
-    Column(modifier = Modifier.padding(6.dp)) {
-        for (e in exercise) {
-            Text(text = e.name, style = MaterialTheme.typography.titleMedium)
-            Text(buildAnnotatedString {
-                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                    append("Description: ")
-                }
-                append(e.detail)
-            }, style = MaterialTheme.typography.bodyMedium)
-            Text(buildAnnotatedString {
-                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                    append("Type: ")
-                }
-                append(e.type.toString())
-            }, style = MaterialTheme.typography.bodyMedium)
-
-            Text(buildAnnotatedString {
-                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                    append("Duration: ")
-                }
-                append(
-                    e.duration.toString()
-                )
-            }, style = MaterialTheme.typography.bodyMedium)
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-    }
-}
-
 enum class SortingCriterion {
     NAME,
     DATE,
-    SCORE,
     DIFFICULTY,
     CATEGORY
 }
@@ -205,7 +166,6 @@ fun polyvalentRoutineList(
     val sortedRoutines = when (sortingCriterion) {
         SortingCriterion.NAME -> myRoutines.sortedBy { it.name }
         SortingCriterion.DATE -> myRoutines.sortedByDescending { it.date }
-        SortingCriterion.SCORE -> myRoutines.sortedByDescending { it.score }
         SortingCriterion.DIFFICULTY -> myRoutines.sortedBy { it.difficulty.ordinal }
         SortingCriterion.CATEGORY -> myRoutines.sortedBy { it.category?.name }
     }

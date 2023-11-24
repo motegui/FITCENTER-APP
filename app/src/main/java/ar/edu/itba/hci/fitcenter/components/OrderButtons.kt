@@ -1,15 +1,15 @@
 package ar.edu.itba.hci.fitcenter.components
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -49,25 +49,6 @@ fun SortingButtons(
                 },
                 modifier = Modifier.weight(1f)
             )
-            SortingButton(
-                text = stringResource(R.string.score),
-                isSelected = sortingCriterion == SortingCriterion.SCORE,
-                onClick = {
-                    if (sortingCriterion == SortingCriterion.SCORE) {
-                        onSortingCriterionChanged(SortingCriterion.NAME)
-                    } else {
-                        onSortingCriterionChanged(SortingCriterion.SCORE)
-                    }
-                },
-                modifier = Modifier.weight(1f)
-            )
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
             SortingButton(
                 text = stringResource(R.string.difficulty),
                 isSelected = sortingCriterion == SortingCriterion.DIFFICULTY,
@@ -119,19 +100,10 @@ fun VerticalSortingButtons(
                     onSortingCriterionChanged(SortingCriterion.DATE)
                 }
             },
+            modifier = Modifier.requiredWidth(150.dp)
+
         )
         Spacer(modifier = Modifier.width(8.dp))
-        SortingButton(
-            text = stringResource(R.string.score),
-            isSelected = sortingCriterion == SortingCriterion.SCORE,
-            onClick = {
-                if (sortingCriterion == SortingCriterion.SCORE) {
-                    onSortingCriterionChanged(SortingCriterion.NAME)
-                } else {
-                    onSortingCriterionChanged(SortingCriterion.SCORE)
-                }
-            },
-        )
         SortingButton(
             text = stringResource(R.string.difficulty),
             isSelected = sortingCriterion == SortingCriterion.DIFFICULTY,
@@ -142,6 +114,8 @@ fun VerticalSortingButtons(
                     onSortingCriterionChanged(SortingCriterion.DIFFICULTY)
                 }
             },
+            modifier = Modifier.requiredWidth(150.dp)
+
         )
         Spacer(modifier = Modifier.width(8.dp))
         SortingButton(
@@ -154,6 +128,8 @@ fun VerticalSortingButtons(
                     onSortingCriterionChanged(SortingCriterion.CATEGORY)
                 }
             },
+            modifier = Modifier.requiredWidth(150.dp)
+
         )
     }
 }
@@ -170,7 +146,7 @@ fun SortingButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray
         ),
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.widthIn()
     ) {
         Text(
             text = text,
