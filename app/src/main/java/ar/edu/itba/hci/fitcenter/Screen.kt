@@ -72,7 +72,7 @@ val screens = NonNullableMap(mapOf(
         icon = Icons.Filled.Search
     ),
 
-    "execute" to Screen(
+    "execute-workout/?detailedMode={detailedMode}&megaRoutineJson={megaRoutineJson}" to Screen(
         resourceId = R.string.execute_routine,
         usesNav = false,
     ),
@@ -92,9 +92,17 @@ val screens = NonNullableMap(mapOf(
 const val uri = "www.fitcenter.com"
 
 var lastRoutineId: Long = 0
+var lastMegaRoutine: Models.MegaRoutine? = null
 
 @Composable
-fun FitcenterNavHost(navController: NavHostController, store: Store? = null, startDestination: String, modifier: Modifier, isLandscape: Boolean, isDeviceTablet: Boolean) {
+fun FitcenterNavHost(
+    navController: NavHostController,
+    store: Store? = null,
+    startDestination: String,
+    modifier: Modifier,
+    isLandscape: Boolean,
+    isDeviceTablet: Boolean
+) {
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -133,13 +141,22 @@ fun FitcenterNavHost(navController: NavHostController, store: Store? = null, sta
             lastRoutineId = routineId
         }
         composable(
-            "execute-workout/?detailedMode={detailedMode}&megaRoutineJson={megaRoutineJson}"
+            route = "execute-workout/?detailedMode={detailedMode}&megaRoutineJson={megaRoutineJson}",
+            arguments = listOf(
+                navArgument("detailedMode") { type = NavType.BoolType },
+                navArgument("megaRoutineJson") { type = NavType.StringType }
+            )
         ) { navBackStackEntry ->
             val gson = GsonBuilder().create()
             val megaRoutineJson = navBackStackEntry.arguments?.getString("megaRoutineJson")
-            val megaRoutine = gson.fromJson(megaRoutineJson, Models.MegaRoutine::class.java)
+            val megaRoutine = if (megaRoutineJson != null) {
+                gson.fromJson(megaRoutineJson, Models.MegaRoutine::class.java)
+            } else {
+                lastMegaRoutine ?: throw Exception("all hope is lost")
+            }
             val detailed = navBackStackEntry.arguments?.getBoolean("detailedMode") ?: false
-            Execution(navController, routine = megaRoutine, detailed = detailed)
+            Execution(navController, megaRoutine, detailed)
+            lastMegaRoutine = megaRoutine
         }
     }
 }

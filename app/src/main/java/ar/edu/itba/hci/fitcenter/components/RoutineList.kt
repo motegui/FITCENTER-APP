@@ -79,14 +79,11 @@ fun RoutineCard(
                         onCardClick(rt.id.toInt())
                         return@clickable
                     }
-                    if (store == null) return@clickable
-                    scope.launch {
-                        try {
-                            navController?.navigate("workout-details/${rt.id}")
-                        } catch (error: Exception) {
-                            throw Exception(error.message)
-                        }
-                    }
+                    if (store == null || clicked) return@clickable
+                    clicked = true
+                    val dest = "workout-details/${rt.id}"
+                    if (navController?.currentDestination?.route == dest) return@clickable
+                    navController?.navigate(dest)
                 }
                 .fillMaxWidth()
                 .padding(12.dp),

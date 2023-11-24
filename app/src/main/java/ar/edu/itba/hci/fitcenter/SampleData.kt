@@ -13,7 +13,6 @@ object SampleData {
         type = Models.ExerciseType.exercise,
         duration = 30,
         date = 1700517512,
-        metadata = JsonObject(content=mapOf())
     )
     val exercise2 = Models.FullExercise(
         id = 9001,
@@ -22,7 +21,6 @@ object SampleData {
         type = Models.ExerciseType.exercise,
         duration = 15,
         date = 1700517512,
-        metadata = JsonObject(content=mapOf())
     )
     val break1 = Models.FullExercise(
         id = 777,
@@ -31,7 +29,6 @@ object SampleData {
         type = Models.ExerciseType.rest,
         duration = 60,
         date = 1700517512,
-        metadata = JsonObject(content=mapOf())
     )
 
     val megaRoutine = Models.MegaRoutine(
@@ -56,7 +53,6 @@ object SampleData {
                 date = 1700517512,
                 lastActivity = 1700517512
             ),
-            metadata = JsonObject(content=mapOf()),
         ),
         megaCycles = listOf(
             Models.MegaCycle(
@@ -67,7 +63,6 @@ object SampleData {
                     type = Models.CycleType.warmup,
                     order = 999,
                     repetitions = 3,
-                    metadata = JsonObject(content=mapOf())
                 ),
                 cycleExercises = listOf(
                     Models.FullCycleExercise(
@@ -99,7 +94,6 @@ object SampleData {
                     type = Models.CycleType.exercise,
                     order = 999,
                     repetitions = 5,
-                    metadata = JsonObject(content=mapOf())
 
                 ),
                 cycleExercises = listOf(
@@ -138,7 +132,6 @@ object SampleData {
                     type = Models.CycleType.cooldown,
                     order = 999,
                     repetitions = 1,
-                    metadata = JsonObject(content=mapOf())
                 ),
                 cycleExercises = listOf(
                     Models.FullCycleExercise(

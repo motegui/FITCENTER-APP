@@ -129,7 +129,7 @@ fun CycleCard(megaCycle: Models.MegaCycle) {
         modifier = Modifier
             .animateContentSize()
             .padding(top = 5.dp, start = 16.dp, end = 16.dp, bottom = 5.dp)
-            .height(42.dp)
+            .height(46.dp)
             .fillMaxWidth()
             .clickable { isCycleExpanded = !isCycleExpanded }
     ) {
@@ -178,8 +178,8 @@ fun CycleCard(megaCycle: Models.MegaCycle) {
 }
 
 @Composable
-fun Title(routine: Models.FullRoutine? = null) {
-    var isFavorite by remember { mutableStateOf(routine?.isFavorite) }
+fun Title(routine: Models.FullRoutine? = null, onFavoriteChanged: (Boolean) -> Unit) {
+    var isFavorite by remember { mutableStateOf(routine?.isFavorite ?: false) }
     Surface(
         shape = MaterialTheme.shapes.medium,
         color = Color.LightGray,
@@ -210,7 +210,8 @@ fun Title(routine: Models.FullRoutine? = null) {
                 // Corazón a la derecha
                 IconButton(
                     onClick = {
-                        isFavorite = !isFavorite!!
+                        isFavorite = !isFavorite
+                        onFavoriteChanged(isFavorite)
                     },
                     modifier = Modifier.align(Alignment.CenterVertically)
                 ) {
@@ -420,17 +421,13 @@ fun startRoutine(
 ) {
     val gson = GsonBuilder().create()
     val megaRoutineJson = gson.toJson(megaRoutine)
-    navController.navigate(
-        "execute-workout/?detailedMode={detailedMode}&megaRoutineJson={megaRoutineJson}"
-            .replace(
-                oldValue = "{detailedMode}",
-                newValue = isDetailed.toString()
-            )
-            .replace(
-                oldValue = "{megaRoutineJson}",
-                newValue = megaRoutineJson
-            )
-    )
+    try {
+        navController.navigate(
+            "execute-workout/?detailedMode=$isDetailed&megaRoutineJson=$megaRoutineJson"
+        )
+    } catch (e: Exception){
+        throw e
+    }
 }
 
 @Composable
@@ -474,6 +471,7 @@ fun WorkoutDetails(
             Log.d("WorkoutDetails", megaRoutine.toString())
         } catch (error: Exception) {
             if (error is CancellationException) {
+                Log.w("WorkoutDetails", "Left composition while fetching MegaRoutine")
                 return@LaunchedEffect
             }
         }
@@ -483,13 +481,19 @@ fun WorkoutDetails(
         Loading()
     } else {
         val isDetailed = remember { mutableStateOf(false) }
+        val scope = rememberCoroutineScope()
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
                 .padding(bottom = 36.dp)
         ) {
-            Title(routine = megaRoutine)
+            Title(routine = megaRoutine) {
+                if (megaRoutine == null) return@Title
+                scope.launch {
+                    store?.setFavorite(megaRoutine!!.id, it)
+                }
+            }
             Info(routine = megaRoutine)
             EquipmentInfo(routine = megaRoutine)
             megaRoutine!!.megaCycles.forEach { megaCycle ->
@@ -509,10 +513,16 @@ fun WorkoutDetails2(
 ) {
     val isDetailed = remember { mutableStateOf(false) }
     val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
+    val scope = rememberCoroutineScope()
+
 
     Column {
         // Title at the top, full width
-        Title(megaRoutine)
+        Title(megaRoutine) {
+            scope.launch {
+                store?.setFavorite(megaRoutine.id, it)
+            }
+        }
 
         // If in landscape, use a Row for the two columns
         if (isLandscape) {

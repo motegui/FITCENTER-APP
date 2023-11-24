@@ -101,9 +101,7 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = JsonObject(content = mapOf(
-                "isFavorite" to JsonPrimitive(false)
-            ))
+            metadata = Models.RoutineMetadata(favorite = false)
         ),
         Models.FullRoutine(
             id = 6,
@@ -122,9 +120,7 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = JsonObject(content = mapOf(
-                "isFavorite" to JsonPrimitive(true)
-            ))
+            metadata = Models.RoutineMetadata(favorite = true)
         ),
         Models.FullRoutine(
             id = 7,
@@ -200,9 +196,7 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = JsonObject(content = mapOf(
-                "isFavorite" to JsonPrimitive(true)
-            ))
+            metadata = Models.RoutineMetadata(favorite = true)
         )
     )
 

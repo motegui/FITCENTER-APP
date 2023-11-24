@@ -1,9 +1,8 @@
 package ar.edu.itba.hci.fitcenter.api
 
 
+import com.google.gson.JsonElement
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonObject
-//import kotlinx.serialization.json.JsonPrimitive
 
 /**
  * API models from the swagger docs
@@ -42,7 +41,7 @@ object Models {
         val email: String,
         val phone: String?,
         val avatarUrl: String?,
-        val metadata: JsonObject?,
+        val metadata: Unit? = null,
         val date: Long,
         val lastActivity: Long,
         val verified: Boolean
@@ -83,35 +82,27 @@ object Models {
         val difficulty: Difficulty,
         val category: FullCategory? = null,
         val user: PublicUser? = null,
-        val metadata: JsonObject?
+        val metadata: RoutineMetadata? = null
     ) {
         val isFavorite: Boolean
             get() {
-                if (metadata == null) return false
-                return metadata.contains("isFavorite")
+                return metadata?.favorite ?: false
             }
-
+        val equipment: List<String>
+            get() {
+                return metadata?.equipment ?: emptyList()
+            }
+//        val category: String?
+//            get() {
+//                return metadata?.category
+//            }
     }
 
-//    private val exampleFullRoutine = FullRoutine(
-//        id = 1234,
-//        name = "bruh",
-//        detail = "",
-//        date = 0,
-//        score = 0,
-//        isPublic = false,
-//        difficulty = Difficulty.Rookie,
-//        category = FullCategory(id=1, name="ortg", detail=""),
-//        user = PublicUser(id=2, username="garlic", gender=Gender.Male, avatarUrl="", date=0, lastActivity=0),
-//        metadata = JsonObject(content = mapOf(
-//            "isFavorite" to JsonPrimitive(true)
-//        ))
-//    )
-//    private val isFavorite = exampleFullRoutine.isFavorite
-
-//    @Serializable class FavoriteMetadata (
-//        val isFavorite: Boolean
-//    )
+    @Serializable open class RoutineMetadata (
+        val favorite: Boolean = false,
+        val equipment: List<String> = emptyList(),
+        val category: String? = null
+    )
 
     @Serializable class FullCategory (
         val id: Long,
@@ -126,7 +117,22 @@ object Models {
         val type: ExerciseType,
         val duration: Int = 0,
         val date: Long,
-        val metadata: JsonObject?
+        val metadata: ExerciseMetadata? = null
+    ) {
+        val equipment: List<String>
+            get() {
+                return metadata?.equipment ?: emptyList()
+            }
+    }
+
+    @Serializable open class ExerciseMetadata (
+        val equipment: List<String> = emptyList(),
+        val image: String? = null,
+        val favorite: Boolean = false,
+        val editingDescription: Boolean = false,
+        val editingEquipment: Boolean = false,
+        val type: String? = null,
+        val bodyArea: String? = null
     )
 
     enum class CycleType {
@@ -141,7 +147,7 @@ object Models {
         val type: CycleType,
         val order: Int,
         val repetitions: Long,
-        val metadata: JsonObject?
+        val metadata: Unit? = null
     )
 
     @Serializable open class Cycles (
