@@ -465,11 +465,28 @@ fun WorkoutDetails(
     id: Int
 ) {
     var megaRoutine by remember { mutableStateOf<Models.MegaRoutine?>(null) }
+    var routine by remember { mutableStateOf<Models.FullRoutine?>(null) }
+    var cycles by remember { mutableStateOf<List<Models.FullCycle>>(emptyList()) }
+    var megaCycles by remember { mutableStateOf<List<Models.MegaCycle>>(emptyList()) }
     LaunchedEffect(store) {
         val routine = store?.fetchRoutine(id)
             ?: throw Exception("Invalid routine ID: $id")
-        Models.MegaRoutine(store, routine, id)
     }
+
+    LaunchedEffect(store) {
+        cycles = store?.fetchCycles(id.toLong())
+            ?: throw Exception("Invalid routine ID: $id")
+
+        if(!cycles.isEmpty()){
+        val updatedMegaCycles = cycles.map { cycle ->
+            val exercises = store?.fetchCycleExercises(cycle.id)
+                ?: throw Exception("Invalid routine ID: $id")
+            Models.MegaCycle(cycle, exercises) // Assuming MegaCycle constructor takes a Cycle and a List of exercises
+        }
+
+        megaCycles = updatedMegaCycles}
+    }
+    routine?.let { Models.MegaRoutine(it, megaCycles) }
     if (megaRoutine == null) {
         Loading()
     }

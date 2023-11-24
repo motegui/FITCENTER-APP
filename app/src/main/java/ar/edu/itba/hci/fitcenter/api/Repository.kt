@@ -78,7 +78,7 @@ object ApiRepository {
         sessionToken: String,
         routineId: Long,
     ): Models.SearchResult<Models.FullCycle> {
-        val response = client.get("$BASE_URL/api/routines/$routineId/cycles?page=0&size=2147483647&orderBy=order&direction=asc") {
+        val response = client.get("$BASE_URL/api/routines/$routineId/cycles?page=0&size=200&orderBy=order&direction=asc") {
             header(HttpHeaders.Authorization, "bearer $sessionToken")
         }
         return parse(response)
@@ -88,9 +88,8 @@ object ApiRepository {
         sessionToken: String,
         cycleId: Long,
     ): Models.SearchResult<Models.FullCycleExercise> {
-        val response = client.get("$BASE_URL/api/cycles/$cycleId/exercises") {
+        val response = client.get("$BASE_URL/api/cycles/$cycleId/exercises?page=0&size=200&orderBy=order&direction=asc") {
             header(HttpHeaders.Authorization, "bearer $sessionToken")
-            parameter("size", Int.MAX_VALUE)
         }
         return parse(response)
     }
