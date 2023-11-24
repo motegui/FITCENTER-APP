@@ -200,8 +200,8 @@ object Models {
         routine.isPublic, routine.difficulty, routine.category, routine.user, routine.metadata
     ) {
         companion object {
-            suspend operator fun invoke(store: Store, routine: FullRoutine): MegaRoutine {
-                val cycles = store.fetchCycles(routine.id)
+            suspend operator fun invoke(store: Store, routine: FullRoutine, id: Int): MegaRoutine {
+                val cycles = store.fetchCycles(id.toLong())
                 val megaCycles = cycles.map { cycle -> MegaCycle(store, cycle) }
                 return MegaRoutine(routine, megaCycles)
             }

@@ -5,11 +5,8 @@ import ar.edu.itba.hci.fitcenter.api.Store
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -24,6 +21,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,11 +35,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ar.edu.itba.hci.fitcenter.R
-import ar.edu.itba.hci.fitcenter.RoutineSampleData
 import ar.edu.itba.hci.fitcenter.SampleData
 import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.components.DifficultyRating
@@ -466,19 +462,29 @@ fun StartButton(
 fun WorkoutDetails(
     navController: NavController? = null,
     store: Store? = null,
-    megaRoutine: Models.MegaRoutine = SampleData.megaRoutine,
+    id: Int
 ) {
+    var megaRoutine by remember { mutableStateOf<Models.MegaRoutine?>(null) }
+    LaunchedEffect(store) {
+        val routine = store?.fetchRoutine(id)
+            ?: throw Exception("Invalid routine ID: $id")
+        Models.MegaRoutine(store, routine, id)
+    }
+    if (megaRoutine == null) {
+        Loading()
+    }
+    else{
     val isDetailed = remember { mutableStateOf(false) }
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Title(routine = megaRoutine)
         Info(routine = megaRoutine)
         EquipmentInfo(routine = megaRoutine)
-        megaRoutine.megaCycles.forEach { megaCycle ->
+        megaRoutine!!.megaCycles.forEach { megaCycle ->
             CycleCard(megaCycle)
         }
         DetailedModeSetting(isDetailed)
-        StartButton(navController, store, megaRoutine, isDetailed)
-    }
+        StartButton(navController, store, megaRoutine!!, isDetailed)
+    }}
 }
 
 @Composable
@@ -539,15 +545,15 @@ fun WorkoutDetails2(
 }
 
 
-@Preview
-@Composable
-fun PreviewRoutineDetail() {
-    FitcenterTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background,
-        ) {
-            WorkoutDetails()
-        }
-    }
-}
+//@Preview
+//@Composable
+//fun PreviewRoutineDetail() {
+//    FitcenterTheme {
+//        Surface(
+//            modifier = Modifier.fillMaxSize(),
+//            color = MaterialTheme.colorScheme.background,
+//        ) {
+//            WorkoutDetails()
+//        }
+//    }
+//}

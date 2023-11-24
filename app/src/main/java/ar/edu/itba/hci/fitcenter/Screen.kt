@@ -6,11 +6,6 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
@@ -114,27 +109,8 @@ fun FitcenterNavHost(navController: NavHostController, store: Store? = null, sta
             deepLinks = listOf(
                 navDeepLink { uriPattern = "android-app://androidx.navigation/workout-details/{id}" }),
             arguments = listOf(navArgument("id") { type = NavType.IntType })
-        ) { navBackStackEntry ->
-            // Extract encoded Routine object from route
-            val gson = GsonBuilder().create()
-            val megaRoutineJson = navBackStackEntry.arguments?.getString("megaRoutineJson")
-            var megaRoutine by remember { mutableStateOf<Models.MegaRoutine?>(null) }
-            LaunchedEffect(store) {
-                megaRoutine = if (megaRoutineJson != null) {
-                    gson.fromJson(megaRoutineJson, Models.MegaRoutine::class.java)
-                } else {
-                    val routineId = navBackStackEntry.arguments?.getInt("id")!!
-                        ?: throw Exception("megaRoutineJson and routineId cannot both be undefined")
-                    val routine = store?.fetchRoutine(routineId.toLong())
-                        ?: throw Exception("Invalid routine ID: $routineId")
-                    Models.MegaRoutine(store, routine)
-                }
-            }
-            if (megaRoutine != null) {
-                WorkoutDetails(navController, store, megaRoutine!!)
-            } else {
-                Loading()
-            }
+        ) {
+            WorkoutDetails(navController, store, it.arguments?.getInt("id")!!)
         }
         composable(
             "execute-workout/?detailedMode={detailedMode}&megaRoutineJson={megaRoutineJson}"
