@@ -205,14 +205,14 @@ fun MainScreen(store: Store? = null) {
                             Icon(
                                 imageVector = screen.icon,
                                 contentDescription = null,
-                                tint = if (route == currentRoute) Color.Green else MaterialTheme.colorScheme.onSecondary
+                                tint = if (route == currentRoute) Color(0xFF00FF85) else MaterialTheme.colorScheme.onSecondary
                             )
                         }
                     },
                     label = {
                         Text(
                             text = stringResource(screen.navResourceId ?: screen.resourceId),
-                            color = if (route == currentRoute) Color.Green else MaterialTheme.colorScheme.onSecondary
+                            color = if (route == currentRoute) Color(0xFF00FF85) else MaterialTheme.colorScheme.onSecondary
                         )
                     },
                     selected = route == currentRoute,
