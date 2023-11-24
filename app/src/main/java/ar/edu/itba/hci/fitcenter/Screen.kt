@@ -126,9 +126,9 @@ fun FitcenterNavHost(
         composable(
             route = "workout-details/{id}",
             deepLinks = listOf(
-                navDeepLink {
-                    uriPattern = "android-app://androidx.navigation/workout-details/{id}"
-                }
+                navDeepLink { uriPattern = "android-app://ar.edu.itba.hci.fitcenter/workout-details/{id}" },
+                navDeepLink { uriPattern = "http://www.fitcenter.com/view-workout/{id}" },
+                navDeepLink { uriPattern = "https://www.fitcenter.com/view-workout/{id}" }
             ),
             arguments = listOf(navArgument("id") { type = NavType.LongType })
         ) {

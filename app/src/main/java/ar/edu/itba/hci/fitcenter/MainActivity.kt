@@ -1,6 +1,7 @@
 package ar.edu.itba.hci.fitcenter
 
 import android.content.Context
+import android.content.Intent
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 import android.content.res.Configuration
 import android.os.Bundle
@@ -39,6 +40,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -47,6 +49,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.datastore.core.DataStore
@@ -167,6 +170,8 @@ fun MainScreen(store: Store? = null) {
     val currentScreen = remember { derivedStateOf { screens[currentRoute] } }
 
     val topBar = @Composable {
+        val context = LocalContext.current
+
         TopAppBar(
             colors = topAppBarColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
@@ -186,7 +191,28 @@ fun MainScreen(store: Store? = null) {
                         )
                     }
                 }
-            }
+            },
+            actions = {
+                if (currentRoute == "workout-details") {
+                    IconButton(onClick = {
+                        val routineId = store?.currentRoutineId
+                        val sendIntent: Intent = Intent().apply {
+                            action = Intent.ACTION_SEND
+                            putExtra(Intent.EXTRA_TEXT,
+                                "https://www.fitcenter.com/view-workout/$routineId"
+                            )
+                            type = "text/plain"
+                        }
+                        val shareIntent = Intent.createChooser(sendIntent, null)
+                        context.startActivity(shareIntent)
+                    }) {
+                        Icon(
+                            imageVector = Icons.Filled.Share,
+                            contentDescription = stringResource(R.string.share)
+                        )
+                    }
+                }
+            },
         )
     }
 

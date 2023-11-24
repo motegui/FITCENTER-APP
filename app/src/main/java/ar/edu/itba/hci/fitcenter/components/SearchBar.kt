@@ -293,7 +293,7 @@ fun RoutineSearch(
     if (isLandscape) {
         RoutineSearchLandscape(routines, navController, store, favorites)
     } else {
-        RoutineSearchPortrait(routines, navController, store, favorites, false, {})
+        RoutineSearchPortrait(routines, navController, store, favorites, false) {}
     }
 }
 

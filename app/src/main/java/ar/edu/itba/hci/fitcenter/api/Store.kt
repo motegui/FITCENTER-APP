@@ -32,6 +32,7 @@ class Store private constructor(dataStore: DataStore<Preferences>) {
     private var user: Models.FullUser? = null
     private var routines: List<Models.FullRoutine>? = null
     private var publicRoutines: List<Models.FullRoutine>? = null
+    public var currentRoutineId: Long? = null
 
 
     suspend fun login(credentials: Models.Credentials) {

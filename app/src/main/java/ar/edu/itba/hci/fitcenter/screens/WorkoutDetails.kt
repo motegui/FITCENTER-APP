@@ -7,6 +7,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -42,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ar.edu.itba.hci.fitcenter.R
@@ -49,6 +51,7 @@ import ar.edu.itba.hci.fitcenter.SampleData
 import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.components.DifficultyRating
 import ar.edu.itba.hci.fitcenter.components.formatDate
+import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
@@ -485,6 +488,7 @@ fun WorkoutDetails(
     store: Store? = null,
     currentRoutineId: Long
 ) {
+    store?.currentRoutineId = currentRoutineId
     var megaRoutine by remember { mutableStateOf<Models.MegaRoutine?>(null) }
     var routineId by remember { mutableLongStateOf(currentRoutineId) }
     LaunchedEffect(store) {
@@ -593,15 +597,15 @@ fun WorkoutDetails2(
 }
 
 
-//@Preview
-//@Composable
-//fun PreviewRoutineDetail() {
-//    FitcenterTheme {
-//        Surface(
-//            modifier = Modifier.fillMaxSize(),
-//            color = MaterialTheme.colorScheme.background,
-//        ) {
-//            WorkoutDetails()
-//        }
-//    }
-//}
+@Preview
+@Composable
+fun PreviewRoutineDetail() {
+    FitcenterTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background,
+        ) {
+            WorkoutDetails(currentRoutineId = 1L)
+        }
+    }
+}
