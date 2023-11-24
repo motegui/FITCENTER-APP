@@ -29,7 +29,7 @@ import ar.edu.itba.hci.fitcenter.components.RoutinesListEffect
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 @Composable
 fun MyWorkoutsT(navController: NavController? = null, store: Store? = null){
-    val selectedRoutine by remember { mutableStateOf(null) }
+    var selectedRoutine by remember { mutableStateOf<Int?>(null) }
     var routines by remember {
         mutableStateOf(
             if (store != null) emptyList()
@@ -51,7 +51,10 @@ fun MyWorkoutsT(navController: NavController? = null, store: Store? = null){
                         .fillMaxHeight()
                         .weight(1f) // Ocupa la mitad del espacio disponible
                 ) {
-                    RoutineSearchPortrait(routines, navController, store, false)
+                    RoutineSearchPortrait(routines, navController, store, false, true, onCardClick = { clickedId ->
+                        // Almacena el ID de la card cuando se hace clic
+                        selectedRoutine = clickedId
+                    })
                 }
                 // Columna 2
                 Box(
@@ -61,7 +64,10 @@ fun MyWorkoutsT(navController: NavController? = null, store: Store? = null){
                         .weight(1f) // Ocupa la otra mitad del espacio disponible
                 ) {
                     if (selectedRoutine == null) {
-                        Text(text = stringResource(R.string.difficulty))
+                        Text(text = stringResource(R.string.no_selected_routine))
+                    }
+                    else{
+                        Text(text = "$selectedRoutine")
                     }
                 }
             }

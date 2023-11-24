@@ -120,7 +120,9 @@ fun RoutineSearchPortrait(
     routines: List<Models.FullRoutine>,
     navController: NavController? = null,
     store: Store? = null,
-    favorites: Boolean
+    favorites: Boolean,
+    tablet: Boolean? = false,
+    onCardClick: (Int) -> Unit
 ) {
     var searchQuery by remember { mutableStateOf("") }
     var sortingCriterion by remember { mutableStateOf(SortingCriterion.NAME) }
@@ -178,7 +180,9 @@ fun RoutineSearchPortrait(
         RoutineList(
             routines = filteredRoutines,
             navController = navController,
-            store = store
+            store = store,
+            tablet = tablet,
+            onCardClick = onCardClick
         )
     }
 }
@@ -268,7 +272,9 @@ fun RoutineSearchLandscape(
             RoutineList(
                 routines = filteredRoutines,
                 navController = navController,
-                store = store
+                store = store,
+                tablet = false,
+                onCardClick = {}
             )
         }
     }
@@ -287,7 +293,7 @@ fun RoutineSearch(
     if (isLandscape) {
         RoutineSearchLandscape(routines, navController, store, favorites)
     } else {
-        RoutineSearchPortrait(routines, navController, store, favorites)
+        RoutineSearchPortrait(routines, navController, store, favorites, false, {})
     }
 }
 

@@ -56,10 +56,11 @@ import kotlinx.coroutines.launch
 fun RoutineCard(
     rt: Models.FullRoutine,
     navController: NavController? = null,
-    store: Store? = null
+    store: Store? = null,
+    tablet: Boolean? = false,
+    onCardClick: (Int) -> Unit
 ) {
     var isFavorite by remember { mutableStateOf(rt.isFavorite) }
-    var clicked by remember { mutableStateOf(false) }
 
     val scope = rememberCoroutineScope()
 
@@ -74,8 +75,11 @@ fun RoutineCard(
         Row(
             modifier = Modifier
                 .clickable {
-                    if (store == null || clicked) return@clickable
-                    clicked = true
+                    if(tablet == true){
+                        onCardClick(rt.id.toInt())
+                        return@clickable
+                    }
+                    if (store == null) return@clickable
                     scope.launch {
                         try {
                             navController?.navigate("workout-details/${rt.id}")
@@ -155,12 +159,14 @@ enum class SortingCriterion {
 fun RoutineList(
     routines: List<Models.FullRoutine>,
     navController: NavController? = null,
-    store: Store? = null
+    store: Store? = null,
+    tablet: Boolean? = false,
+    onCardClick: (Int) -> Unit
 ) {
     if (routines.isNotEmpty()) {
         LazyColumn {
             items(routines) { routine ->
-                RoutineCard(routine, navController, store)
+                RoutineCard(routine, navController, store, tablet, onCardClick)
             }
         }
     } else {
@@ -231,7 +237,8 @@ fun PreviewRoutineList() {
                     routines = RoutineSampleData.sportsRoutines,
                     favorites = true,
                     searchQuery = "",
-                )
+                ),
+                onCardClick = {}
             )
         }
     }

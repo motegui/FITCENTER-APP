@@ -42,102 +42,102 @@ fun isTablet(): Boolean {
         screenWidthInInches >= 5
     }
 }
-@Composable
-fun DetectDeviceTypeScreen(routines: List<Models.FullRoutine>,
-                           navController: NavController? = null,
-                           store: Store? = null,
-                           megaRoutine: Models.MegaRoutine = SampleData.megaRoutine,
-                           favorites: Boolean
-) {
-    val configuration = LocalConfiguration.current
-    val screenWidthDp = configuration.screenWidthDp.dp
-
-    if (screenWidthDp > 600.dp) {
-        TabletScreen(routines, navController, store, megaRoutine, favorites)
-    } else {
-        RoutineSearch(routines, navController, store, favorites)
-    }
-}
-
-
-
-@Composable
-fun TabletScreen(
-    routines: List<Models.FullRoutine>,
-    navController: NavController? = null,
-    store: Store? = null,
-    megaRoutine: Models.MegaRoutine = SampleData.megaRoutine,
-    favorites: Boolean
-) {
-    val configuration = LocalConfiguration.current
-    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-    Row(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        // Left side with RoutineSearchPortrait
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxHeight()
-        ) {
-            RoutineSearchPortrait(
-                routines = routines,
-                navController = navController,
-                store = store,
-                favorites = favorites
-            )
-        }
-
-        // Divider
-        Divider(
-            modifier = Modifier
-                .fillMaxHeight()
-                .width(2.dp),
-            color = Color.LightGray
-        )
-
-        // Right side with WorkoutDetails
-        Column(
-            modifier = Modifier
-                .weight(
-                    if (isLandscape) {
-                        1.8f
-                    } else {
-                        1f
-                    }
-                )
-                .fillMaxHeight()
-        ) {
-            WorkoutDetails(
-                navController = navController,
-                store = store,
-                routineId = megaRoutine.id
-            )
-        }
-    }
-}
+//@Composable
+//fun DetectDeviceTypeScreen(routines: List<Models.FullRoutine>,
+//                           navController: NavController? = null,
+//                           store: Store? = null,
+//                           megaRoutine: Models.MegaRoutine = SampleData.megaRoutine,
+//                           favorites: Boolean
+//) {
+//    val configuration = LocalConfiguration.current
+//    val screenWidthDp = configuration.screenWidthDp.dp
+//
+//    if (screenWidthDp > 600.dp) {
+//        TabletScreen(routines, navController, store, megaRoutine, favorites)
+//    } else {
+//        RoutineSearch(routines, navController, store, favorites)
+//    }
+//}
 
 
 
-@Preview
-@Composable
-fun DetectDeviceTypeScreenPreview() {
-    FitcenterTheme {
-    }
-}
-
-@Preview
-@Composable
-fun TabletScreenPreview() {
-    FitcenterTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background,
-        ) {
-            TabletScreen(RoutineSampleData.sportsRoutines, favorites = true)
-        }
-    }
-}
+//@Composable
+//fun TabletScreen(
+//    routines: List<Models.FullRoutine>,
+//    navController: NavController? = null,
+//    store: Store? = null,
+//    megaRoutine: Models.MegaRoutine = SampleData.megaRoutine,
+//    favorites: Boolean
+//) {
+//    val configuration = LocalConfiguration.current
+//    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+//    Row(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .padding(16.dp)
+//    ) {
+//        // Left side with RoutineSearchPortrait
+//        Column(
+//            modifier = Modifier
+//                .weight(1f)
+//                .fillMaxHeight()
+//        ) {
+//            RoutineSearchPortrait(
+//                routines = routines,
+//                navController = navController,
+//                store = store,
+//                favorites = favorites
+//            )
+//        }
+//
+//        // Divider
+//        Divider(
+//            modifier = Modifier
+//                .fillMaxHeight()
+//                .width(2.dp),
+//            color = Color.LightGray
+//        )
+//
+//        // Right side with WorkoutDetails
+//        Column(
+//            modifier = Modifier
+//                .weight(
+//                    if (isLandscape) {
+//                        1.8f
+//                    } else {
+//                        1f
+//                    }
+//                )
+//                .fillMaxHeight()
+//        ) {
+//            WorkoutDetails(
+//                navController = navController,
+//                store = store,
+//                routineId = megaRoutine.id
+//            )
+//        }
+//    }
+//}
+//
+//
+//
+//@Preview
+//@Composable
+//fun DetectDeviceTypeScreenPreview() {
+//    FitcenterTheme {
+//    }
+//}
+//
+//@Preview
+//@Composable
+//fun TabletScreenPreview() {
+//    FitcenterTheme {
+//        Surface(
+//            modifier = Modifier.fillMaxSize(),
+//            color = MaterialTheme.colorScheme.background,
+//        ) {
+//            TabletScreen(RoutineSampleData.sportsRoutines, favorites = true)
+//        }
+//    }
+//}
 
