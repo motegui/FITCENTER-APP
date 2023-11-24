@@ -1,5 +1,6 @@
 package ar.edu.itba.hci.fitcenter.screens
 
+import android.content.res.Configuration
 import android.util.Log
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
@@ -24,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ar.edu.itba.hci.fitcenter.R
 import ar.edu.itba.hci.fitcenter.RoutineSampleData
@@ -119,6 +121,19 @@ fun FindWorkoutsT(navController: NavController? = null, store: Store? = null){
                     }
                 }
             }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewFindWorkoutsT() {
+    FitcenterTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background,
+        ) {
+            FindWorkoutsT()
         }
     }
 }
