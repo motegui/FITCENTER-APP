@@ -45,6 +45,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
@@ -82,8 +83,8 @@ class MainActivity : ComponentActivity() {
 
 val navItems = listOf(
     "my-workouts",
-    "profile",
     "find-workouts",
+    "profile",
 )
 
 fun navigate(navController: NavController, route: String) {
@@ -189,6 +190,7 @@ fun MainScreen(store: Store? = null) {
     }
 
     val bottomBar = @Composable {
+
         BottomAppBar(
             containerColor = MaterialTheme.colorScheme.secondary,
             contentColor = MaterialTheme.colorScheme.onSecondary
@@ -196,30 +198,32 @@ fun MainScreen(store: Store? = null) {
             navItems.forEach { route ->
                 val screen = screens[route]
                 BottomNavigationItem(
-                    selectedContentColor = MaterialTheme.colorScheme.primary,
+                    selectedContentColor = Color.Green,
                     unselectedContentColor = MaterialTheme.colorScheme.onSecondary,
                     icon = {
                         if (screen.icon != null) {
                             Icon(
                                 imageVector = screen.icon,
                                 contentDescription = null,
+                                tint = if (route == currentRoute) Color.Green else MaterialTheme.colorScheme.onSecondary
                             )
                         }
                     },
                     label = {
                         Text(
                             text = stringResource(screen.navResourceId ?: screen.resourceId),
-                            color = MaterialTheme.colorScheme.onSecondary
+                            color = if (route == currentRoute) Color.Green else MaterialTheme.colorScheme.onSecondary
                         )
                     },
                     selected = route == currentRoute,
                     onClick = {
                         currentRoute = route
                         navigate(navController, route)
-                    }
+                    },
                 )
             }
         }
+
     }
 
 // Sidebar
