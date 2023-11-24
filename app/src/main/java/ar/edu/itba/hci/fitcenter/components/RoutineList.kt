@@ -75,20 +75,8 @@ fun RoutineCard(
                 .clickable {
                     if (store == null) return@clickable
                     scope.launch {
-//                        val gson = GsonBuilder().create()
-                        // Promote FullRoutine to MegaRoutine to receive cycle and exercise info
-//                        val megaRoutine = Models.MegaRoutine(store, rt)
-//                        val megaRoutineJson = gson.toJson(megaRoutine)
                         try {
-                            navController?.navigate(
-                                "workout-details/${rt.id}"
-//                                    .replace(
-////                                        oldValue = "{megaRoutineJson}",
-////                                        newValue = megaRoutineJson
-//                                        oldValue = "{routineId}",
-//                                        newValue = rt.id.toString()
-//                                    )
-                            )
+                            navController?.navigate("workout-details/${rt.id}")
                         } catch (error: Exception) {
                             throw Exception(error.message)
                         }

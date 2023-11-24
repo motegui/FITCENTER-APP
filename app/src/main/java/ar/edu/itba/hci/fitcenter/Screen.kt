@@ -105,12 +105,17 @@ fun FitcenterNavHost(navController: NavHostController, store: Store? = null, sta
         composable("my-workouts") { MyWorkouts(navController, store) }
         composable("find-workouts") { FindWorkouts(navController, store) }
         composable(
-            route = "workout-details" + "/{id}",
+            route = "workout-details/{id}",
             deepLinks = listOf(
-                navDeepLink { uriPattern = "android-app://androidx.navigation/workout-details/{id}" }),
+                navDeepLink {
+                    uriPattern = "android-app://androidx.navigation/workout-details/{id}"
+                }
+            ),
             arguments = listOf(navArgument("id") { type = NavType.IntType })
         ) {
-            WorkoutDetails(navController, store, it.arguments?.getInt("id")!!)
+            val routineId = it.arguments?.getInt("id")
+            if (routineId == null || routineId == 0) return@composable
+            WorkoutDetails(navController, store, routineId.toLong())
         }
         composable(
             "execute-workout/?detailedMode={detailedMode}&megaRoutineJson={megaRoutineJson}"

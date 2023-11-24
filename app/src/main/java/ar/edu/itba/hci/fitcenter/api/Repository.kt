@@ -128,7 +128,7 @@ object ApiRepository {
         return parse(response)
     }
 
-    suspend fun fetchRoutine(sessionToken: String, routineId: Int): Models.FullRoutine {
+    suspend fun fetchRoutine(sessionToken: String, routineId: Long): Models.FullRoutine {
         val response = client.get("$BASE_URL/api/routines/$routineId") {
             header(HttpHeaders.Authorization, "bearer $sessionToken")
         }

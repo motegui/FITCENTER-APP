@@ -94,7 +94,7 @@ fun TabletScreen(
             WorkoutDetails(
                 navController = navController,
                 store = store,
-                id = megaRoutine.id.toInt(),
+                routineId = megaRoutine.id
             )
         }
     }

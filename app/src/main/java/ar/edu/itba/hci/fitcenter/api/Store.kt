@@ -90,7 +90,7 @@ class Store private constructor(dataStore: DataStore<Preferences>) {
         return publicRoutines!!
     }
 
-    suspend fun fetchRoutine(routineId: Int): Models.FullRoutine =
+    suspend fun fetchRoutine(routineId: Long): Models.FullRoutine =
         ApiRepository.fetchRoutine(storage.get(Keys.SESSION_TOKEN), routineId)
 
     suspend fun setFavorite(routineId: Long, isFavorite: Boolean) {

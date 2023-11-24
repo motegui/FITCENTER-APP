@@ -1,6 +1,7 @@
 package ar.edu.itba.hci.fitcenter.screens
 
 import android.content.res.Configuration
+import android.util.Log
 import ar.edu.itba.hci.fitcenter.api.Store
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
@@ -42,7 +43,6 @@ import ar.edu.itba.hci.fitcenter.SampleData
 import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.components.DifficultyRating
 import ar.edu.itba.hci.fitcenter.components.formatDate
-import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.Row as Row
@@ -462,51 +462,31 @@ fun StartButton(
 fun WorkoutDetails(
     navController: NavController? = null,
     store: Store? = null,
-    id: Int
+    routineId: Long
 ) {
     var megaRoutine by remember { mutableStateOf<Models.MegaRoutine?>(null) }
-    var routine by remember { mutableStateOf<Models.FullRoutine?>(null) }
-    var cycles by remember { mutableStateOf<List<Models.FullCycle>>(emptyList()) }
-    var megaCycles by remember { mutableStateOf<List<Models.MegaCycle>>(emptyList()) }
     LaunchedEffect(store) {
-        routine = store?.fetchRoutine(id)
-            ?: throw Exception("Invalid routine ID: $id")
+        if (store == null) throw Exception("Store is missing")
+        val routine = store.fetchRoutine(routineId)
+        megaRoutine = Models.MegaRoutine(store, routine)
+        Log.d("WorkoutDetails", megaRoutine.toString())
     }
 
-    LaunchedEffect(store) {
-        cycles = store?.fetchCycles(id.toLong())
-            ?: throw Exception("Invalid routine ID: $id")
-    }
-    if (!cycles.isEmpty()) {
-        LaunchedEffect(store) {
-            val updatedMegaCycles = cycles.map { cycle ->
-                val exercises = store?.fetchCycleExercises(cycle.id)
-                    ?: throw Exception("Invalid routine ID: $id")
-                Models.MegaCycle(
-                    cycle,
-                    exercises
-                ) // Assuming MegaCycle constructor takes a Cycle and a List of exercises
-            }
-
-            megaCycles = updatedMegaCycles
-        }
-    }
-    routine?.let { Models.MegaRoutine(it, megaCycles) }
     if (megaRoutine == null) {
         Loading()
-    }
-    else{
-    val isDetailed = remember { mutableStateOf(false) }
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Title(routine = megaRoutine)
-        Info(routine = megaRoutine)
-        EquipmentInfo(routine = megaRoutine)
-        megaRoutine!!.megaCycles.forEach { megaCycle ->
-            CycleCard(megaCycle)
+    } else {
+        val isDetailed = remember { mutableStateOf(false) }
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Title(routine = megaRoutine)
+            Info(routine = megaRoutine)
+            EquipmentInfo(routine = megaRoutine)
+            megaRoutine!!.megaCycles.forEach { megaCycle ->
+                CycleCard(megaCycle)
+            }
+            DetailedModeSetting(isDetailed)
+            StartButton(navController, store, megaRoutine!!, isDetailed)
         }
-        DetailedModeSetting(isDetailed)
-        StartButton(navController, store, megaRoutine!!, isDetailed)
-    }}
+    }
 }
 
 @Composable
