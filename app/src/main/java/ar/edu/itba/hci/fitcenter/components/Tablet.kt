@@ -26,26 +26,29 @@ import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
 
 @Composable
-fun DetectDeviceTypeScreen(routines: List<Models.FullRoutine>?,
+fun DetectDeviceTypeScreen(routines: List<Models.FullRoutine>,
                            navController: NavController? = null,
                            store: Store? = null,
-                           megaRoutine: Models.MegaRoutine = SampleData.megaRoutine,) {
+                           megaRoutine: Models.MegaRoutine = SampleData.megaRoutine,
+                           favorites: Boolean
+) {
     val configuration = LocalConfiguration.current
     val screenWidthDp = configuration.screenWidthDp.dp
 
     if (screenWidthDp > 600.dp) {
-        TabletScreen(routines, navController, store,megaRoutine)
+        TabletScreen(routines, navController, store, megaRoutine, favorites)
     } else {
-        RoutineSearch(routines, navController, store)
+        RoutineSearch(routines, navController, store, favorites)
     }
 }
 
 @Composable
 fun TabletScreen(
-    routines: List<Models.FullRoutine>?,
+    routines: List<Models.FullRoutine>,
     navController: NavController? = null,
     store: Store? = null,
     megaRoutine: Models.MegaRoutine = SampleData.megaRoutine,
+    favorites: Boolean
 ) {
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
@@ -64,6 +67,7 @@ fun TabletScreen(
                 routines = routines,
                 navController = navController,
                 store = store,
+                favorites = favorites
             )
         }
 
@@ -108,14 +112,13 @@ fun DetectDeviceTypeScreenPreview() {
 @Preview
 @Composable
 fun TabletScreenPreview() {
-
-        FitcenterTheme {
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = MaterialTheme.colorScheme.background,
-            ) {
-                TabletScreen(polyvalentRoutineList(routines = RoutineSampleData.sportsRoutines))
-            }
+    FitcenterTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background,
+        ) {
+            TabletScreen(RoutineSampleData.sportsRoutines, favorites = true)
         }
+    }
 }
 
