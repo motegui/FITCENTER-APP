@@ -184,6 +184,7 @@ fun RoutineSearchPortrait(
 }
 
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun RoutineSearchLandscape(
     routines: List<Models.FullRoutine>,
@@ -193,15 +194,24 @@ fun RoutineSearchLandscape(
 ) {
     var searchQuery by remember { mutableStateOf("") }
     var sortingCriterion by remember { mutableStateOf(SortingCriterion.NAME) }
-    val filteredRoutines by remember {
-        derivedStateOf {
-            filterRoutineList(
-                routines = routines,
-                sortingCriterion = sortingCriterion,
-                searchQuery = searchQuery,
-                favorites = favorites
-            )
-        }
+//    val filteredRoutines by remember {
+//        derivedStateOf {
+//            filterRoutineList(
+//                routines = routines,
+//                sortingCriterion = sortingCriterion,
+//                searchQuery = searchQuery,
+//                favorites = favorites
+//            )
+//        }
+//    }
+
+    val filteredRoutines by derivedStateOf {
+        filterRoutineList(
+            routines = routines,
+            sortingCriterion = sortingCriterion,
+            searchQuery = searchQuery,
+            favorites = favorites
+        )
     }
 
     // Row for buttons and routine list
