@@ -4,9 +4,11 @@ import android.content.res.Configuration
 import android.util.Log
 import ar.edu.itba.hci.fitcenter.api.Store
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -127,7 +129,9 @@ fun CycleCard(megaCycle: Models.MegaCycle) {
         modifier = Modifier
             .animateContentSize()
             .padding(top = 5.dp, start = 16.dp, end = 16.dp, bottom = 5.dp)
+            .height(42.dp)
             .fillMaxWidth()
+            .clickable { isCycleExpanded = !isCycleExpanded }
     ) {
         Row(
             modifier = Modifier
@@ -143,18 +147,12 @@ fun CycleCard(megaCycle: Models.MegaCycle) {
                     color = Color.Green
                 )
             )
-            IconButton(
-                onClick = {
-                    isCycleExpanded = !isCycleExpanded
-                },
+            Icon(
+                imageVector = if (isCycleExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                tint = Color.Green,
+                contentDescription = "Expand/Collapse",
                 modifier = Modifier.align(Alignment.CenterVertically)
-            ) {
-                Icon(
-                    imageVector = if (isCycleExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
-                    tint = Color.Green,
-                    contentDescription = "Expand/Collapse",
-                )
-            }
+            )
         }
     }
     if (isCycleExpanded) {
@@ -487,7 +485,9 @@ fun WorkoutDetails(
         val isDetailed = remember { mutableStateOf(false) }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.verticalScroll(rememberScrollState())
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = 36.dp)
         ) {
             Title(routine = megaRoutine)
             Info(routine = megaRoutine)
