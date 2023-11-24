@@ -19,6 +19,7 @@ import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.api.Store
 import ar.edu.itba.hci.fitcenter.screens.Execution
 import ar.edu.itba.hci.fitcenter.screens.FindWorkouts
+import ar.edu.itba.hci.fitcenter.screens.FindWorkoutsT
 import ar.edu.itba.hci.fitcenter.screens.Loading
 import ar.edu.itba.hci.fitcenter.screens.Login
 import ar.edu.itba.hci.fitcenter.screens.MyWorkouts
@@ -107,11 +108,13 @@ fun FitcenterNavHost(navController: NavHostController, store: Store? = null, sta
             composable("profile") { Profile(navController, store) }}
         if(isDeviceTablet){
             composable("my-workouts") { MyWorkoutsT(navController, store) }
+            composable("find-workouts") { FindWorkoutsT(navController, store) }
+
         }
         else{
             composable("my-workouts") { MyWorkouts(navController, store) }
+            composable("find-workouts") { FindWorkouts(navController, store) }
         }
-        composable("find-workouts") { FindWorkouts(navController, store) }
         composable(
             route = "workout-details/{id}",
             deepLinks = listOf(
