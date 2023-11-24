@@ -59,6 +59,7 @@ fun RoutineCard(
     store: Store? = null
 ) {
     var isFavorite by remember { mutableStateOf(rt.isFavorite) }
+    var clicked by remember { mutableStateOf(false) }
 
     val scope = rememberCoroutineScope()
 
@@ -73,7 +74,8 @@ fun RoutineCard(
         Row(
             modifier = Modifier
                 .clickable {
-                    if (store == null) return@clickable
+                    if (store == null || clicked) return@clickable
+                    clicked = true
                     scope.launch {
                         try {
                             navController?.navigate("workout-details/${rt.id}")

@@ -191,7 +191,6 @@ fun MainScreen(store: Store? = null) {
     }
 
     val bottomBar = @Composable {
-
         BottomAppBar(
             containerColor = MaterialTheme.colorScheme.secondary,
             contentColor = MaterialTheme.colorScheme.onSecondary
@@ -240,7 +239,7 @@ fun MainScreen(store: Store? = null) {
 
     Scaffold(
         topBar = { if (currentScreen.value.usesNav && !isLandscape) topBar() },
-        bottomBar = { if (currentScreen.value.usesNav && !isLandscape) bottomBar() },
+        bottomBar = { if (currentScreen.value.usesNav && !currentScreen.value.isSubPage && !isLandscape) bottomBar() },
         contentWindowInsets = WindowInsets(top=0)
     ) { innerPadding ->
         if(isLandscape){
@@ -257,7 +256,7 @@ fun MainScreen(store: Store? = null) {
                     store = store,
                     startDestination = currentRoute,
                     modifier = Modifier.padding(innerPadding),
-                    isLandscape  = isLandscape,
+                    isLandscape = isLandscape,
                     isDeviceTablet = isDeviceTablet
                 )
             }

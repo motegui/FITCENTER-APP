@@ -44,6 +44,7 @@ import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.components.DifficultyRating
 import ar.edu.itba.hci.fitcenter.components.formatDate
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.Row as Row
 
@@ -467,9 +468,15 @@ fun WorkoutDetails(
     var megaRoutine by remember { mutableStateOf<Models.MegaRoutine?>(null) }
     LaunchedEffect(store) {
         if (store == null) throw Exception("Store is missing")
-        val routine = store.fetchRoutine(routineId)
-        megaRoutine = Models.MegaRoutine(store, routine)
-        Log.d("WorkoutDetails", megaRoutine.toString())
+        try {
+            val routine = store.fetchRoutine(routineId)
+            megaRoutine = Models.MegaRoutine(store, routine)
+            Log.d("WorkoutDetails", megaRoutine.toString())
+        } catch (error: Exception) {
+            if (error is CancellationException) {
+                return@LaunchedEffect
+            }
+        }
     }
 
     if (megaRoutine == null) {

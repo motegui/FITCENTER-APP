@@ -90,6 +90,8 @@ val screens = NonNullableMap(mapOf(
 
 const val uri = "www.fitcenter.com"
 
+var lastRoutineId: Long = 0
+
 @Composable
 fun FitcenterNavHost(navController: NavHostController, store: Store? = null, startDestination: String, modifier: Modifier, isLandscape: Boolean, isDeviceTablet: Boolean) {
     NavHost(
@@ -117,11 +119,15 @@ fun FitcenterNavHost(navController: NavHostController, store: Store? = null, sta
                     uriPattern = "android-app://androidx.navigation/workout-details/{id}"
                 }
             ),
-            arguments = listOf(navArgument("id") { type = NavType.IntType })
+            arguments = listOf(navArgument("id") { type = NavType.LongType })
         ) {
-            val routineId = it.arguments?.getInt("id")
-            if (routineId == null || routineId == 0) return@composable
-            WorkoutDetails(navController, store, routineId.toLong())
+            var routineId = it.arguments?.getLong("id")
+            if (routineId == null || routineId == 0L) {
+                // Band-aid for weird duplicate requests with no ID after a legitimate one
+                routineId = lastRoutineId
+            }
+            WorkoutDetails(navController, store, routineId)
+            lastRoutineId = routineId
         }
         composable(
             "execute-workout/?detailedMode={detailedMode}&megaRoutineJson={megaRoutineJson}"

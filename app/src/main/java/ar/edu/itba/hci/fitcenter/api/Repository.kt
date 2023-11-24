@@ -88,8 +88,9 @@ object ApiRepository {
         sessionToken: String,
         cycleId: Long,
     ): Models.SearchResult<Models.FullCycleExercise> {
-        val response = client.get("$BASE_URL/api/cycles/$cycleId/exercises?page=0&size=200&orderBy=order&direction=asc") {
+        val response = client.get("$BASE_URL/api/cycles/$cycleId/exercises") {
             header(HttpHeaders.Authorization, "bearer $sessionToken")
+            parameter("size", Int.MAX_VALUE)
         }
         return parse(response)
     }
