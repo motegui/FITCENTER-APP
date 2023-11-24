@@ -183,7 +183,7 @@ fun Execution(
                 // Header
                 Row {
                     Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { navController?.navigateUp() }) {
+                    IconButton(onClick = { navController?.popBackStack() }) {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "Close",
@@ -343,7 +343,7 @@ fun Execution(
                 // Header
                 Row {
                     Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { navController?.navigateUp() }) {
+                    IconButton(onClick = { navController?.popBackStack() }) {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "Close",
@@ -417,7 +417,7 @@ fun Execution(
                         )
                     }
                     Button(
-                        onClick = { navController?.navigateUp() }
+                        onClick = { navController?.popBackStack() }
                     ) {
                         Icon(
                             imageVector = Icons.Default.ExitToApp,
