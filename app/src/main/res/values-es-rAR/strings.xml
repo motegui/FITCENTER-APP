@@ -26,4 +26,5 @@
     <string name="comple_workout">Has completado el entrenamiento</string>
     <string name="find">Buscar</string>
     <string name="workouts">Rutinas</string>
+    <string name="score">Clasificación</string>
 </resources>

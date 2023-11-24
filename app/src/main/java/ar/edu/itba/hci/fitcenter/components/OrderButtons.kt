@@ -1,12 +1,15 @@
 package ar.edu.itba.hci.fitcenter.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -14,65 +17,82 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ar.edu.itba.hci.fitcenter.R
+import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
 @Composable
 fun SortingButtons(
     sortingCriterion: SortingCriterion,
     onSortingCriterionChanged: (SortingCriterion) -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        SortingButton(
-            text = "Date",
-            isSelected = sortingCriterion == SortingCriterion.DATE,
-            onClick = {
-                if (sortingCriterion == SortingCriterion.DATE) {
-                    // Clicked on the already selected button, unselect and use default sorting
-                    onSortingCriterionChanged(SortingCriterion.NAME)
-                } else {
-                    // Clicked on a different button, change sorting
-                    onSortingCriterionChanged(SortingCriterion.DATE)
-                }
-            }
-        )
-        SortingButton(
-            text = "Score",
-            isSelected = sortingCriterion == SortingCriterion.SCORE,
-            onClick = {
-                if (sortingCriterion == SortingCriterion.SCORE) {
-                    onSortingCriterionChanged(SortingCriterion.NAME)
-                } else {
-                    onSortingCriterionChanged(SortingCriterion.SCORE)
-                }
-            }
-        )
-        SortingButton(
-            text = "Difficulty",
-            isSelected = sortingCriterion == SortingCriterion.DIFFICULTY,
-            onClick = {
-                if (sortingCriterion == SortingCriterion.DIFFICULTY) {
-                    onSortingCriterionChanged(SortingCriterion.NAME)
-                } else {
-                    onSortingCriterionChanged(SortingCriterion.DIFFICULTY)
-                }
-            }
-        )
-        SortingButton(
-            text = "Category",
-            isSelected = sortingCriterion == SortingCriterion.CATEGORY,
-            onClick = {
-                if (sortingCriterion == SortingCriterion.CATEGORY) {
-                    onSortingCriterionChanged(SortingCriterion.NAME)
-                } else {
-                    onSortingCriterionChanged(SortingCriterion.CATEGORY)
-                }
-            }
-        )
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            SortingButton(
+                text = stringResource(R.string.date),
+                isSelected = sortingCriterion == SortingCriterion.DATE,
+                onClick = {
+                    if (sortingCriterion == SortingCriterion.DATE) {
+                        // Clicked on the already selected button, unselect and use default sorting
+                        onSortingCriterionChanged(SortingCriterion.NAME)
+                    } else {
+                        // Clicked on a different button, change sorting
+                        onSortingCriterionChanged(SortingCriterion.DATE)
+                    }
+                },
+                modifier = Modifier.weight(1f)
+            )
+            SortingButton(
+                text = stringResource(R.string.score),
+                isSelected = sortingCriterion == SortingCriterion.SCORE,
+                onClick = {
+                    if (sortingCriterion == SortingCriterion.SCORE) {
+                        onSortingCriterionChanged(SortingCriterion.NAME)
+                    } else {
+                        onSortingCriterionChanged(SortingCriterion.SCORE)
+                    }
+                },
+                modifier = Modifier.weight(1f)
+            )
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            SortingButton(
+                text = stringResource(R.string.difficulty),
+                isSelected = sortingCriterion == SortingCriterion.DIFFICULTY,
+                onClick = {
+                    if (sortingCriterion == SortingCriterion.DIFFICULTY) {
+                        onSortingCriterionChanged(SortingCriterion.NAME)
+                    } else {
+                        onSortingCriterionChanged(SortingCriterion.DIFFICULTY)
+                    }
+                },
+                modifier = Modifier.weight(1f)
+            )
+            SortingButton(
+                text = stringResource(R.string.category),
+                isSelected = sortingCriterion == SortingCriterion.CATEGORY,
+                onClick = {
+                    if (sortingCriterion == SortingCriterion.CATEGORY) {
+                        onSortingCriterionChanged(SortingCriterion.NAME)
+                    } else {
+                        onSortingCriterionChanged(SortingCriterion.CATEGORY)
+                    }
+                },
+                modifier = Modifier.weight(1f)
+            )
+        }
     }
 }
 
@@ -88,7 +108,7 @@ fun VerticalSortingButtons(
         verticalArrangement = Arrangement.SpaceAround
     ) {
         SortingButton(
-            text = "Date",
+            text = stringResource(R.string.date),
             isSelected = sortingCriterion == SortingCriterion.DATE,
             onClick = {
                 if (sortingCriterion == SortingCriterion.DATE) {
@@ -99,11 +119,10 @@ fun VerticalSortingButtons(
                     onSortingCriterionChanged(SortingCriterion.DATE)
                 }
             },
-            modifier = Modifier
-                .widthIn(min = 150.dp)
         )
+        Spacer(modifier = Modifier.width(8.dp))
         SortingButton(
-            text = "Score",
+            text = stringResource(R.string.score),
             isSelected = sortingCriterion == SortingCriterion.SCORE,
             onClick = {
                 if (sortingCriterion == SortingCriterion.SCORE) {
@@ -112,11 +131,9 @@ fun VerticalSortingButtons(
                     onSortingCriterionChanged(SortingCriterion.SCORE)
                 }
             },
-            modifier = Modifier
-                .widthIn(min = 150.dp)
         )
         SortingButton(
-            text = "Difficulty",
+            text = stringResource(R.string.difficulty),
             isSelected = sortingCriterion == SortingCriterion.DIFFICULTY,
             onClick = {
                 if (sortingCriterion == SortingCriterion.DIFFICULTY) {
@@ -125,11 +142,10 @@ fun VerticalSortingButtons(
                     onSortingCriterionChanged(SortingCriterion.DIFFICULTY)
                 }
             },
-            modifier = Modifier
-                .widthIn(min = 150.dp)
         )
+        Spacer(modifier = Modifier.width(8.dp))
         SortingButton(
-            text = "Category",
+            text = stringResource(R.string.category),
             isSelected = sortingCriterion == SortingCriterion.CATEGORY,
             onClick = {
                 if (sortingCriterion == SortingCriterion.CATEGORY) {
@@ -138,8 +154,6 @@ fun VerticalSortingButtons(
                     onSortingCriterionChanged(SortingCriterion.CATEGORY)
                 }
             },
-            modifier = Modifier
-                .widthIn(min = 150.dp)
         )
     }
 }
@@ -156,8 +170,19 @@ fun SortingButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray
         ),
-        modifier = modifier
+        modifier = modifier.fillMaxWidth()
     ) {
-        Text(text = text, color = Color.White)
+        Text(
+            text = text,
+            color = if (isSelected) Color.Black else Color.White
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewSortingButtons() {
+    FitcenterTheme {
+        SortingButtons(SortingCriterion.DATE) {}
     }
 }
