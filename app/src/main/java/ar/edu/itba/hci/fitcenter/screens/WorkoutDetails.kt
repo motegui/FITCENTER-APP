@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
@@ -257,7 +258,7 @@ fun Info(routine: Models.FullRoutine? = null) {
                 }
             }
             Divider(color = Color.Gray, thickness = 1.dp)
-            if (routine?.category != null) {
+            if (routine?.metadataCategory != null) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -273,7 +274,7 @@ fun Info(routine: Models.FullRoutine? = null) {
                         modifier = Modifier.weight(1f) // Utilizar weight para ocupar el espacio disponible
                     )
                     Text(
-                        text = routine.category.name,
+                        text = routine?.metadataCategory!!,
                         style = MaterialTheme.typography.titleMedium,
                         //modifier = Modifier.weight(1f)
                     )
@@ -326,25 +327,36 @@ fun EquipmentInfo(routine: Models.FullRoutine? = null) {
                 .padding(top = 1.dp, start = 16.dp, end = 6.dp, bottom = 1.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = stringResource(R.string.equipment),
-                modifier = Modifier.weight(1f),
-                style = MaterialTheme.typography.titleMedium.copy(
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black
+            if (routine!!.equipment.isEmpty()) {
+                Text(
+                    text = stringResource(R.string.no_equipment),
+                    modifier = Modifier.weight(1f).padding(top = 10.dp, bottom = 10.dp),
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    )
                 )
-            )
-            IconButton(
-                onClick = {
-                    isEquipmentExpanded = !isEquipmentExpanded
-                },
-                modifier = Modifier.align(Alignment.CenterVertically)
-            ) {
-                Icon(
-                    imageVector = if (isEquipmentExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
-                    tint = Color.Black,
-                    contentDescription = "Expand/Collapse",
+            } else {
+                Text(
+                    text = stringResource(R.string.equipment),
+                    modifier = Modifier.weight(1f),
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    )
                 )
+                IconButton(
+                    onClick = {
+                        isEquipmentExpanded = !isEquipmentExpanded
+                    },
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                ) {
+                    Icon(
+                        imageVector = if (isEquipmentExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                        tint = Color.Black,
+                        contentDescription = "Expand/Collapse",
+                    )
+                }
             }
         }
     }
@@ -358,16 +370,22 @@ fun EquipmentInfo(routine: Models.FullRoutine? = null) {
                 .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
                 .fillMaxWidth()
         ) {
-            Row(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 10.dp, start = 16.dp, end = 16.dp, bottom = 10.dp),
-                verticalAlignment = Alignment.CenterVertically
+                    .padding(top = 10.dp, start = 16.dp, end = 16.dp, bottom = 10.dp)
             ) {
-                Text(
-                    text = "the equipment here",
-                    style = MaterialTheme.typography.titleMedium
-                )
+                routine!!.equipment.forEach(){ equipmentItem ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = equipmentItem,
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
+                }
             }
         }
     }

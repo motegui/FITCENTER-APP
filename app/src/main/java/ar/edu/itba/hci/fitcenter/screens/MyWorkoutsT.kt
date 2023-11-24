@@ -65,7 +65,7 @@ fun MyWorkoutsT(navController: NavController? = null, store: Store? = null){
                 ) {
                     RoutineSearchPortrait(routines, navController, store, false, true, onCardClick = { clickedId ->
                         // Almacena el ID de la card cuando se hace clic
-                        selectedRoutine = clickedId
+                        selectedRoutine = clickedId.toInt()
                     })
                 }
                 // Columna 2
