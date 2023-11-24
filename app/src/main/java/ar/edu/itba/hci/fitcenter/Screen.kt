@@ -26,6 +26,7 @@ import ar.edu.itba.hci.fitcenter.screens.Loading
 import ar.edu.itba.hci.fitcenter.screens.Login
 import ar.edu.itba.hci.fitcenter.screens.MyWorkouts
 import ar.edu.itba.hci.fitcenter.screens.Profile
+import ar.edu.itba.hci.fitcenter.screens.ProfileL
 import ar.edu.itba.hci.fitcenter.screens.WorkoutDetails
 
 data class Screen(
@@ -83,6 +84,7 @@ val screens = NonNullableMap(mapOf(
     ),
 
     "workout-details" to Screen(
+        isSubPage = true,
         resourceId = R.string.workout,
         usesNav = true,
     )
@@ -91,7 +93,7 @@ val screens = NonNullableMap(mapOf(
 const val uri = "www.fitcenter.com"
 
 @Composable
-fun FitcenterNavHost(navController: NavHostController, store: Store? = null, startDestination: String, modifier: Modifier) {
+fun FitcenterNavHost(navController: NavHostController, store: Store? = null, startDestination: String, modifier: Modifier, isLandscape: Boolean) {
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -99,7 +101,10 @@ fun FitcenterNavHost(navController: NavHostController, store: Store? = null, sta
     ) {
         composable("loading") { Loading() }
         composable("login") { Login(navController, store) }
-        composable("profile") { Profile(navController, store) }
+        if(isLandscape){
+            composable("profile") { ProfileL(navController, store) }}
+        else{
+            composable("profile") { Profile(navController, store) }}
         composable("my-workouts") { MyWorkouts(navController, store) }
         composable("find-workouts") { FindWorkouts(navController, store) }
         composable(

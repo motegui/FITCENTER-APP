@@ -198,7 +198,7 @@ fun MainScreen(store: Store? = null) {
             navItems.forEach { route ->
                 val screen = screens[route]
                 BottomNavigationItem(
-                    selectedContentColor = Color.Green,
+                    selectedContentColor = Color(0xFF00FF85),
                     unselectedContentColor = MaterialTheme.colorScheme.onSecondary,
                     icon = {
                         if (screen.icon != null) {
@@ -254,7 +254,8 @@ fun MainScreen(store: Store? = null) {
                     navController = navController,
                     store = store,
                     startDestination = currentRoute,
-                    modifier = Modifier.padding(innerPadding)
+                    modifier = Modifier.padding(innerPadding),
+                    isLandscape  = isLandscape
                 )
             }
 
@@ -266,7 +267,8 @@ fun MainScreen(store: Store? = null) {
                     navController = navController,
                     store = store,
                     startDestination = currentRoute,
-                    modifier = Modifier.padding(innerPadding)
+                    modifier = Modifier.padding(innerPadding),
+                    isLandscape  = isLandscape
                 )
             }
         }
