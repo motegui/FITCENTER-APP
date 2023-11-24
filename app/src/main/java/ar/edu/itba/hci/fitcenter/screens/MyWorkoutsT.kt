@@ -18,9 +18,11 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ar.edu.itba.hci.fitcenter.R
 import ar.edu.itba.hci.fitcenter.RoutineSampleData
@@ -61,13 +63,17 @@ fun MyWorkoutsT(navController: NavController? = null, store: Store? = null){
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.background)
                         .fillMaxHeight()
-                        .weight(1f) // Ocupa la otra mitad del espacio disponible
+                        .weight(1f), // Ocupa la otra mitad del espacio disponible
+                    contentAlignment = Alignment.Center
                 ) {
                     if (selectedRoutine == null) {
-                        Text(text = stringResource(R.string.no_selected_routine))
+                        Text(text = stringResource(R.string.no_selected_routine),
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = Modifier.padding(30.dp),
+                            textAlign = TextAlign.Center)
                     }
                     else{
-                        Text(text = "$selectedRoutine")
+                        WorkoutDetails(navController, store, selectedRoutine!!.toLong())
                     }
                 }
             }
