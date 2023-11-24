@@ -27,4 +27,7 @@
     <string name="find">Find</string>
     <string name="workouts">Workouts</string>
     <string name="score">Score</string>
+    <string name="order_by">Order by</string>
+    <string name="search">Search</string>
+    <string name="empty_favorites">Workouts that you favorite will be added here.</string>
 </resources>

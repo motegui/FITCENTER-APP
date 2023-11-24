@@ -3,6 +3,8 @@ package ar.edu.itba.hci.fitcenter.components
 import android.content.res.Configuration
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +20,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,9 +30,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import ar.edu.itba.hci.fitcenter.R
 import ar.edu.itba.hci.fitcenter.RoutineSampleData
 import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.api.Store
@@ -147,29 +159,60 @@ fun RoutineList(
     navController: NavController? = null,
     store: Store? = null
 ) {
-    LazyColumn {
-        items(routines) { routine ->
-            RoutineCard(routine, navController, store)
+    if (routines.isNotEmpty()) {
+        LazyColumn {
+            items(routines) { routine ->
+                RoutineCard(routine, navController, store)
+            }
+        }
+    } else {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Text(
+                text = stringResource(R.string.empty_favorites),
+                fontStyle = FontStyle.Italic,
+                fontSize = 16.sp,
+                textAlign = TextAlign.Center
+            )
+            TextButton(onClick = { navController?.navigate("find-workouts") }) {
+                Text(
+                    text = "${stringResource(R.string.find_workouts)}...",
+                    fontStyle = FontStyle.Italic,
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
 
-fun polyvalentRoutineList(
+fun filterRoutineList(
     routines: List<Models.FullRoutine>,
     sortingCriterion: SortingCriterion = SortingCriterion.NAME,
+    searchQuery: String,
     favorites: Boolean = false
 ): List<Models.FullRoutine> {
-    var myRoutines = routines
-    if (favorites) {
-        myRoutines = routines.filter { it.isFavorite }
+    if (routines.isEmpty()) return routines
+    val filtered = if (favorites) {
+        routines.filter { it.isFavorite }
+    } else {
+        routines.map { it }  // Copy the list
     }
-    val sortedRoutines = when (sortingCriterion) {
-        SortingCriterion.NAME -> myRoutines.sortedBy { it.name }
-        SortingCriterion.DATE -> myRoutines.sortedByDescending { it.date }
-        SortingCriterion.DIFFICULTY -> myRoutines.sortedBy { it.difficulty.ordinal }
-        SortingCriterion.CATEGORY -> myRoutines.sortedBy { it.category?.name }
+    val sorted = when (sortingCriterion) {
+        SortingCriterion.NAME -> filtered.sortedBy { it.name }
+        SortingCriterion.DATE -> filtered.sortedByDescending { it.date }
+        SortingCriterion.DIFFICULTY -> filtered.sortedBy { it.difficulty.ordinal }
+        SortingCriterion.CATEGORY -> filtered.sortedBy { it.category?.name }
     }
-    return sortedRoutines
+    return if (searchQuery.isEmpty()) {
+        sorted
+    } else {
+        sorted.filter { it.name.contains(searchQuery, ignoreCase = true) }
+    }
 }
 
 @Preview(name = "Light Mode")
@@ -186,9 +229,10 @@ fun PreviewRoutineList() {
             color = MaterialTheme.colorScheme.background,
         ) {
             RoutineList(
-                polyvalentRoutineList(
+                filterRoutineList(
                     routines = RoutineSampleData.sportsRoutines,
-                    favorites = true
+                    favorites = true,
+                    searchQuery = "",
                 )
             )
         }

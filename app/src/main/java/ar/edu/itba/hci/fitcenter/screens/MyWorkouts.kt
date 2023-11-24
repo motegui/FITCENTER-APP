@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import ar.edu.itba.hci.fitcenter.RoutineSampleData
 import androidx.navigation.NavController
 import ar.edu.itba.hci.fitcenter.components.RoutineSearch
-import ar.edu.itba.hci.fitcenter.components.polyvalentRoutineList
+import ar.edu.itba.hci.fitcenter.components.filterRoutineList
 import ar.edu.itba.hci.fitcenter.api.Store
 import ar.edu.itba.hci.fitcenter.components.RoutinesListEffect
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
@@ -24,19 +24,18 @@ import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 fun MyWorkouts(navController: NavController? = null, store: Store? = null) {
     var routines by remember {
         mutableStateOf(
-            if (store != null) null else RoutineSampleData.sportsRoutines
+            if (store != null) emptyList()
+            else RoutineSampleData.sportsRoutines
         )
     }
 
     RoutinesListEffect(navController, store) { routines = it }
 
     RoutineSearch(
-        if (routines != null) polyvalentRoutineList(
-            routines = routines!!,
-            favorites = true
-        ) else null,
+        routines = routines,
         navController = navController,
-        store = store
+        store = store,
+        favorites = true
     )
 }
 

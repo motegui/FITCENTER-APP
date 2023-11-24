@@ -27,4 +27,7 @@
     <string name="find">Buscar</string>
     <string name="workouts">Rutinas</string>
     <string name="score">Clasificación</string>
+    <string name="order_by">Ordenar por</string>
+    <string name="search">Buscar</string>
+    <string name="empty_favorites">Las rutinas que marcás como favoritos se aparecerán acá.</string>
 </resources>

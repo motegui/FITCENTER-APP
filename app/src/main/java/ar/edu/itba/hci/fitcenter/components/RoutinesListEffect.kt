@@ -12,11 +12,11 @@ import kotlinx.coroutines.CancellationException
 fun RoutinesListEffect(
     navController: NavController? = null,
     store: Store? = null,
-    onValueChange: (List<Models.FullRoutine>?) -> Unit
+    onValueChange: (List<Models.FullRoutine>) -> Unit
 ) {
     LaunchedEffect(store) {
         if (store == null) return@LaunchedEffect
-        onValueChange(null)
+        onValueChange(emptyList())
         try {
             onValueChange(store.fetchRoutines())
         } catch (error: Exception) {
