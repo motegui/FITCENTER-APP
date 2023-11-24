@@ -58,7 +58,7 @@ fun RoutineCard(
     navController: NavController? = null,
     store: Store? = null,
     tablet: Boolean? = false,
-    onCardClick: (Int) -> Unit
+    onCardClick: (Long) -> Unit
 ) {
     var isFavorite by remember { mutableStateOf(rt.isFavorite) }
     var clicked by remember { mutableStateOf(false) }
@@ -77,7 +77,7 @@ fun RoutineCard(
             modifier = Modifier
                 .clickable {
                     if(tablet == true){
-                        onCardClick(rt.id.toInt())
+                        onCardClick(rt.id)
                         return@clickable
                     }
                     if (store == null || clicked) return@clickable
@@ -159,7 +159,7 @@ fun RoutineList(
     navController: NavController? = null,
     store: Store? = null,
     tablet: Boolean? = false,
-    onCardClick: (Int) -> Unit
+    onCardClick: (Long) -> Unit
 ) {
     if (routines.isNotEmpty()) {
         LazyColumn {

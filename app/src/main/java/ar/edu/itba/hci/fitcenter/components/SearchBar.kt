@@ -122,7 +122,7 @@ fun RoutineSearchPortrait(
     store: Store? = null,
     favorites: Boolean,
     tablet: Boolean? = false,
-    onCardClick: (Int) -> Unit
+    onCardClick: (Long) -> Unit
 ) {
     var searchQuery by remember { mutableStateOf("") }
     var sortingCriterion by remember { mutableStateOf(SortingCriterion.NAME) }
