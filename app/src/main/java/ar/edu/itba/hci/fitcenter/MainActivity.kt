@@ -249,7 +249,8 @@ fun MainScreen(store: Store? = null) {
                     .fillMaxSize()
                     .padding(innerPadding)
             ) {
-                sidebar()
+                if(currentScreen.value.usesNav){
+                sidebar()}
                 FitcenterNavHost(
                     navController = navController,
                     store = store,
