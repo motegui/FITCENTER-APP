@@ -26,4 +26,5 @@
     <string name="comple_workout">You have completed the workout</string>
     <string name="find">Find</string>
     <string name="workouts">Workouts</string>
+    <string name="score">Score</string>
 </resources>
