@@ -265,7 +265,7 @@ fun MainScreen(store: Store? = null) {
 
     Scaffold(
         topBar = { if (currentScreen.value.usesNav && !isLandscape) topBar() },
-        bottomBar = { if (currentScreen.value.usesNav && !currentScreen.value.isSubPage && !isLandscape) bottomBar() },
+        bottomBar = { if (currentScreen.value.usesNav && !isLandscape) bottomBar() },
         contentWindowInsets = WindowInsets(top=0)
     ) { innerPadding ->
         if(isLandscape){

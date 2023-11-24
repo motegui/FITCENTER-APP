@@ -216,8 +216,9 @@ fun LoginForm(navController: NavController? = null, store: Store? = null) {
 
         if (error.value != null) {
             Text(
-                text = error.value?.message ?: "An unknown error has occurred",
-                color = Color.Red
+                text = "Wrong username or password",
+                //text = error.value?.message ?: "An unknown error has occurred",
+                color = Color.White
             )
         }
         UsernameField(

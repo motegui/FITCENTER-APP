@@ -83,7 +83,6 @@ val screens = NonNullableMap(mapOf(
     ),
 
     "workout-details/{id}" to Screen(
-        isSubPage = true,
         resourceId = R.string.workout,
         usesNav = true,
     )
