@@ -14,8 +14,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.google.gson.GsonBuilder
 import ar.edu.itba.hci.fitcenter.api.Models
@@ -83,7 +85,7 @@ val screens = NonNullableMap(mapOf(
         usesNav = false,
     ),
 
-    "workout-details" to Screen(
+    "workout-details/{id}" to Screen(
         isSubPage = true,
         resourceId = R.string.workout,
         usesNav = true,
@@ -108,8 +110,10 @@ fun FitcenterNavHost(navController: NavHostController, store: Store? = null, sta
         composable("my-workouts") { MyWorkouts(navController, store) }
         composable("find-workouts") { FindWorkouts(navController, store) }
         composable(
-            "workout-details/?routineId={routineId}&megaRoutineJson={megaRoutineJson}",
-            deepLinks = listOf(navDeepLink { uriPattern = "$uri/view-workout/{routineId}" })
+            route = "workout-details" + "/{id}",
+            deepLinks = listOf(
+                navDeepLink { uriPattern = "android-app://androidx.navigation/workout-details/{id}" }),
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
         ) { navBackStackEntry ->
             // Extract encoded Routine object from route
             val gson = GsonBuilder().create()
@@ -119,7 +123,7 @@ fun FitcenterNavHost(navController: NavHostController, store: Store? = null, sta
                 megaRoutine = if (megaRoutineJson != null) {
                     gson.fromJson(megaRoutineJson, Models.MegaRoutine::class.java)
                 } else {
-                    val routineId = navBackStackEntry.arguments?.getString("routineId")
+                    val routineId = navBackStackEntry.arguments?.getInt("id")!!
                         ?: throw Exception("megaRoutineJson and routineId cannot both be undefined")
                     val routine = store?.fetchRoutine(routineId.toLong())
                         ?: throw Exception("Invalid routine ID: $routineId")

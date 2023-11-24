@@ -81,13 +81,13 @@ fun RoutineCard(
 //                        val megaRoutineJson = gson.toJson(megaRoutine)
                         try {
                             navController?.navigate(
-                                "workout-details/?routineId={routineId}&megaRoutineJson={megaRoutineJson}"
-                                    .replace(
-//                                        oldValue = "{megaRoutineJson}",
-//                                        newValue = megaRoutineJson
-                                        oldValue = "{routineId}",
-                                        newValue = rt.id.toString()
-                                    )
+                                "workout-details/${rt.id}"
+//                                    .replace(
+////                                        oldValue = "{megaRoutineJson}",
+////                                        newValue = megaRoutineJson
+//                                        oldValue = "{routineId}",
+//                                        newValue = rt.id.toString()
+//                                    )
                             )
                         } catch (error: Exception) {
                             throw Exception(error.message)
