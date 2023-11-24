@@ -120,6 +120,16 @@ object ApiRepository {
         return parse(response)
     }
 
+    suspend fun fetchPublicRoutines(
+        sessionToken: String
+    ): Models.SearchResult<Models.FullRoutine> {
+        val response = client.get("$BASE_URL/api/routines") {
+            header(HttpHeaders.Authorization, "bearer $sessionToken")
+            parameter("size", Int.MAX_VALUE)
+        }
+        return parse(response)
+    }
+
     suspend fun fetchRoutine(sessionToken: String, routineId: Long): Models.FullRoutine {
         val response = client.get("$BASE_URL/api/routine/$routineId") {
             header(HttpHeaders.Authorization, "bearer $sessionToken")

@@ -16,23 +16,24 @@ import androidx.navigation.NavController
 import ar.edu.itba.hci.fitcenter.components.RoutineSearch
 import ar.edu.itba.hci.fitcenter.components.filterRoutineList
 import ar.edu.itba.hci.fitcenter.api.Store
+import ar.edu.itba.hci.fitcenter.components.PublicRoutinesListEffect
 import ar.edu.itba.hci.fitcenter.components.RoutinesListEffect
 import ar.edu.itba.hci.fitcenter.ui.theme.FitcenterTheme
 
 
 @Composable
 fun FindWorkouts(navController: NavController? = null, store: Store? = null) {
-    var routines by remember {
+    var publicRoutines by remember {
         mutableStateOf(
             if (store != null) emptyList()
             else RoutineSampleData.sportsRoutines
         )
     }
 
-    RoutinesListEffect(navController, store) { routines = it }
+    PublicRoutinesListEffect(navController, store) { publicRoutines = it }
 
     RoutineSearch(
-        routines = routines,
+        routines = publicRoutines,
         navController = navController,
         store = store,
         favorites = false

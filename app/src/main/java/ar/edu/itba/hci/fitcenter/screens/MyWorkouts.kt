@@ -35,7 +35,7 @@ fun MyWorkouts(navController: NavController? = null, store: Store? = null) {
         routines = routines,
         navController = navController,
         store = store,
-        favorites = true
+        favorites = false
     )
 }
 

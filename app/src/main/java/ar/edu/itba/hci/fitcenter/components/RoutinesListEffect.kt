@@ -32,3 +32,28 @@ fun RoutinesListEffect(
         }
     }
 }
+
+@Composable
+fun PublicRoutinesListEffect(
+    navController: NavController? = null,
+    store: Store? = null,
+    onValueChange: (List<Models.FullRoutine>) -> Unit
+) {
+    LaunchedEffect(store) {
+        if (store == null) return@LaunchedEffect
+        onValueChange(emptyList())
+        try {
+            onValueChange(store.fetchPublicRoutines())
+        } catch (error: Exception) {
+            if (error is CancellationException) {
+                return@LaunchedEffect
+            }
+            store.logout()
+            navController?.navigate("login") {
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                }
+            }
+        }
+    }
+}

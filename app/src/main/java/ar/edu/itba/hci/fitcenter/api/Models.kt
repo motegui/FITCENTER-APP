@@ -51,8 +51,8 @@ object Models {
     @Serializable class PublicUser (
         val id: Long,
         val username: String,
-        val gender: Gender,
-        val avatarUrl: String,
+        val gender: Gender?,
+        val avatarUrl: String?,
         val date: Long,
         val lastActivity: Long
     )
