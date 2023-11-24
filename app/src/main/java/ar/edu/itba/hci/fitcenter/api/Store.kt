@@ -64,19 +64,15 @@ class Store private constructor(dataStore: DataStore<Preferences>) {
         return results
     }
 
-    suspend fun fetchCycles(routineId: Long): List<Models.FullCycle> {
-        val token = storage.get(Keys.SESSION_TOKEN)
-        return collectSearchResult {
-            ApiRepository.fetchCycles(token, routineId)
+    suspend fun fetchCycles(routineId: Long): List<Models.FullCycle> =
+        collectSearchResult {
+            ApiRepository.fetchCycles(storage.get(Keys.SESSION_TOKEN), routineId)
         }.sortedBy { it.order }
-    }
 
-    suspend fun fetchCycleExercises(cycleId: Long): List<Models.FullCycleExercise> {
-        val token = storage.get(Keys.SESSION_TOKEN)
-        return collectSearchResult {
-            ApiRepository.fetchCycleExercises(token, cycleId)
+    suspend fun fetchCycleExercises(cycleId: Long): List<Models.FullCycleExercise> =
+        collectSearchResult {
+            ApiRepository.fetchCycleExercises(storage.get(Keys.SESSION_TOKEN), cycleId)
         }.sortedBy { it.order }
-    }
 
     suspend fun fetchRoutines(): List<Models.FullRoutine> {
         if (routines != null) return routines!!

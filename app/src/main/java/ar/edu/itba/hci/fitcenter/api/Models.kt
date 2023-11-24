@@ -124,7 +124,7 @@ object Models {
         val name: String,
         val detail: String,
         val type: ExerciseType,
-        val duration: Int,
+        val duration: Int = 0,
         val date: Long,
         val metadata: JsonObject?
     )
@@ -156,7 +156,7 @@ object Models {
 
     @Serializable class FullCycleExercise (
         val order: Int,
-        val duration: Int,
+        val duration: Int = 0,
         val repetitions: Int,
         val exercise: FullExercise
     )
@@ -164,7 +164,6 @@ object Models {
     @Serializable enum class Direction {
         asc,
         desc
-
     }
     @Serializable class SearchResult<T> (
         val totalCount: Int,

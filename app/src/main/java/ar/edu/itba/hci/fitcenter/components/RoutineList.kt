@@ -75,17 +75,23 @@ fun RoutineCard(
                 .clickable {
                     if (store == null) return@clickable
                     scope.launch {
-                        val gson = GsonBuilder().create()
+//                        val gson = GsonBuilder().create()
                         // Promote FullRoutine to MegaRoutine to receive cycle and exercise info
-                        val megaRoutine = Models.MegaRoutine(store, rt)
-                        val megaRoutineJson = gson.toJson(megaRoutine)
-                        navController?.navigate(
-                            "workout-details/?megaRoutineJson={megaRoutineJson}"
-                                .replace(
-                                    oldValue = "{megaRoutineJson}",
-                                    newValue = megaRoutineJson
-                                )
-                        )
+//                        val megaRoutine = Models.MegaRoutine(store, rt)
+//                        val megaRoutineJson = gson.toJson(megaRoutine)
+                        try {
+                            navController?.navigate(
+                                "workout-details/?routineId={routineId}&megaRoutineJson={megaRoutineJson}"
+                                    .replace(
+//                                        oldValue = "{megaRoutineJson}",
+//                                        newValue = megaRoutineJson
+                                        oldValue = "{routineId}",
+                                        newValue = rt.id.toString()
+                                    )
+                            )
+                        } catch (error: Exception) {
+                            throw Exception(error.message)
+                        }
                     }
                 }
                 .fillMaxWidth()

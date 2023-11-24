@@ -49,6 +49,8 @@ object ApiRepository {
             throw Exception(message)
         }
         return response.body()
+//        val result: T = response.body()
+//        return result
     }
 
     suspend fun login(credentials: Models.Credentials): Models.AuthenticationToken {
