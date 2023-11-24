@@ -112,8 +112,8 @@ fun FindWorkoutsT(navController: NavController? = null, store: Store? = null){
                                 megaRoutine!!.megaCycles.forEach { megaCycle ->
                                     CycleCard(megaCycle)
                                 }
-                                DetailedModeSetting(isDetailed)
-                                StartButton(navController, store, megaRoutine!!, isDetailed)
+                                DetailedModeSetting(navController, store, megaRoutine!!)
+                                //StartButton(navController, store, megaRoutine!!, isDetailed)
                             }
                         }
                     }
