@@ -1,5 +1,6 @@
 package ar.edu.itba.hci.fitcenter.screens
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.util.Log
 import ar.edu.itba.hci.fitcenter.api.Store
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -22,6 +24,7 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.IconButton
@@ -41,6 +44,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -486,13 +490,31 @@ fun startRoutine(
 }
 
 @Composable
-fun StartButton(
-    navController: NavController? = null,
-    store: Store? = null,
-    megaRoutine: Models.MegaRoutine,
-    isDetailed: MutableState<Boolean>
+fun ShareButton(
+    megaRoutine: Models.MegaRoutine
 ) {
+    val sendIntent: Intent = Intent().apply {
+        action = Intent.ACTION_SEND
+        val id = megaRoutine.id
+        putExtra(Intent.EXTRA_TEXT, "https://www.fitcenter.com/view-workout/{$id}")
+        type = "text/plain"
+    }
+    val shareIntent = Intent.createChooser(sendIntent, null)
+    val context = LocalContext.current
+    IconButton(
+        onClick = {
+            context.startActivity(shareIntent)
+        },
+        modifier = Modifier.padding(16.dp),
+    ) {
+        androidx.compose.material3.Icon(
+            imageVector = Icons.Default.Share,
+            contentDescription = "Close",
+            tint = Color.Green,
+            modifier = Modifier.size(36.dp)
+        )
 
+    }
 }
 
 
@@ -542,6 +564,7 @@ fun WorkoutDetails(
                 CycleCard(megaCycle)
             }
             DetailedModeSetting(navController, store, megaRoutine!!)
+            ShareButton(megaRoutine!!)
             //StartButton(navController, store, megaRoutine!!, isDetailed)
         }
     }
@@ -611,8 +634,7 @@ fun WorkoutDetails(
 //}
 
 
-@Preview
-@Composable
+@Preview@Composable
 fun PreviewRoutineDetail() {
     FitcenterTheme {
         Surface(
