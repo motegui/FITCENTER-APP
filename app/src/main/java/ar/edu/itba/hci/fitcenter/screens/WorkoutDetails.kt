@@ -395,7 +395,10 @@ fun EquipmentInfo(routine: Models.FullRoutine? = null) {
 }
 
 @Composable
-fun DetailedModeSetting(isDetailed: MutableState<Boolean>) {
+fun DetailedModeSetting(navController: NavController? = null,
+                        store: Store? = null,
+                        megaRoutine: Models.MegaRoutine) {
+    val isDetailed = remember { mutableStateOf(false) }
     Surface(
         shape = MaterialTheme.shapes.medium,
         color = Color.White,
@@ -438,31 +441,6 @@ fun DetailedModeSetting(isDetailed: MutableState<Boolean>) {
             )
         }
     }
-}
-
-fun startRoutine(
-    navController: NavController,
-    megaRoutine: Models.MegaRoutine,
-    isDetailed: Boolean
-) {
-    val gson = GsonBuilder().create()
-    val megaRoutineJson = gson.toJson(megaRoutine)
-    try {
-        navController.navigate(
-            "execute-workout/?detailedMode=$isDetailed&megaRoutineJson=$megaRoutineJson"
-        )
-    } catch (e: Exception){
-        throw e
-    }
-}
-
-@Composable
-fun StartButton(
-    navController: NavController? = null,
-    store: Store? = null,
-    megaRoutine: Models.MegaRoutine,
-    isDetailed: MutableState<Boolean>
-) {
     val scope = rememberCoroutineScope()
 
     Column(
@@ -479,6 +457,42 @@ fun StartButton(
             Text(stringResource(R.string.start))
         }
     }
+}
+
+fun startRoutine(
+    navController: NavController,
+    megaRoutine: Models.MegaRoutine,
+    isDetailed: Boolean
+) {
+    val gson = GsonBuilder().create()
+    val megaRoutineJson = gson.toJson(megaRoutine)
+    if(!isDetailed){
+    try {
+        navController.navigate(
+            "execute-workout/?detailedMode=$isDetailed&megaRoutineJson=$megaRoutineJson"
+        )
+    } catch (e: Exception){
+        throw e
+    }}
+    else{
+        try {
+            navController.navigate(
+                "execute-workout-detailed/?detailedMode=$isDetailed&megaRoutineJson=$megaRoutineJson"
+            )
+        } catch (e: Exception){
+            throw e
+        }
+    }
+}
+
+@Composable
+fun StartButton(
+    navController: NavController? = null,
+    store: Store? = null,
+    megaRoutine: Models.MegaRoutine,
+    isDetailed: MutableState<Boolean>
+) {
+
 }
 
 
@@ -527,74 +541,74 @@ fun WorkoutDetails(
             megaRoutine!!.megaCycles.forEach { megaCycle ->
                 CycleCard(megaCycle)
             }
-            DetailedModeSetting(isDetailed)
-            StartButton(navController, store, megaRoutine!!, isDetailed)
+            DetailedModeSetting(navController, store, megaRoutine!!)
+            //StartButton(navController, store, megaRoutine!!, isDetailed)
         }
     }
 }
 
-@Composable
-fun WorkoutDetails2(
-    navController: NavController? = null,
-    store: Store? = null,
-    megaRoutine: Models.MegaRoutine = SampleData.megaRoutine,
-) {
-    val isDetailed = remember { mutableStateOf(false) }
-    val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
-    val scope = rememberCoroutineScope()
-
-
-    Column {
-        // Title at the top, full width
-        Title(megaRoutine) {
-            scope.launch {
-                store?.setFavorite(megaRoutine.id, it)
-            }
-        }
-
-        // If in landscape, use a Row for the two columns
-        if (isLandscape) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            ) {
-                // Left column for Info and EquipmentInfo
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(end = 8.dp)
-                ) {
-                    Info(megaRoutine)
-                    EquipmentInfo(megaRoutine)
-                    StartButton(navController, store, megaRoutine, isDetailed)
-                }
-
-                // Right column for the list of cycles
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(start = 8.dp)
-                ) {
-                    megaRoutine.megaCycles.forEach { megaCycle ->
-                        CycleCard(megaCycle)
-                    }
-                }
-            }
-        } else {
-            // Portrait mode: Info, EquipmentInfo, and Cycles in a single column
-            Info(megaRoutine)
-            EquipmentInfo(megaRoutine)
-            megaRoutine.megaCycles.forEach { megaCycle ->
-                CycleCard(megaCycle)
-            }
-            DetailedModeSetting(isDetailed)
-            StartButton(navController, store, megaRoutine, isDetailed)
-        }
-
-
-    }
-}
+//@Composable
+//fun WorkoutDetails2(
+//    navController: NavController? = null,
+//    store: Store? = null,
+//    megaRoutine: Models.MegaRoutine = SampleData.megaRoutine,
+//) {
+//    val isDetailed = remember { mutableStateOf(false) }
+//    val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
+//    val scope = rememberCoroutineScope()
+//
+//
+//    Column {
+//        // Title at the top, full width
+//        Title(megaRoutine) {
+//            scope.launch {
+//                store?.setFavorite(megaRoutine.id, it)
+//            }
+//        }
+//
+//        // If in landscape, use a Row for the two columns
+//        if (isLandscape) {
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(8.dp)
+//            ) {
+//                // Left column for Info and EquipmentInfo
+//                Column(
+//                    modifier = Modifier
+//                        .weight(1f)
+//                        .padding(end = 8.dp)
+//                ) {
+//                    Info(megaRoutine)
+//                    EquipmentInfo(megaRoutine)
+//                    StartButton(navController, store, megaRoutine, isDetailed)
+//                }
+//
+//                // Right column for the list of cycles
+//                Column(
+//                    modifier = Modifier
+//                        .weight(1f)
+//                        .padding(start = 8.dp)
+//                ) {
+//                    megaRoutine.megaCycles.forEach { megaCycle ->
+//                        CycleCard(megaCycle)
+//                    }
+//                }
+//            }
+//        } else {
+//            // Portrait mode: Info, EquipmentInfo, and Cycles in a single column
+//            Info(megaRoutine)
+//            EquipmentInfo(megaRoutine)
+//            megaRoutine.megaCycles.forEach { megaCycle ->
+//                CycleCard(megaCycle)
+//            }
+//            DetailedModeSetting(isDetailed)
+//            StartButton(navController, store, megaRoutine, isDetailed)
+//        }
+//
+//
+//    }
+//}
 
 
 @Preview

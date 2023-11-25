@@ -18,6 +18,7 @@ import com.google.gson.GsonBuilder
 import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.api.Store
 import ar.edu.itba.hci.fitcenter.screens.Execution
+import ar.edu.itba.hci.fitcenter.screens.Execution2
 import ar.edu.itba.hci.fitcenter.screens.FindWorkouts
 import ar.edu.itba.hci.fitcenter.screens.FindWorkoutsT
 import ar.edu.itba.hci.fitcenter.screens.Loading
@@ -73,6 +74,10 @@ val screens = NonNullableMap(mapOf(
     ),
 
     "execute-workout/?detailedMode={detailedMode}&megaRoutineJson={megaRoutineJson}" to Screen(
+        resourceId = R.string.execute_routine,
+        usesNav = false,
+    ),
+    "execute-workout-detailed/?detailedMode={detailedMode}&megaRoutineJson={megaRoutineJson}" to Screen(
         resourceId = R.string.execute_routine,
         usesNav = false,
     ),
@@ -154,7 +159,25 @@ fun FitcenterNavHost(
                 lastMegaRoutine ?: throw Exception("all hope is lost")
             }
             val detailed = navBackStackEntry.arguments?.getBoolean("detailedMode") ?: false
-            Execution(navController, megaRoutine, detailed)
+            Execution2(navController, megaRoutine, false)
+            lastMegaRoutine = megaRoutine
+        }
+        composable(
+            route = "execute-workout-detailed/?detailedMode={detailedMode}&megaRoutineJson={megaRoutineJson}",
+            arguments = listOf(
+                navArgument("detailedMode") { type = NavType.BoolType },
+                navArgument("megaRoutineJson") { type = NavType.StringType }
+            )
+        ) { navBackStackEntry ->
+            val gson = GsonBuilder().create()
+            val megaRoutineJson = navBackStackEntry.arguments?.getString("megaRoutineJson")
+            val megaRoutine = if (megaRoutineJson != null) {
+                gson.fromJson(megaRoutineJson, Models.MegaRoutine::class.java)
+            } else {
+                lastMegaRoutine ?: throw Exception("all hope is lost")
+            }
+            val detailed = navBackStackEntry.arguments?.getBoolean("detailedMode") ?: false
+            Execution2(navController, megaRoutine, true)
             lastMegaRoutine = megaRoutine
         }
     }
