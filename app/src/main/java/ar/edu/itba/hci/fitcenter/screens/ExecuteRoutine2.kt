@@ -51,7 +51,8 @@ fun Execution2(
     navController: NavController? = null,
     megaRoutine: Models.MegaRoutine = SampleData.megaRoutine,
     detailed: Boolean,
-    lastPageOverride: Boolean = false
+    lastPageOverride: Boolean = false,
+    isTablet: Boolean
 ) {
     val cycles: List<Models.MegaCycle> = megaRoutine.megaCycles
     var currentCycle: Models.FullCycle = cycles[0]
@@ -82,7 +83,16 @@ fun Execution2(
                 // Header
                 Row {
                     Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { navController?.popBackStack() }) {
+                    IconButton(onClick = {
+                        if(!isTablet){
+                            val dest = "workout-details/${megaRoutine.id}"
+                            navController?.navigate(dest)
+                        }
+                        else{
+                            val dest = "find-workouts-t/${megaRoutine.id}"
+                            navController?.navigate(dest)
+                        }
+                    }) {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "Close",
@@ -156,7 +166,14 @@ fun Execution2(
                         )
                     }
                     Button(
-                        onClick = { navController?.popBackStack() }
+                        onClick = { if(!isTablet){
+                            val dest = "workout-details/${megaRoutine.id}"
+                            navController?.navigate(dest)
+                        }
+                        else{
+                            val dest = "find-workouts-t/${megaRoutine.id}"
+                            navController?.navigate(dest)
+                        }}
                     ) {
                         Icon(
                             imageVector = Icons.Default.ExitToApp,
@@ -194,7 +211,16 @@ fun Execution2(
                         // Header
                         Row {
                             Spacer(modifier = Modifier.weight(1f))
-                            IconButton(onClick = { navController?.popBackStack() }) {
+                            IconButton(onClick = {
+                                if(!isTablet){
+                                    val dest = "workout-details/${megaRoutine.id}"
+                                    navController?.navigate(dest)
+                                }
+                                else{
+                                    val dest = "find-workouts-t/${megaRoutine.id}"
+                                    navController?.navigate(dest)
+                                }
+                            }) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
                                     contentDescription = "Close",

@@ -35,8 +35,8 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.CancellationException
 
 @Composable
-fun FindWorkoutsT(navController: NavController? = null, store: Store? = null){
-    var selectedRoutineId by remember { mutableStateOf<Long?>(null) }
+fun FindWorkoutsT(navController: NavController? = null, store: Store? = null, routineId: Long? = null){
+    var selectedRoutineId by remember { mutableStateOf<Long?>(routineId) }
     var routines by remember {
         mutableStateOf(
             if (store != null) emptyList()

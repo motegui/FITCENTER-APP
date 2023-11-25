@@ -73,6 +73,20 @@ val screens = NonNullableMap(mapOf(
         icon = Icons.Filled.Search
     ),
 
+    "my-workouts-t/{id}" to Screen(
+        resourceId = R.string.my_workouts,
+        navResourceId = R.string.workouts,
+        usesNav = true,
+        icon = Icons.Filled.FitnessCenter
+    ),
+
+    "find-workouts-t/{id}" to Screen(
+        resourceId = R.string.find_workouts,
+        navResourceId = R.string.find,
+        usesNav = true,
+        icon = Icons.Filled.Search
+    ),
+
     "execute-workout/?detailedMode={detailedMode}&megaRoutineJson={megaRoutineJson}" to Screen(
         resourceId = R.string.execute_routine,
         usesNav = false,
@@ -127,6 +141,38 @@ fun FitcenterNavHost(
             composable("my-workouts") { MyWorkouts(navController, store) }
             composable("find-workouts") { FindWorkouts(navController, store) }
         }
+        composable(route="my-workouts-t/{id}",
+                arguments = listOf(navArgument("id") { type = NavType.LongType }),
+            deepLinks = listOf(
+                navDeepLink { uriPattern = "android-app://ar.edu.itba.hci.fitcenter/workout-details-t/{id}" },
+                navDeepLink { uriPattern = "http://www.fitcenter.com/view-workout/{id}" },
+                navDeepLink { uriPattern = "https://www.fitcenter.com/view-workout/{id}" }
+            )
+        ) {
+            var routineId = it.arguments?.getLong("id")
+            if (routineId == null || routineId == 0L) {
+                // Band-aid for weird duplicate requests with no ID after a legitimate one
+                routineId = lastRoutineId
+            }
+            MyWorkoutsT(navController, store, routineId)
+            lastRoutineId = routineId}
+        composable(
+            route="find-workouts-t/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.LongType }),
+            deepLinks = listOf(
+                navDeepLink { uriPattern = "android-app://androidx.navigation/workout-details/{id}" },
+                navDeepLink { uriPattern = "http://www.fitcenter.com/view-workout/{id}" },
+                navDeepLink { uriPattern = "https://www.fitcenter.com/view-workout/{id}" }
+        ),
+        ) {
+            var routineId = it.arguments?.getLong("id")
+            if (routineId == null || routineId == 0L) {
+                // Band-aid for weird duplicate requests with no ID after a legitimate one
+                routineId = lastRoutineId
+            }
+            FindWorkoutsT(navController, store, routineId)
+            lastRoutineId = routineId!!}
+
         composable(
             route = "workout-details/{id}",
             deepLinks = listOf(
@@ -141,8 +187,8 @@ fun FitcenterNavHost(
                 // Band-aid for weird duplicate requests with no ID after a legitimate one
                 routineId = lastRoutineId
             }
-            WorkoutDetails(navController, store, routineId)
-            lastRoutineId = routineId
+            WorkoutDetails(navController, store, routineId!!)
+            lastRoutineId = routineId as Long
         }
         composable(
             route = "execute-workout/?detailedMode={detailedMode}&megaRoutineJson={megaRoutineJson}",
@@ -159,7 +205,7 @@ fun FitcenterNavHost(
                 lastMegaRoutine ?: throw Exception("all hope is lost")
             }
             val detailed = navBackStackEntry.arguments?.getBoolean("detailedMode") ?: false
-            Execution2(navController, megaRoutine, false)
+            Execution2(navController, megaRoutine, false, isTablet = isDeviceTablet)
             lastMegaRoutine = megaRoutine
         }
         composable(
@@ -177,7 +223,7 @@ fun FitcenterNavHost(
                 lastMegaRoutine ?: throw Exception("all hope is lost")
             }
             val detailed = navBackStackEntry.arguments?.getBoolean("detailedMode") ?: false
-            Execution2(navController, megaRoutine, true)
+            Execution2(navController, megaRoutine, true, isTablet = isDeviceTablet)
             lastMegaRoutine = megaRoutine
         }
     }
