@@ -141,6 +141,7 @@ fun FitcenterNavHost(
             composable("my-workouts") { MyWorkouts(navController, store) }
             composable("find-workouts") { FindWorkouts(navController, store) }
         }
+        if(isDeviceTablet){
         composable(route="my-workouts-t/{id}",
                 arguments = listOf(navArgument("id") { type = NavType.LongType }),
             deepLinks = listOf(
@@ -171,7 +172,7 @@ fun FitcenterNavHost(
                 routineId = lastRoutineId
             }
             FindWorkoutsT(navController, store, routineId)
-            lastRoutineId = routineId!!}
+            lastRoutineId = routineId!!}}
 
         composable(
             route = "workout-details/{id}",
