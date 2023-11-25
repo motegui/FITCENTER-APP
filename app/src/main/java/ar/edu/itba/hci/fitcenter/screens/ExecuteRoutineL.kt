@@ -49,7 +49,9 @@ fun ExecutionL(
     navController: NavController? = null,
     megaRoutine: Models.MegaRoutine = SampleData.megaRoutine,
     detailed: Boolean,
-    lastPageOverride: Boolean = false
+    lastPageOverride: Boolean = false,
+    isTablet: Boolean
+
 ) {
     val cycles: List<Models.MegaCycle> = megaRoutine.megaCycles
     var currentCycle: Models.FullCycle = cycles[0]
@@ -66,7 +68,6 @@ fun ExecutionL(
             .fillMaxSize()) {
         if (!isLastPage) {
             // Header
-
             Row(modifier=Modifier.padding(40.dp).fillMaxSize()){
                 Column (modifier = Modifier
                     .fillMaxHeight()
@@ -164,7 +165,6 @@ fun ExecutionL(
 
                 }
                 Spacer(modifier = Modifier.weight(0.5f))
-
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.weight(5f),
@@ -195,8 +195,16 @@ fun ExecutionL(
                         horizontalAlignment = Alignment.End
                     ) {
                         //Close
-
-                        IconButton(onClick = { navController?.popBackStack() }) {
+                        IconButton(onClick = {
+                            if(!isTablet){
+                                val dest = "workout-details/${megaRoutine.id}"
+                                navController?.navigate(dest)
+                            }
+                            else{
+                                val dest = "find-workouts-t/${megaRoutine.id}"
+                                navController?.navigate(dest)
+                            }
+                        }) {
                             Icon(
                                 imageVector = Icons.Default.Close,
                                 contentDescription = "Close",
@@ -327,7 +335,14 @@ fun ExecutionL(
                             )
                         }
                         Button(
-                            onClick = { navController?.popBackStack() }
+                            onClick = { if(!isTablet){
+                                val dest = "workout-details/${megaRoutine.id}"
+                                navController?.navigate(dest)
+                            }
+                            else{
+                                val dest = "find-workouts-t/${megaRoutine.id}"
+                                navController?.navigate(dest)
+                            }}
                         ) {
                             Icon(
                                 imageVector = Icons.Default.ExitToApp,
@@ -347,7 +362,16 @@ fun ExecutionL(
                         .padding(12.dp),
                     horizontalAlignment = Alignment.End
                 ) {
-                    IconButton(onClick = { navController?.popBackStack() }) {
+                    IconButton(onClick = {
+                        if(!isTablet){
+                            val dest = "workout-details/${megaRoutine.id}"
+                            navController?.navigate(dest)
+                        }
+                        else{
+                            val dest = "find-workouts-t/${megaRoutine.id}"
+                            navController?.navigate(dest)
+                        }
+                    }) {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "Close",
@@ -369,7 +393,7 @@ fun ExecutionLPreview(detailed: Boolean, lastPageOverride: Boolean = false) {
             modifier = Modifier.fillMaxSize(),
             color = Color.Black
         ) {
-            ExecutionL(detailed = detailed, lastPageOverride = lastPageOverride)
+            ExecutionL(detailed = detailed, lastPageOverride = lastPageOverride, isTablet = false)
         }
     }
 }
