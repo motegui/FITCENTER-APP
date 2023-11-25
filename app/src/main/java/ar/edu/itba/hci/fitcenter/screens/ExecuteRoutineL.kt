@@ -1,6 +1,5 @@
 package ar.edu.itba.hci.fitcenter.screens
 
-import android.os.CountDownTimer
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,16 +9,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ExitToApp
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -65,32 +61,66 @@ fun ExecutionL(
     var exerciseState by remember { mutableStateOf(currentExe) }
     var cycleState by remember { mutableStateOf(currentCycle) }
     var isLastPage by remember { mutableStateOf(lastPageOverride) }
-    Surface(color = Color.Black) {
+    Surface(color = Color.Black,
+        modifier = Modifier
+            .fillMaxSize()) {
         if (!isLastPage) {
             // Header
-            Row {
-                Spacer(modifier = Modifier.weight(1f))
-                IconButton(onClick = { navController?.popBackStack() }) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = "Close",
-                        tint = Color.Green,
-                        modifier = Modifier.size(36.dp)
-                    )
+
+            Row(modifier=Modifier.padding(40.dp).fillMaxSize()){
+                Column (modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(1f)
+                    .padding(8.dp),
+                    verticalArrangement = Arrangement.SpaceAround,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+                    //left Nav
+                        if (exeNum > 0 || cycleNum > 0 || repNum > 0) {
+                            IconButton(
+                                onClick = {
+                                    if (exeNum > 0) {
+                                        exeNum -= 1
+                                        currentExe = cycleExercises[exeNum]
+                                        exerciseState = currentExe
+                                        return@IconButton
+                                    }
+                                    if ((repNum).toLong() > 0) {
+                                        repNum -= 1
+                                        exeNum = cycleExercises.size - 1
+                                        currentExe = cycleExercises[exeNum]
+                                        exerciseState = currentExe
+                                        return@IconButton
+                                    }
+                                    if (cycleNum > 0) {
+                                        cycleNum -= 1
+                                        currentCycle = cycles[cycleNum]
+                                        cycleExercises = cycles[cycleNum].cycleExercises
+                                        cycleState = currentCycle
+                                        exeNum = cycleExercises.size - 1
+                                        currentExe = cycleExercises[exeNum]
+                                        exerciseState = currentExe
+                                        return@IconButton
+                                    }
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.ArrowBack,
+                                    contentDescription = null,
+                                    tint = Color.Green,
+                                    modifier = Modifier.size(45.dp)
+                                )
+                            }
+                        }
                 }
-            }
-            Row(){
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .padding(
-                            top = 36.dp,
-                            start = 48.dp,
-                            end = 48.dp,
-                            bottom = 84.dp
-                        )
+                    modifier = Modifier.weight(5f),
+                    verticalArrangement = Arrangement.SpaceAround
                 ) {
                     // Title
+                    Spacer(modifier = Modifier.weight(1f))
+
                     Text(
                         text = cycleState.name,
                         style = MaterialTheme.typography.titleLarge.copy(
@@ -106,7 +136,7 @@ fun ExecutionL(
 
                     Text(
                         text = exerciseState.exercise.name,
-                        style = MaterialTheme.typography.displayMedium.copy(
+                        style = MaterialTheme.typography.displaySmall.copy(
                             fontWeight = FontWeight.Bold,
                             color = Color.White
                         ),
@@ -130,119 +160,97 @@ fun ExecutionL(
                                 .wrapContentHeight()
                         )
                     }
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .padding(
-                                top = 36.dp,
-                                start = 48.dp,
-                                end = 48.dp,
-                                bottom = 84.dp
-                            )
-                    ) {
-                        if (exerciseState.repetitions > 0) {
-                            Text(
-                                text = "x${exerciseState.repetitions}",
-                                style = MaterialTheme.typography.displayMedium.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.White
-                                ),
-                                modifier = Modifier.padding(top = 20.dp)
-                            )
-                        }
-
-                        if (exerciseState.duration > 0) {
-                            CountdownTimer(initialTimeSeconds = exerciseState.duration)
-                        }
-                    }
-            }
-
-                Spacer(modifier = Modifier.weight(1f))
-
-
-                // Nav
-                // TODO deal with left and right
-                Row() {
-                    if (exeNum > 0 || cycleNum > 0 || repNum > 0) {
-                        IconButton(
-                            onClick = {
-                                if (exeNum > 0) {
-                                    exeNum -= 1;
-                                    currentExe = cycleExercises[exeNum];
-                                    exerciseState = currentExe;
-                                    return@IconButton;
-                                }
-                                if ((repNum).toLong() > 0) {
-                                    repNum -= 1;
-                                    exeNum = cycleExercises.size - 1;
-                                    currentExe = cycleExercises[exeNum];
-                                    exerciseState = currentExe;
-                                    return@IconButton;
-                                }
-                                if (cycleNum > 0) {
-                                    cycleNum -= 1;
-                                    currentCycle = cycles[cycleNum];
-                                    cycleExercises = cycles[cycleNum].cycleExercises;
-                                    cycleState = currentCycle;
-                                    exeNum = cycleExercises.size - 1;
-                                    currentExe = cycleExercises[exeNum];
-                                    exerciseState = currentExe;
-                                    return@IconButton;
-                                }
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.ArrowBack,
-                                contentDescription = null,
-                                tint = Color.Green,
-                                modifier = Modifier.size(45.dp)
-                            )
-                        }
-                    }
                     Spacer(modifier = Modifier.weight(1f))
-                    IconButton(
-                        onClick = {
-                            if (exeNum < cycleExercises.size - 1) {
-                                exeNum += 1;
-                                currentExe = cycleExercises[exeNum];
-                                exerciseState = currentExe;
-                                return@IconButton;
-                            }
-                            if ((repNum + 1).toLong() < cycleState.repetitions) {
-                                repNum += 1;
-                                exeNum = 0;
-                                currentExe = cycleExercises[exeNum];
-                                exerciseState = currentExe;
-                                return@IconButton;
-                            }
-                            if (cycleNum < cycles.size - 1) {
-                                cycleNum += 1;
-                                currentCycle = cycles[cycleNum];
-                                cycleExercises = cycles[cycleNum].cycleExercises;
-                                cycleState = currentCycle;
-                                repNum = 0;
-                                exeNum = 0;
-                                currentExe = cycleExercises[exeNum];
-                                exerciseState = currentExe;
-                                return@IconButton;
-                            }
-                            isLastPage = true;
-                        }
+
+                }
+                Spacer(modifier = Modifier.weight(0.5f))
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.weight(5f),
+                    verticalArrangement = Arrangement.SpaceAround
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowForward,
-                            contentDescription = null,
-                            tint = Color.Green,
-                            modifier = Modifier.size(45.dp)
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    if (exerciseState.repetitions > 0) {
+                        Text(
+                            text = "x${exerciseState.repetitions}",
+                            style = MaterialTheme.typography.displayMedium.copy(
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            ),
+                            modifier = Modifier.padding(20.dp)
                         )
                     }
-                }
 
+                    if (exerciseState.duration > 0) {
+                        CountdownTimer(initialTimeSeconds = exerciseState.duration)
+                    }
+
+                    Spacer(modifier = Modifier.weight(1f))
+                }
+                Column(
+                        modifier= Modifier
+                            .weight(1f),
+                        horizontalAlignment = Alignment.End
+                    ) {
+                        //Close
+
+                        IconButton(onClick = { navController?.popBackStack() }) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Close",
+                                tint = Color.Green,
+                                modifier = Modifier.size(36.dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.weight(1f))
+                        //Right Nav
+                            IconButton(
+                                onClick = {
+                                    if (exeNum < cycleExercises.size - 1) {
+                                        exeNum += 1
+                                        currentExe = cycleExercises[exeNum]
+                                        exerciseState = currentExe
+                                        return@IconButton
+                                    }
+                                    if ((repNum + 1).toLong() < cycleState.repetitions) {
+                                        repNum += 1
+                                        exeNum = 0
+                                        currentExe = cycleExercises[exeNum]
+                                        exerciseState = currentExe
+                                        return@IconButton
+                                    }
+                                    if (cycleNum < cycles.size - 1) {
+                                        cycleNum += 1
+                                        currentCycle = cycles[cycleNum]
+                                        cycleExercises = cycles[cycleNum].cycleExercises
+                                        cycleState = currentCycle
+                                        repNum = 0
+                                        exeNum = 0
+                                        currentExe = cycleExercises[exeNum]
+                                        exerciseState = currentExe
+                                        return@IconButton
+                                    }
+                                    isLastPage = true
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.ArrowForward,
+                                    contentDescription = null,
+                                    tint = Color.Green,
+                                    modifier = Modifier.size(45.dp)
+                                )
+                            }
+                        Spacer(modifier = Modifier.weight(1f))
+
+
+                    }
 
             }
         }
         if (isLastPage) {
-            Row(){
+            Row(modifier=Modifier.padding(40.dp)){
                 Column(modifier = Modifier
                     .fillMaxHeight()
                     .weight(1f)
@@ -269,9 +277,6 @@ fun ExecutionL(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                        .padding(
-                            40.dp
-                        )
                         .weight(4f)
                 ) {
                     Spacer(modifier = Modifier.weight(1f))
@@ -337,7 +342,9 @@ fun ExecutionL(
 
                 }
                 Column(
-                    modifier=Modifier.weight(1f).padding(12.dp),
+                    modifier= Modifier
+                        .weight(1f)
+                        .padding(12.dp),
                     horizontalAlignment = Alignment.End
                 ) {
                     IconButton(onClick = { navController?.popBackStack() }) {
