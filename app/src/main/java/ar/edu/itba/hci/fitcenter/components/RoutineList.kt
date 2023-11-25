@@ -115,9 +115,8 @@ fun RoutineCard(
                 ) {
                     if (rt.metadataCategory != null) {
                         Text(
-                            text = rt?.metadataCategory!!,
+                            text = rt.metadataCategory!!,
                             style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(start = 6.dp)
                         )
                     }
                 }
@@ -207,7 +206,7 @@ fun filterRoutineList(
         SortingCriterion.NAME -> filtered.sortedBy { it.name }
         SortingCriterion.DATE -> filtered.sortedByDescending { it.date }
         SortingCriterion.DIFFICULTY -> filtered.sortedBy { it.difficulty.ordinal }
-        SortingCriterion.CATEGORY -> filtered.sortedBy { it.category?.name }
+        SortingCriterion.CATEGORY -> filtered.sortedBy { it.metadataCategory }
     }
     return if (searchQuery.isEmpty()) {
         sorted
@@ -232,7 +231,7 @@ fun PreviewRoutineList() {
             RoutineList(
                 filterRoutineList(
                     routines = RoutineSampleData.sportsRoutines,
-                    favorites = true,
+                    favorites = false,
                     searchQuery = "",
                 ),
                 onCardClick = {}

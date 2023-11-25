@@ -1,13 +1,67 @@
 package ar.edu.itba.hci.fitcenter
 
 import ar.edu.itba.hci.fitcenter.api.Models
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
 
 object RoutineSampleData {
     // Sample routine data
 
     val sportsRoutines: List<Models.FullRoutine> = listOf(
+
+        Models.FullRoutine(
+                        id = 11,
+                        name = "Morning Jog",
+                        detail = "A light jog to start the day",
+                        date = System.currentTimeMillis(),
+                        score = 4,
+                        isPublic = true,
+                        difficulty = Models.Difficulty.beginner,
+                        category = Models.FullCategory(
+                            id = 101,
+                            name = "Running",
+                            detail = "Outdoor"
+                        ),
+                        user = Models.PublicUser(
+                            id = 123,
+                            username = "runner123",
+                            gender = Models.Gender.male,
+                            avatarUrl = "https://example.com/avatar/runner123.jpg",
+                            date = System.currentTimeMillis(),
+                            lastActivity = System.currentTimeMillis()
+                        ),
+                        metadata = Models.RoutineMetadata(
+                            favorite = true,
+                            equipment = listOf("Running Shoes"),
+                            category = "Outdoor"
+                        )
+                    ),
+        Models.FullRoutine(
+                        id = 12,
+                        name = "Bodyweight Workout",
+                        detail = "No equipment needed bodyweight exercises",
+                        date = System.currentTimeMillis(),
+                        score = 5,
+                        isPublic = true,
+                        difficulty = Models.Difficulty.intermediate,
+                        category = Models.FullCategory(
+                            id = 102,
+                            name = "Bodyweight",
+                            detail = "Indoor"
+                        ),
+                        user = Models.PublicUser(
+                            id = 456,
+                            username = "fitfanatic",
+                            gender = Models.Gender.female,
+                            avatarUrl = "https://example.com/avatar/fitfanatic.jpg",
+                            date = System.currentTimeMillis(),
+                            lastActivity = System.currentTimeMillis()
+                        ),
+                        metadata = Models.RoutineMetadata(
+                            favorite = false,
+                            equipment = emptyList(),
+                            category = "Indoor"
+                        )
+                    ),
+
         Models.FullRoutine(
             id = 1,
             name = "Beginner Full Body",
@@ -25,7 +79,11 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = null
+            metadata = Models.RoutineMetadata(
+                favorite = false,
+                equipment = emptyList(),
+                category = "Strength"
+            )
         ),
         Models.FullRoutine(
             id = 2,
@@ -44,7 +102,11 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = null
+            metadata = Models.RoutineMetadata(
+                favorite = false,
+                equipment = emptyList(),
+                category = "Cardio"
+            )
         ),
         Models.FullRoutine(
             id = 3,
@@ -63,7 +125,11 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = null
+            metadata = Models.RoutineMetadata(
+                favorite = false,
+                equipment = listOf("Mat"),
+                category = "Strength"
+            )
         ),
         Models.FullRoutine(
             id = 4,
@@ -82,7 +148,11 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = null
+            metadata = Models.RoutineMetadata(
+                favorite = true,
+                equipment = listOf("Dumbells"),
+                category = "Strength"
+            )
         ),
         Models.FullRoutine(
             id = 5,
@@ -101,7 +171,11 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = Models.RoutineMetadata(favorite = false)
+            metadata = Models.RoutineMetadata(
+                favorite = false,
+                equipment = listOf("Mat"),
+                category = "Flexibility"
+            )
         ),
         Models.FullRoutine(
             id = 6,
@@ -120,7 +194,11 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = Models.RoutineMetadata(favorite = true)
+            metadata = Models.RoutineMetadata(
+                favorite = false,
+                equipment = emptyList(),
+                category = "Flexibility"
+            )
         ),
         Models.FullRoutine(
             id = 7,
@@ -139,7 +217,11 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = null
+            metadata = Models.RoutineMetadata(
+                favorite = false,
+                equipment = emptyList(),
+                category = "Strength"
+            )
         ),
         Models.FullRoutine(
             id = 8,
@@ -158,7 +240,7 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = null
+            metadata = Models.RoutineMetadata(category = "Cardio")
         ),
         Models.FullRoutine(
             id = 9,
@@ -177,7 +259,11 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = null
+            metadata = Models.RoutineMetadata(
+                favorite = false,
+                equipment = emptyList(),
+                category = "Flexibility"
+            )
         ),
         Models.FullRoutine(
             id = 10,
@@ -196,7 +282,11 @@ object RoutineSampleData {
                 20231114,
                 20231115
             ),
-            metadata = Models.RoutineMetadata(favorite = true)
+            metadata = Models.RoutineMetadata(
+                favorite = false,
+                equipment = emptyList(),
+                category = "Strength"
+            )
         )
     )
 
