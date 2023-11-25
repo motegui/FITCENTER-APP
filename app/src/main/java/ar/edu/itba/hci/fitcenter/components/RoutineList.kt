@@ -106,7 +106,6 @@ fun RoutineCard(
                     modifier = Modifier.padding(top = 4.dp)
                 )
 
-                // Difficulty below the date, with category
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()

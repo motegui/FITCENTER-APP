@@ -224,12 +224,12 @@ fun RoutineSearchLandscape(
             .fillMaxSize()
             .padding(horizontal = 8.dp)
     ) {
-        // Column for sorting buttons
         Column(
             modifier = Modifier
                 .fillMaxHeight()
                 .padding(top = 8.dp)
-                .weight(1f) // Take up available vertical space
+                .weight(1f),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Search bar
             SearchBar(
