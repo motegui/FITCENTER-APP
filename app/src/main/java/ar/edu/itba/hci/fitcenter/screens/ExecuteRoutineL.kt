@@ -150,7 +150,7 @@ fun ExecutionL(
 
                     if (detailed) {
                         Text(
-                            text = exerciseState.exercise.detail.substring(0, 200),
+                            text = exerciseState.exercise.detail,
                             style = MaterialTheme.typography.titleMedium.copy(
                                 color = Color.White
                             ),

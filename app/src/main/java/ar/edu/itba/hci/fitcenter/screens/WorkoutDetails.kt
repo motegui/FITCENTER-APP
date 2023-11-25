@@ -22,6 +22,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Share
@@ -213,7 +214,9 @@ fun Title(routine: Models.FullRoutine? = null, onFavoriteChanged: (Boolean) -> U
                         fontWeight = FontWeight.Bold, // Hacer el texto en negrita
                         color = Color.Black
                     ),
-                    modifier = Modifier.weight(1f).padding(top = 15.dp, bottom = 15.dp) // Utilizar weight para ocupar el espacio disponible
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(top = 15.dp, bottom = 15.dp) // Utilizar weight para ocupar el espacio disponible
                 )
 
                 // Corazón a la derecha
@@ -337,7 +340,9 @@ fun EquipmentInfo(routine: Models.FullRoutine? = null) {
             if (routine!!.equipment.isEmpty()) {
                 Text(
                     text = stringResource(R.string.no_equipment),
-                    modifier = Modifier.weight(1f).padding(top = 10.dp, bottom = 10.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(top = 10.dp, bottom = 10.dp),
                     style = MaterialTheme.typography.titleMedium.copy(
                         fontWeight = FontWeight.Bold,
                         color = Color.Black
@@ -403,6 +408,14 @@ fun DetailedModeSetting(navController: NavController? = null,
                         store: Store? = null,
                         megaRoutine: Models.MegaRoutine) {
     val isDetailed = remember { mutableStateOf(false) }
+    val sendIntent: Intent = Intent().apply {
+        action = Intent.ACTION_SEND
+        val id = megaRoutine.id
+        putExtra(Intent.EXTRA_TEXT, "https://www.fitcenter.com/view-workout/{$id}")
+        type = "text/plain"
+    }
+    val shareIntent = Intent.createChooser(sendIntent, null)
+    val context = LocalContext.current
     Surface(
         shape = MaterialTheme.shapes.medium,
         color = Color.White,
@@ -450,15 +463,31 @@ fun DetailedModeSetting(navController: NavController? = null,
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(
-            onClick = {
-                if (navController == null || store == null) return@Button
-                scope.launch {
-                    startRoutine(navController, megaRoutine, isDetailed.value)
+        Row{
+            Button(
+                modifier = Modifier.padding(end = 6.dp),
+                onClick = {
+                    context.startActivity(shareIntent)
                 }
+            ) {
+                Text(text=stringResource(R.string.share),
+                    modifier = Modifier.padding(2.dp))
+                Icon(
+                    imageVector = Icons.Default.Share,
+                    contentDescription = "Share",
+                    modifier = Modifier.size(15.dp).padding(start=3.dp)
+                )
             }
-        ) {
-            Text(stringResource(R.string.start))
+            Button(
+                onClick = {
+                    if (navController == null || store == null) return@Button
+                    scope.launch {
+                        startRoutine(navController, megaRoutine, isDetailed.value)
+                    }
+                }
+            ) {
+                Text(stringResource(R.string.start))
+            }
         }
     }
 }
@@ -501,15 +530,15 @@ fun ShareButton(
     }
     val shareIntent = Intent.createChooser(sendIntent, null)
     val context = LocalContext.current
+
     IconButton(
         onClick = {
             context.startActivity(shareIntent)
         },
-        modifier = Modifier.padding(16.dp),
     ) {
-        androidx.compose.material3.Icon(
+        Icon(
             imageVector = Icons.Default.Share,
-            contentDescription = "Close",
+            contentDescription = "Share",
             tint = Color.Green,
             modifier = Modifier.size(36.dp)
         )
@@ -564,74 +593,11 @@ fun WorkoutDetails(
                 CycleCard(megaCycle)
             }
             DetailedModeSetting(navController, store, megaRoutine!!)
-            ShareButton(megaRoutine!!)
-            //StartButton(navController, store, megaRoutine!!, isDetailed)
+            //ShareButton(megaRoutine!!)
         }
     }
 }
 
-//@Composable
-//fun WorkoutDetails2(
-//    navController: NavController? = null,
-//    store: Store? = null,
-//    megaRoutine: Models.MegaRoutine = SampleData.megaRoutine,
-//) {
-//    val isDetailed = remember { mutableStateOf(false) }
-//    val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
-//    val scope = rememberCoroutineScope()
-//
-//
-//    Column {
-//        // Title at the top, full width
-//        Title(megaRoutine) {
-//            scope.launch {
-//                store?.setFavorite(megaRoutine.id, it)
-//            }
-//        }
-//
-//        // If in landscape, use a Row for the two columns
-//        if (isLandscape) {
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(8.dp)
-//            ) {
-//                // Left column for Info and EquipmentInfo
-//                Column(
-//                    modifier = Modifier
-//                        .weight(1f)
-//                        .padding(end = 8.dp)
-//                ) {
-//                    Info(megaRoutine)
-//                    EquipmentInfo(megaRoutine)
-//                    StartButton(navController, store, megaRoutine, isDetailed)
-//                }
-//
-//                // Right column for the list of cycles
-//                Column(
-//                    modifier = Modifier
-//                        .weight(1f)
-//                        .padding(start = 8.dp)
-//                ) {
-//                    megaRoutine.megaCycles.forEach { megaCycle ->
-//                        CycleCard(megaCycle)
-//                    }
-//                }
-//            }
-//        } else {
-//            // Portrait mode: Info, EquipmentInfo, and Cycles in a single column
-//            Info(megaRoutine)
-//            EquipmentInfo(megaRoutine)
-//            megaRoutine.megaCycles.forEach { megaCycle ->
-//                CycleCard(megaCycle)
-//            }
-//            DetailedModeSetting(isDetailed)
-//            StartButton(navController, store, megaRoutine, isDetailed)
-//        }
-//
-//
-//    }
-//}
 
 
 @Preview@Composable

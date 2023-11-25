@@ -19,6 +19,8 @@ import ar.edu.itba.hci.fitcenter.api.Models
 import ar.edu.itba.hci.fitcenter.api.Store
 import ar.edu.itba.hci.fitcenter.screens.Execution
 import ar.edu.itba.hci.fitcenter.screens.Execution2
+import ar.edu.itba.hci.fitcenter.screens.ExecutionL
+import ar.edu.itba.hci.fitcenter.screens.ExecutionT
 import ar.edu.itba.hci.fitcenter.screens.FindWorkouts
 import ar.edu.itba.hci.fitcenter.screens.FindWorkoutsT
 import ar.edu.itba.hci.fitcenter.screens.Loading
@@ -191,41 +193,52 @@ fun FitcenterNavHost(
             WorkoutDetails(navController, store, routineId!!)
             lastRoutineId = routineId as Long
         }
-        composable(
-            route = "execute-workout/?detailedMode={detailedMode}&megaRoutineJson={megaRoutineJson}",
-            arguments = listOf(
-                navArgument("detailedMode") { type = NavType.BoolType },
-                navArgument("megaRoutineJson") { type = NavType.StringType }
-            )
-        ) { navBackStackEntry ->
-            val gson = GsonBuilder().create()
-            val megaRoutineJson = navBackStackEntry.arguments?.getString("megaRoutineJson")
-            val megaRoutine = if (megaRoutineJson != null) {
-                gson.fromJson(megaRoutineJson, Models.MegaRoutine::class.java)
-            } else {
-                lastMegaRoutine ?: throw Exception("all hope is lost")
+
+            composable(
+                route = "execute-workout/?detailedMode={detailedMode}&megaRoutineJson={megaRoutineJson}",
+                arguments = listOf(
+                    navArgument("detailedMode") { type = NavType.BoolType },
+                    navArgument("megaRoutineJson") { type = NavType.StringType }
+                )
+            ) { navBackStackEntry ->
+                val gson = GsonBuilder().create()
+                val megaRoutineJson = navBackStackEntry.arguments?.getString("megaRoutineJson")
+                val megaRoutine = if (megaRoutineJson != null) {
+                    gson.fromJson(megaRoutineJson, Models.MegaRoutine::class.java)
+                } else {
+                    lastMegaRoutine ?: throw Exception("all hope is lost")
+                }
+                val detailed = navBackStackEntry.arguments?.getBoolean("detailedMode") ?: false
+                if(isDeviceTablet){
+                    ExecutionT(navController, megaRoutine, false, isTablet = isDeviceTablet)
+                }else if(isLandscape){
+                ExecutionL(navController, megaRoutine, false, isTablet = isDeviceTablet)}
+                else{
+                    Execution2(navController, megaRoutine, false, isTablet = isDeviceTablet)}
+                lastMegaRoutine = megaRoutine
             }
-            val detailed = navBackStackEntry.arguments?.getBoolean("detailedMode") ?: false
-            Execution2(navController, megaRoutine, false, isTablet = isDeviceTablet)
-            lastMegaRoutine = megaRoutine
-        }
-        composable(
-            route = "execute-workout-detailed/?detailedMode={detailedMode}&megaRoutineJson={megaRoutineJson}",
-            arguments = listOf(
-                navArgument("detailedMode") { type = NavType.BoolType },
-                navArgument("megaRoutineJson") { type = NavType.StringType }
-            )
-        ) { navBackStackEntry ->
-            val gson = GsonBuilder().create()
-            val megaRoutineJson = navBackStackEntry.arguments?.getString("megaRoutineJson")
-            val megaRoutine = if (megaRoutineJson != null) {
-                gson.fromJson(megaRoutineJson, Models.MegaRoutine::class.java)
-            } else {
-                lastMegaRoutine ?: throw Exception("all hope is lost")
+            composable(
+                route = "execute-workout-detailed/?detailedMode={detailedMode}&megaRoutineJson={megaRoutineJson}",
+                arguments = listOf(
+                    navArgument("detailedMode") { type = NavType.BoolType },
+                    navArgument("megaRoutineJson") { type = NavType.StringType }
+                )
+            ) { navBackStackEntry ->
+                val gson = GsonBuilder().create()
+                val megaRoutineJson = navBackStackEntry.arguments?.getString("megaRoutineJson")
+                val megaRoutine = if (megaRoutineJson != null) {
+                    gson.fromJson(megaRoutineJson, Models.MegaRoutine::class.java)
+                } else {
+                    lastMegaRoutine ?: throw Exception("all hope is lost")
+                }
+                val detailed = navBackStackEntry.arguments?.getBoolean("detailedMode") ?: false
+                if(isDeviceTablet){
+                    ExecutionT(navController, megaRoutine, true, isTablet = isDeviceTablet)
+                }else if(isLandscape){
+                    ExecutionL(navController, megaRoutine, true, isTablet = isDeviceTablet)}
+                else{
+                    Execution2(navController, megaRoutine, true, isTablet = isDeviceTablet)}
+                lastMegaRoutine = megaRoutine
             }
-            val detailed = navBackStackEntry.arguments?.getBoolean("detailedMode") ?: false
-            Execution2(navController, megaRoutine, true, isTablet = isDeviceTablet)
-            lastMegaRoutine = megaRoutine
-        }
     }
 }
