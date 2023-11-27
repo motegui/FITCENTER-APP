@@ -6,6 +6,7 @@
 
     <application
         android:usesCleartextTraffic="true"
+        android:enableOnBackInvokedCallback="true"
 
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -19,12 +20,15 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Fitcenter">
+            android:theme="@style/Theme.Fitcenter"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="sensor"
+            android:configChanges="orientation|screenSize"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+                <data android:scheme="https" android:host="www.fitcenter.com" />
             </intent-filter>
         </activity>
     </application>

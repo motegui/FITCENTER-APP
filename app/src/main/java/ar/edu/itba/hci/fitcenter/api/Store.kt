@@ -2,16 +2,21 @@ package ar.edu.itba.hci.fitcenter.api
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
+import ar.edu.itba.hci.fitcenter.storage.Keys
+import ar.edu.itba.hci.fitcenter.storage.StorageRepository
+
 
 /**
  * Store
- * Use this to interface with the API. Please avoid using api.Routes directly outside of this class.
+ * Data Layer -> Repository
+ * Brings together the app's two data sources: the API and the Preferences Store.
+ * Provides methods for accessing the API that also save/cache necessary information.
+ *
+ * Use this to interface with the API. Please avoid using api.Routes outside of this class.
  * Objects like the current user can be added as properties on this object to cache them in memory.
  * Objects like the session token can be added to the dataStore to save them to the device's storage.
  */
-class Store private constructor(private val dataStore: DataStore<Preferences>) {
+class Store private constructor(dataStore: DataStore<Preferences>) {
     // Singleton class constructor
     companion object {
         @Volatile
@@ -23,23 +28,77 @@ class Store private constructor(private val dataStore: DataStore<Preferences>) {
             }
     }
 
+    private val storage = StorageRepository.getStorageRepository(dataStore)
     private var user: Models.FullUser? = null
+    private var routines: List<Models.FullRoutine>? = null
+    private var publicRoutines: List<Models.FullRoutine>? = null
+    public var currentRoutineId: Long? = null
 
-    private val SESSION_TOKEN = stringPreferencesKey("session_token")
 
     suspend fun login(credentials: Models.Credentials) {
-        val tokenObject = Routes.login(credentials)
-        dataStore.edit { app ->
-            app[SESSION_TOKEN] = tokenObject.token
-        }
+        val token = ApiRepository.login(credentials).token
+        storage.set(Keys.SESSION_TOKEN, token)
     }
 
-//    suspend fun logout() {
-////         POST /users/logout
-//    }
+    suspend fun isLoggedIn(): Boolean = storage.get(Keys.SESSION_TOKEN, "") != ""
 
-//    suspend fun currentUser(): FullUser {
-//        if (user != null) return user
-//        // GET /users/current
-//    }
+    suspend fun logout() {
+        try {
+            ApiRepository.logout(storage.get(Keys.SESSION_TOKEN))
+        } catch (_: Exception) {}
+        storage.set(Keys.SESSION_TOKEN, "")
+    }
+
+    suspend fun currentUser(): Models.FullUser {
+        if (user != null) return user as Models.FullUser
+        user = ApiRepository.fetchCurrentUser(storage.get(Keys.SESSION_TOKEN))
+        return user as Models.FullUser
+    }
+
+    private suspend fun <T> collectSearchResult(
+        searchFunction: suspend () -> Models.SearchResult<T>
+    ): List<T> {
+        val results = mutableListOf<T>()
+        do {
+            val page = searchFunction()
+            results.addAll(page.content)
+        } while (!page.isLastPage)
+        return results
+    }
+
+    suspend fun fetchCycles(routineId: Long): List<Models.FullCycle> =
+        collectSearchResult {
+            ApiRepository.fetchCycles(storage.get(Keys.SESSION_TOKEN), routineId)
+        }.sortedBy { it.order }
+
+    suspend fun fetchCycleExercises(cycleId: Long): List<Models.FullCycleExercise> =
+        collectSearchResult {
+            ApiRepository.fetchCycleExercises(storage.get(Keys.SESSION_TOKEN), cycleId)
+        }.sortedBy { it.order }
+
+    suspend fun fetchRoutines(): List<Models.FullRoutine> {
+        if (routines != null) return routines!!
+        routines = collectSearchResult {
+            ApiRepository.fetchRoutines(storage.get(Keys.SESSION_TOKEN))
+        }
+        return routines!!
+    }
+
+    suspend fun fetchPublicRoutines(): List<Models.FullRoutine> {
+        publicRoutines = collectSearchResult {
+            ApiRepository.fetchPublicRoutines(storage.get(Keys.SESSION_TOKEN))
+        }
+        return publicRoutines!!
+    }
+
+    suspend fun fetchRoutine(routineId: Long): Models.FullRoutine =
+        ApiRepository.fetchRoutine(storage.get(Keys.SESSION_TOKEN), routineId)
+
+    suspend fun setFavorite(routineId: Long, isFavorite: Boolean) {
+        if (isFavorite) {
+            ApiRepository.addFavorite(storage.get(Keys.SESSION_TOKEN), routineId)
+        } else {
+            ApiRepository.removeFavorite(storage.get(Keys.SESSION_TOKEN), routineId)
+        }
+    }
 }

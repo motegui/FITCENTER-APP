@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="my_workouts">Mis rutinas</string>
-    <string name="find_workouts">Buscinar rutinas</string>
-    <string name="login">Inicio de sesión</string>
-    <string name="password">Contraseña</string>
-    <string name="log_in">Ingresar</string>
-</resources>

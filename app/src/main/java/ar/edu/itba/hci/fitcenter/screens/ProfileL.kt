@@ -7,6 +7,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -54,9 +55,9 @@ import coil.compose.AsyncImage
 import kotlinx.coroutines.launch
 
 @Composable
-private fun Avatar(imageUrl: String? = null) {
+private fun AvatarL(imageUrl: String? = null) {
     Surface(
-        modifier = Modifier.size(200.dp),
+        modifier = Modifier.size(250.dp),
         shape = CircleShape
     ) {
         if (imageUrl != null) {
@@ -81,7 +82,7 @@ private fun Avatar(imageUrl: String? = null) {
 }
 
 @Composable
-fun Profile(navController: NavController? = null, store: Store? = null) {
+fun ProfileL(navController: NavController? = null, store: Store? = null) {
     var user by remember { mutableStateOf(Placeholder.emptyUser) }
     val scope = rememberCoroutineScope()
 
@@ -93,73 +94,93 @@ fun Profile(navController: NavController? = null, store: Store? = null) {
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 28.dp),
-        verticalArrangement = Arrangement.Top,
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Avatar(user.avatarUrl)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth().padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AvatarL(user.avatarUrl)
+            Spacer(modifier = Modifier.weight(1f))
+            LazyColumn(verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally) {
+                (1..3).forEach { i ->
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(0.8f) // reduce width here
+                                .height(60.dp) // increase height here
+                                .padding(horizontal = 10.dp, vertical = 10.dp)
+                                .background(
+                                    if (i == 1) MaterialTheme.colorScheme.primary else Color.White,
+                                    shape = RoundedCornerShape(10.dp)
+                                ) // change color for the first rectangle
+                                .border(
+                                    if (i != 1) BorderStroke(1.dp, Color.Black) else BorderStroke(
+                                        0.dp,
+                                        Color.Transparent
+                                    ), RoundedCornerShape(10.dp)
+                                ), // remove border for the first rectangle
+                            contentAlignment = Alignment.Center // align content to center
+                        ) {
+                            when (i) {
+                                1 -> Text(
+                                    "${user.firstName} ${user.lastName}",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 15.sp
+                                )
 
-        // Add four rectangles with rounded corners
-        for (i in 1..3) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(0.8f) // reduce width here
-                    .height(60.dp) // increase height here
-                    .padding(horizontal = 10.dp, vertical = 10.dp)
-                    .background(
-                        if (i == 1) MaterialTheme.colorScheme.primary else Color.White,
-                        shape = RoundedCornerShape(10.dp)
-                    ) // change color for first rectangle
-                    .border(
-                        if (i != 1) BorderStroke(1.dp, Color.Black) else BorderStroke(
-                            0.dp,
-                            Color.Transparent
-                        ), RoundedCornerShape(10.dp)
-                    ), // remove border for first rectangle
-                contentAlignment = Alignment.Center // align content to center
-            ) {
-                when (i) {
-                    1 -> Text("${user.firstName} ${user.lastName}", fontWeight = FontWeight.Bold, fontSize = 15.sp)
-                    2 -> Text(user.email, fontSize = 15.sp)
-                    3 -> Text("@${user.username}", fontSize = 15.sp)
+                                2 -> Text(user.email, fontSize = 15.sp)
+                                3 -> Text("@${user.username}", fontSize = 15.sp)
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
                 }
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-
-        // Logout button
-        Button(
-            onClick = {
-                scope.launch {
-                    store?.logout()
-                    navController?.navigate("login") {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                (1..1).forEach { i ->
+                    item {
+                        Button(
+                            onClick = {
+                                scope.launch {
+                                    store?.logout()
+                                    navController?.navigate("login") {
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                    }
+                                }
+                            },
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .fillMaxWidth(0.5f),
+                            shape = RoundedCornerShape(10.dp),
+                            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.primary)
+                        ) {
+                            Text(
+                                stringResource(R.string.log_out),
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 15.sp
+                            )
                         }
                     }
                 }
-            },
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth(0.5f),
-            shape = RoundedCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.primary)
-        ) {
-            Text(stringResource(R.string.log_out), fontWeight = FontWeight.Bold, fontSize = 15.sp)
+            }
         }
     }
 }
 
 @Preview(name="Light Mode")
 @Composable
-fun PreviewProfile() {
+fun PreviewProfileL() {
     FitcenterTheme {
         Surface(
-            modifier=Modifier.fillMaxSize(),
+            modifier=Modifier.fillMaxWidth(),
             color=MaterialTheme.colorScheme.background,
         ) {
-            Profile()
+            ProfileL()
         }
     }
 }
