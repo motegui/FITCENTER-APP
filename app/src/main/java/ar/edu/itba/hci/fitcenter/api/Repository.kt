@@ -1,9 +1,8 @@
 package ar.edu.itba.hci.fitcenter.api
 
-import android.util.Log
+import ar.edu.itba.hci.fitcenter.BuildConfig
 import ar.edu.itba.hci.fitcenter.api.Client.client
 import kotlin.math.pow
-import io.github.cdimascio.dotenv.dotenv
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.post
@@ -19,22 +18,7 @@ import io.ktor.http.HttpHeaders
  * Provides methods for accessing the app's API.
  */
 object ApiRepository {
-    private fun getBaseUrl(): String {
-        val defaultValue = "http://localhost:8080"
-        try {
-            val dotenv = dotenv {
-                directory = "/assets"
-                filename = "env"
-            }
-            val url = dotenv["API_URL"] ?: return defaultValue
-            Log.d("ApiRepository", url)
-            return url.replace("\"", "").replace("'", "")
-        } catch (error: Exception) {
-            return defaultValue
-        }
-    }
-
-    private val BASE_URL = getBaseUrl()
+    private const val BASE_URL = BuildConfig.API_BASE_URL
 
     // Check if HTTP status code is 2xx
     private fun ok(response: HttpResponse): Boolean {
@@ -54,21 +38,21 @@ object ApiRepository {
     }
 
     suspend fun login(credentials: Models.Credentials): Models.AuthenticationToken {
-        val response = client.post("$BASE_URL/api/users/login") {
+        val response = client.post("${BASE_URL}users/login") {
             setBody(credentials)
         }
         return parse(response)
     }
 
     suspend fun logout(sessionToken: String) {
-        val response = client.post("$BASE_URL/api/users/logout") {
+        val response = client.post("${BASE_URL}users/logout") {
             header(HttpHeaders.Authorization, "bearer $sessionToken")
         }
         parse<Unit>(response)
     }
 
     suspend fun fetchCurrentUser(sessionToken: String): Models.FullUser {
-        val response = client.get("$BASE_URL/api/users/current") {
+        val response = client.get("${BASE_URL}users/current") {
             header(HttpHeaders.Authorization, "bearer $sessionToken")
         }
         return parse(response)
@@ -78,7 +62,7 @@ object ApiRepository {
         sessionToken: String,
         routineId: Long,
     ): Models.SearchResult<Models.FullCycle> {
-        val response = client.get("$BASE_URL/api/routines/$routineId/cycles") {
+        val response = client.get("${BASE_URL}routines/$routineId/cycles") {
             header(HttpHeaders.Authorization, "bearer $sessionToken")
             parameter("size", Int.MAX_VALUE)
         }
@@ -89,7 +73,7 @@ object ApiRepository {
         sessionToken: String,
         cycleId: Long,
     ): Models.SearchResult<Models.FullCycleExercise> {
-        val response = client.get("$BASE_URL/api/cycles/$cycleId/exercises") {
+        val response = client.get("${BASE_URL}cycles/$cycleId/exercises") {
             header(HttpHeaders.Authorization, "bearer $sessionToken")
             parameter("size", Int.MAX_VALUE)
         }
@@ -97,14 +81,14 @@ object ApiRepository {
     }
 
     suspend fun addFavorite(sessionToken: String, routineId: Long) {
-        val response = client.post("$BASE_URL/api/favourites/$routineId") {
+        val response = client.post("${BASE_URL}favourites/$routineId") {
             header(HttpHeaders.Authorization, "bearer $sessionToken")
         }
         return parse(response)
     }
 
     suspend fun removeFavorite(sessionToken: String, routineId: Long) {
-        val response = client.delete("$BASE_URL/api/favourites/$routineId") {
+        val response = client.delete("${BASE_URL}favourites/$routineId") {
             header(HttpHeaders.Authorization, "bearer $sessionToken")
         }
         return parse(response)
@@ -113,7 +97,7 @@ object ApiRepository {
     suspend fun fetchRoutines(
         sessionToken: String
     ): Models.SearchResult<Models.FullRoutine> {
-        val response = client.get("$BASE_URL/api/users/current/routines") {
+        val response = client.get("${BASE_URL}users/current/routines") {
             header(HttpHeaders.Authorization, "bearer $sessionToken")
             parameter("size", Int.MAX_VALUE)
         }
@@ -123,7 +107,7 @@ object ApiRepository {
     suspend fun fetchPublicRoutines(
         sessionToken: String
     ): Models.SearchResult<Models.FullRoutine> {
-        val response = client.get("$BASE_URL/api/routines") {
+        val response = client.get("${BASE_URL}routines") {
             header(HttpHeaders.Authorization, "bearer $sessionToken")
             parameter("size", Int.MAX_VALUE)
         }
@@ -131,7 +115,7 @@ object ApiRepository {
     }
 
     suspend fun fetchRoutine(sessionToken: String, routineId: Long): Models.FullRoutine {
-        val response = client.get("$BASE_URL/api/routines/$routineId") {
+        val response = client.get("${BASE_URL}routines/$routineId") {
             header(HttpHeaders.Authorization, "bearer $sessionToken")
         }
         return parse(response)

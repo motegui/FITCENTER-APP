@@ -22,7 +22,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8080/api/\"")
+        }
         release {
+            buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8080/api/\"")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -54,7 +58,6 @@ android {
 
 dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
-    implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
 
     implementation(platform("androidx.compose:compose-bom:2023.10.01"))
     implementation("io.coil-kt:coil-compose:2.5.0")
